@@ -1,0 +1,49 @@
+<header class="navbar">
+  <div class="navbar-left">
+    <h2 class="app-title">Library Management System</h2>
+    <span class="portal-role-tag" [class.tag-admin]="authService.isAdmin()" [class.tag-student]="authService.isStudent()">
+      {{ authService.isAdmin() ? '🏛️ ADMIN CONSOLE' : '🎓 STUDENT PORTAL' }}
+    </span>
+  </div>
+
+  <!-- Admin Central Session Status Indicator -->
+  @if (authService.isAdmin()) {
+    <div class="navbar-center-admin">
+      <span class="admin-session-pill">
+        <span class="pulse-dot"></span>
+        <span>Institutional Operations & Stock Governance Session</span>
+      </span>
+    </div>
+  }
+
+  <!-- Navbar Right Section -->
+  <div class="navbar-right">
+    <!-- Light / Dark Mode Toggle Button -->
+    <button 
+      type="button" 
+      class="theme-toggle-nav" 
+      (click)="themeService.toggleTheme()"
+      [title]="themeService.isDark() ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
+    >
+      {{ themeService.isDark() ? '☀️' : '🌙' }}
+    </button>
+
+    <!-- User Profile & Role Info -->
+    <div class="user-profile">
+      <div class="avatar" [class.avatar-admin]="authService.isAdmin()" [class.avatar-student]="authService.isStudent()">
+        {{ authService.currentUser()?.avatar || 'ADM' }}
+      </div>
+      <div class="user-details">
+        <span class="user-name">{{ authService.currentUser()?.name || 'Librarian' }}</span>
+        <span class="user-role-badge" [class.badge-adm]="authService.isAdmin()" [class.badge-stu]="authService.isStudent()">
+          {{ authService.isAdmin() ? 'ADMIN' : 'STUDENT' }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Logout Button -->
+    <button type="button" class="logout-btn" (click)="logout()" title="Sign out of portal">
+      Logout
+    </button>
+  </div>
+</header>

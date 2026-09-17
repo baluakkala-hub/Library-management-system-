@@ -1,0 +1,178 @@
+<div class="page-header">
+  <div>
+    <h1>Lending & Returns</h1>
+    <p class="subtitle">Issue books to members, track loan due dates, and process book returns</p>
+  </div>
+  <div style="display: flex; gap: 10px;">
+    <button class="btn btn-secondary" (click)="exportCsv()">
+      Export CSV Report
+    </button>
+    <button class="btn btn-primary" (click)="openIssueModal()">
+      Issue a Book
+    </button>
+  </div>
+</div>
+
+<div class="card">
+  <div class="toolbar">
+    <div class="filter-tabs">
+      <button 
+        class="tab-btn" 
+        [class.active]="filter === 'ACTIVE'" 
+        (click)="setFilter('ACTIVE')">
+        Active Loans
+      </button>
+      <button 
+        class="tab-btn" 
+        [class.active]="filter === 'OVERDUE'" 
+        (click)="setFilter('OVERDUE')">
+        Overdue Loans
+      </button>
+      <button 
+        class="tab-btn" 
+        [class.active]="filter === 'RESERVATIONS'" 
+        (click)="setFilter('RESERVATIONS')">
+        Waitlist Holds
+      </button>
+      <button 
+        class="tab-btn" 
+        [class.active]="filter === 'ALL'" 
+        (click)="setFilter('ALL')">
+        All History
+      </button>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="loading-state">Loading data...</div>
+  } @else if (filter === 'RESERVATIONS') {
+    <!-- Reservations Table -->
+    @if (reservations.length === 0) {
+      <div class="empty-state">
+        <p>No book hold reservations in the queue.</p>
+      </div>
+    } @else {
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Hold ID</th>
+            <th>Book Title</th>
+            <th>Reserving Member</th>
+            <th>Hold Date</th>
+            <th>Status</th>
+            <th>Fulfillment Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (res of reservations; track res.id) {
+            <tr>
+              <td><code>#{{ res.id }}</code></td>
+              <td>
+                <strong>{{ res.bookTitle }}</strong>
+                <div class="sub-text">{{ res.bookIsbn }}</div>
+              </td>
+              <td>
+                <strong>{{ res.memberName }}</strong>
+                <div class="sub-text">{{ res.memberEmail }}</div>
+              </td>
+              <td>{{ res.reservationDate | date:'mediumDate' }}</td>
+              <td>
+                @if (res.status === 'PENDING') {
+                  <span class="badge badge-warning">IN QUEUE</span>
+                } @else if (res.status === 'FULFILLED') {
+                  <span class="badge badge-success">FULFILLED</span>
+                } @else {
+                  <span class="badge badge-danger">CANCELLED</span>
+                }
+              </td>
+              <td>{{ res.fulfillmentDate ? (res.fulfillmentDate | date:'mediumDate') : 'Pending Return' }}</td>
+              <td>
+                @if (res.status === 'PENDING') {
+                  <button class="btn btn-danger btn-sm" (click)="cancelReservation(res)">
+                    Cancel Hold
+                  </button>
+                } @else {
+                  <span class="badge badge-info">Closed</span>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  } @else {
+    <!-- Transactions Table -->
+    @if (transactions.length === 0) {
+      <div class="empty-state">
+        <p>No transactions found for the selected filter.</p>
+      </div>
+    } @else {
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Transaction ID</th>
+            <th>Book Title</th>
+            <th>Borrower</th>
+            <th>Issue Date</th>
+            <th>Due Date</th>
+            <th>Return Date</th>
+            <th>Status</th>
+            <th>Fine</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (tx of transactions; track tx.id) {
+            <tr>
+              <td><code>#{{ tx.id }}</code></td>
+              <td>
+                <strong>{{ tx.bookTitle }}</strong>
+                <div class="sub-text">{{ tx.bookIsbn }}</div>
+              </td>
+              <td>
+                {{ tx.memberName }}
+                <div class="sub-text">{{ tx.memberEmail }}</div>
+              </td>
+              <td>{{ tx.issueDate | date:'mediumDate' }}</td>
+              <td>{{ tx.dueDate | date:'mediumDate' }}</td>
+              <td>{{ tx.returnDate ? (tx.returnDate | date:'mediumDate') : '—' }}</td>
+              <td>
+                @if (tx.status === 'ISSUED') {
+                  <span class="badge badge-warning">ISSUED</span>
+                } @else if (tx.status === 'RETURNED') {
+                  <span class="badge badge-success">RETURNED</span>
+                } @else {
+                  <span class="badge badge-danger">OVERDUE</span>
+                }
+              </td>
+              <td>
+                @if (tx.fineAmount > 0) {
+                  <strong class="fine-text">${{ tx.fineAmount | number:'1.2-2' }}</strong>
+                } @else {
+                  <span class="text-muted">$0.00</span>
+                }
+              </td>
+              <td>
+                @if (tx.status === 'ISSUED') {
+                  <button class="btn btn-primary btn-sm" (click)="returnBook(tx)">
+                    Return Book
+                  </button>
+                } @else {
+                  <span class="badge badge-info">Completed</span>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  }
+</div>
+
+@if (showIssueModal) {
+  <app-issue-modal 
+    (issued)="onBookIssued()" 
+    (cancel)="closeIssueModal()"
+  ></app-issue-modal>
+}

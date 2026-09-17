@@ -1,0 +1,97 @@
+<div class="login-wrapper">
+  <!-- Theme Toggle in Top Right -->
+  <div class="top-actions">
+    <button 
+      type="button" 
+      class="theme-toggle-btn" 
+      (click)="themeService.toggleTheme()"
+      [title]="themeService.isDark() ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
+    >
+      {{ themeService.isDark() ? '☀️ Light Mode' : '🌙 Dark Mode' }}
+    </button>
+  </div>
+
+  <div class="login-container animate-slide-up">
+    <!-- Brand Header -->
+    <div class="login-header">
+      <div class="brand-seal">🏛️</div>
+      <h2>Library Management System</h2>
+    </div>
+
+    <!-- Role Toggle Bar -->
+    <div class="role-toggle-bar">
+      <button 
+        type="button" 
+        class="toggle-tab" 
+        [class.active]="selectedRole === 'student'"
+        (click)="setRole('student')"
+      >
+        <span class="tab-icon">🎓</span>
+        <span class="tab-text">Student Login</span>
+      </button>
+      <button 
+        type="button" 
+        class="toggle-tab" 
+        [class.active]="selectedRole === 'admin'"
+        (click)="setRole('admin')"
+      >
+        <span class="tab-icon">🛡️</span>
+        <span class="tab-text">Administrator Login</span>
+      </button>
+    </div>
+
+    <!-- Active Role Login Card -->
+    <div class="card login-card" [ngClass]="selectedRole === 'admin' ? 'admin-login-card' : 'student-login-card'">
+      <div class="card-title-row">
+        <h3>{{ selectedRole === 'admin' ? 'Administrator Login' : 'Student Portal Login' }}</h3>
+      </div>
+
+      @if (error) {
+        <div class="alert-box alert-error animate-fade-in">
+          <span>⚠️ {{ error }}</span>
+        </div>
+      }
+
+      <form (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label class="form-label" for="username">
+            {{ selectedRole === 'admin' ? 'Administrator Username' : 'Student ID / Username' }}
+          </label>
+          <input 
+            id="username"
+            name="username"
+            type="text" 
+            class="form-control" 
+            [placeholder]="selectedRole === 'admin' ? 'Enter administrator username' : 'Enter student ID or username'" 
+            [(ngModel)]="username"
+            required
+            autocomplete="username"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <input 
+            id="password"
+            name="password"
+            type="password" 
+            class="form-control" 
+            [placeholder]="selectedRole === 'admin' ? 'Enter account password' : 'Enter student portal password'" 
+            [(ngModel)]="password"
+            required
+            autocomplete="current-password"
+          />
+        </div>
+
+        <button 
+          type="submit" 
+          class="btn btn-block" 
+          [ngClass]="selectedRole === 'admin' ? 'btn-admin-submit' : 'btn-student-submit'"
+          [disabled]="loading"
+        >
+          {{ loading ? 'Verifying Credentials...' : (selectedRole === 'admin' ? 'Sign In to Administrative Console →' : 'Sign In to Student Portal →') }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

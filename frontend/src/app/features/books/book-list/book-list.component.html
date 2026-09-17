@@ -1,0 +1,220 @@
+<div class="page-header">
+  <div>
+    <h1>{{ authService.isAdmin() ? 'Books Inventory & Stock Governance' : 'Books Catalog & Physical Shelf Locator' }}</h1>
+    <p class="subtitle">{{ authService.isAdmin() ? 'Manage institutional textbook inventory, adjust copies, and update physical shelf coordinates (Aisles 1–6)' : 'Explore university textbooks, locate physical aisles and shelf racks, and check borrowing availability' }}</p>
+  </div>
+  @if (authService.isAdmin()) {
+    <button class="btn btn-primary" (click)="openAddModal()">
+      + Add New Book
+    </button>
+  }
+</div>
+
+<div class="card">
+  <div class="toolbar">
+    <div class="search-box">
+      <input 
+        type="text" 
+        class="form-control" 
+        [placeholder]="authService.isAdmin() ? 'Search inventory by Title, Author, Category, or ISBN...' : (aiSearchMode ? 'Enter conversational topic (e.g. neural networks, clean code, distributed)...' : 'Search by Title, Author, Category, or ISBN...')" 
+        [(ngModel)]="searchQuery" 
+        (keyup.enter)="onSearch()"
+      />
+    </div>
+    <button class="btn btn-secondary" (click)="onSearch()">Search</button>
+
+    <!-- AI Search Mode Toggle: Rendered exclusively for Students -->
+    @if (authService.isStudent()) {
+      <button 
+        type="button" 
+        class="btn" 
+        [ngClass]="aiSearchMode ? 'btn-ai-active' : 'btn-outline'" 
+        (click)="toggleAiSearchMode()"
+        title="Toggle between AI Semantic NLP search and traditional keyword substring search"
+      >
+        {{ aiSearchMode ? '✨ AI Semantic: ON' : '🔍 AI Mode: OFF' }}
+      </button>
+    }
+
+    @if (searchQuery) {
+      <button class="btn btn-outline btn-sm" (click)="clearSearchFilter()">Clear</button>
+    }
+  </div>
+
+  <!-- AI Query Intelligence Status Banner: Rendered exclusively for Students -->
+  @if (authService.isStudent() && aiSearchMode && searchQuery && !loading) {
+    <div class="ai-search-banner">
+      <div class="ai-banner-left">
+        <span class="ai-icon">✨</span>
+        <div>
+          <strong>AI Semantic Search Active for: "{{ searchQuery }}"</strong>
+          <p>Concept expansion applied to categories, topics, and descriptions. Ranked by cosine vector similarity.</p>
+        </div>
+      </div>
+      <div class="ai-banner-right">
+        <span class="badge badge-primary">{{ books.length }} Conceptual Matches</span>
+        <button class="btn-link-white" (click)="clearSearchFilter()">Reset to Default</button>
+      </div>
+    </div>
+  }
+
+  @if (loading) {
+    <div class="loading-state">
+      {{ aiSearchMode ? 'Running NLP concept expansion and vector ranking...' : 'Loading books...' }}
+    </div>
+  } @else if (books.length === 0) {
+    <div class="empty-state">
+      <p>{{ aiSearchMode ? 'No books match this conceptual query.' : 'No books found. Click "Add New Book" to start your catalog.' }}</p>
+      @if (aiSearchMode) {
+        <button class="btn btn-secondary btn-sm" style="margin-top: 10px;" (click)="clearSearchFilter()">Show All Books</button>
+      }
+    </div>
+  } @else {
+    <table class="data-table">
+      <thead>
+        <tr>
+          @if (aiSearchMode) {
+            <th>AI Match</th>
+          }
+          <th>ISBN</th>
+          <th>Title & Author</th>
+          <th>Category</th>
+          <th>Physical Shelf Location</th>
+          <th>Copies</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (book of books; track book.id) {
+          <tr>
+            @if (aiSearchMode) {
+              <td>
+                @if (semanticMetaMap.has(book.id!)) {
+                  <span class="badge badge-primary">{{ semanticMetaMap.get(book.id!)?.relevance }}% Match</span>
+                } @else {
+                  <span class="badge badge-secondary">—</span>
+                }
+              </td>
+            }
+            <td><code>{{ book.isbn }}</code></td>
+            <td>
+              <strong class="book-title-cell">{{ book.title }}</strong>
+              <div class="book-author-cell">by {{ book.author }}</div>
+              @if (aiSearchMode && semanticMetaMap.has(book.id!)) {
+                <div class="inventory-matched-tags">
+                  @for (kw of semanticMetaMap.get(book.id!)?.matchedKeywords; track kw) {
+                    <span class="mini-kw-pill">{{ kw }}</span>
+                  }
+                </div>
+              }
+            </td>
+            <td><span class="badge badge-info">{{ book.category || 'General' }}</span></td>
+            <td>
+              <div class="shelf-location-chip" title="Aisle, Shelf and Column location">
+                <span class="shelf-icon">📍</span>
+                <div class="shelf-meta">
+                  <span class="shelf-aisle">{{ book.aisle || 'Aisle 1' }}</span>
+                  <span class="shelf-coords">{{ book.shelf || 'Shelf A1' }} • {{ book.columnRack || 'Rack 1' }}</span>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="copies-cell">
+                <span class="avail-num">{{ book.availableCopies }}</span> / {{ book.totalCopies }}
+              </div>
+            </td>
+            <td>
+              @if ((book.availableCopies || 0) > 0) {
+                <span class="badge badge-success">In Stock</span>
+              } @else {
+                <span class="badge badge-danger">Checked Out</span>
+              }
+            </td>
+            <td class="action-buttons">
+              @if (authService.isAdmin()) {
+                @if ((book.availableCopies || 0) === 0) {
+                  <button class="btn btn-outline btn-sm" (click)="openReserveModal(book)" title="Place Hold on Waitlist">Hold</button>
+                }
+                <button class="btn btn-secondary btn-sm" (click)="openEditModal(book)">Edit</button>
+                <button class="btn btn-danger btn-sm" (click)="deleteBook(book)">Delete</button>
+              } @else {
+                @if ((book.availableCopies || 0) > 0) {
+                  <button class="btn btn-primary btn-sm btn-borrow" (click)="requestBorrow(book)">
+                    Take Book
+                  </button>
+                } @else {
+                  <button class="btn btn-warning btn-sm btn-hold" (click)="requestBorrow(book)">
+                    Place Hold
+                  </button>
+                }
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    <!-- Pagination Controls -->
+    @if (isPagedMode && totalPages > 1) {
+      <div class="pagination-bar">
+        <button class="btn btn-secondary btn-sm" [disabled]="pageNumber === 0" (click)="goToPage(-1)">
+          Previous
+        </button>
+        <span class="page-info">
+          Page {{ pageNumber + 1 }} of {{ totalPages }} ({{ totalElements }} total books)
+        </span>
+        <button class="btn btn-secondary btn-sm" [disabled]="pageNumber >= totalPages - 1" (click)="goToPage(1)">
+          Next
+        </button>
+      </div>
+    }
+  }
+</div>
+
+@if (showModal) {
+  <app-book-form 
+    [book]="selectedBook" 
+    (save)="onSaveBook()" 
+    (cancel)="closeModal()"
+  ></app-book-form>
+}
+
+<!-- Hold / Reservation Modal -->
+@if (showReserveModal && reserveBookTarget) {
+  <div class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Place Book Hold (Waitlist)</h3>
+        <button class="close-btn" (click)="closeReserveModal()">Close</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="hold-summary">
+          <p>This book is currently out of stock. Placing a hold guarantees priority fulfillment as soon as any copy is returned.</p>
+          <div style="margin-top: 10px;">
+            <strong>Title:</strong> {{ reserveBookTarget.title }}<br>
+            <strong>ISBN:</strong> {{ reserveBookTarget.isbn }}
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 16px;">
+          <label class="form-label">Select Reserving Member (Active Only) *</label>
+          <select class="form-control" [(ngModel)]="selectedMemberId">
+            <option [ngValue]="0" disabled selected>-- Select a Member --</option>
+            @for (m of activeMembers; track m.id) {
+              <option [ngValue]="m.id">{{ m.name }} ({{ m.email }})</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeReserveModal()">Cancel</button>
+        <button type="button" class="btn btn-primary" [disabled]="reserving" (click)="confirmReservation()">
+          {{ reserving ? 'Placing Hold...' : 'Confirm Hold' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

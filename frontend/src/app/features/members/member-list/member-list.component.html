@@ -1,0 +1,172 @@
+<div class="page-header">
+  <div>
+    <h1>Members Directory</h1>
+    <p class="subtitle">Manage registered students, faculty, and library cardholders</p>
+  </div>
+  <button class="btn btn-primary" (click)="openAddModal()">
+    Register New Member
+  </button>
+</div>
+
+<div class="card">
+  <div class="toolbar">
+    <div class="search-box">
+      <input 
+        type="text" 
+        class="form-control" 
+        placeholder="Search by Name, Email, or Phone..." 
+        [(ngModel)]="searchQuery" 
+        (keyup.enter)="onSearch()"
+      />
+    </div>
+    <button class="btn btn-secondary" (click)="onSearch()">Search</button>
+  </div>
+
+  @if (loading) {
+    <div class="loading-state">Loading members...</div>
+  } @else if (members.length === 0) {
+    <div class="empty-state">
+      <p>No members found. Click "Register New Member" to add one.</p>
+    </div>
+  } @else {
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email Address</th>
+          <th>Phone</th>
+          <th>Status</th>
+          <th>Membership Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (member of members; track member.id) {
+          <tr>
+            <td><strong>{{ member.name }}</strong></td>
+            <td>{{ member.email }}</td>
+            <td>{{ member.phone || 'N/A' }}</td>
+            <td>
+              @if (member.status === 'ACTIVE') {
+                <span class="badge badge-success">ACTIVE</span>
+              } @else if (member.status === 'SUSPENDED') {
+                <span class="badge badge-danger">SUSPENDED</span>
+              } @else {
+                <span class="badge badge-warning">INACTIVE</span>
+              }
+            </td>
+            <td>{{ member.membershipDate | date:'mediumDate' }}</td>
+            <td class="action-buttons">
+              <button class="btn btn-secondary btn-sm" (click)="openHistoryModal(member)">History</button>
+              <button class="btn btn-secondary btn-sm" (click)="openEditModal(member)">Edit</button>
+              <button class="btn btn-danger btn-sm" (click)="deleteMember(member)">Delete</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>
+
+@if (showModal) {
+  <app-member-form 
+    [member]="selectedMember" 
+    (save)="onSaveMember()" 
+    (cancel)="closeModal()"
+  ></app-member-form>
+}
+
+<!-- Member History Modal -->
+@if (showHistoryModal && historyMember) {
+  <div class="modal-overlay">
+    <div class="modal-card wide-modal">
+      <div class="modal-header">
+        <div>
+          <h3>Member Activity Profile: {{ historyMember.name }}</h3>
+          <p class="sub-text">{{ historyMember.email }} | Status: {{ historyMember.status }}</p>
+        </div>
+        <button class="close-btn" (click)="closeHistoryModal()">Close</button>
+      </div>
+
+      <div class="modal-body">
+        @if (loadingHistory) {
+          <div class="loading-state">Loading activity history...</div>
+        } @else {
+          <!-- Loans Section -->
+          <h4 class="section-title">Loan & Borrowing History ({{ memberLoans.length }})</h4>
+          @if (memberLoans.length === 0) {
+            <p class="text-muted" style="font-size: 13px; margin-bottom: 20px;">No books borrowed yet.</p>
+          } @else {
+            <table class="data-table history-table" style="margin-bottom: 24px;">
+              <thead>
+                <tr>
+                  <th>Book Title</th>
+                  <th>Issue Date</th>
+                  <th>Due Date</th>
+                  <th>Return Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (loan of memberLoans; track loan.id) {
+                  <tr>
+                    <td><strong>{{ loan.bookTitle }}</strong></td>
+                    <td>{{ loan.issueDate | date:'mediumDate' }}</td>
+                    <td>{{ loan.dueDate | date:'mediumDate' }}</td>
+                    <td>{{ loan.returnDate ? (loan.returnDate | date:'mediumDate') : 'Currently Held' }}</td>
+                    <td>
+                      @if (loan.status === 'ISSUED') {
+                        <span class="badge badge-warning">ISSUED</span>
+                      } @else if (loan.status === 'RETURNED') {
+                        <span class="badge badge-success">RETURNED</span>
+                      } @else {
+                        <span class="badge badge-danger">OVERDUE</span>
+                      }
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+
+          <!-- Fines Section -->
+          <h4 class="section-title">Fine Records & Settlements ({{ memberFines.length }})</h4>
+          @if (memberFines.length === 0) {
+            <p class="text-muted" style="font-size: 13px;">No fine records on this account.</p>
+          } @else {
+            <table class="data-table history-table">
+              <thead>
+                <tr>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Payment Date</th>
+                  <th>Method</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (fine of memberFines; track fine.id) {
+                  <tr>
+                    <td><strong>${{ fine.amount | number:'1.2-2' }}</strong></td>
+                    <td>
+                      @if (fine.status === 'UNPAID') {
+                        <span class="badge badge-danger">UNPAID</span>
+                      } @else {
+                        <span class="badge badge-success">PAID</span>
+                      }
+                    </td>
+                    <td>{{ fine.paymentDate ? (fine.paymentDate | date:'mediumDate') : '—' }}</td>
+                    <td>{{ fine.paymentMethod || '—' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+        }
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeHistoryModal()">Close Profile</button>
+      </div>
+    </div>
+  </div>
+}

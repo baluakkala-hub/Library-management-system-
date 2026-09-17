@@ -1,0 +1,222 @@
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.member-selector-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.member-select {
+  width: 280px;
+}
+
+.student-profile-chip {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 8px 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.prof-label {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.intro-card {
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  background: var(--bg-card);
+}
+
+.intro-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.intro-content h3 {
+  font-size: 16px;
+  margin: 0;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.sub-text {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.rec-shelf-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-hover);
+  border: 1px solid var(--border-color);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 12px;
+  width: fit-content;
+}
+
+.shelf-pin {
+  font-size: 13px;
+}
+
+.recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 20px;
+}
+
+.rec-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  border-top: 3px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.rec-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.rec-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.book-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 6px 0 2px 0;
+  color: var(--text-main);
+}
+
+.book-author {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.match-score-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--primary-light);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  border-radius: 8px;
+  padding: 6px 10px;
+  min-width: 55px;
+}
+
+.match-val {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.match-lbl {
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.explanation-box {
+  background: #f1f5f9;
+  border-left: 3px solid var(--primary);
+  border-radius: 4px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+}
+
+.explanation-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.explanation-text {
+  font-size: 13px;
+  color: var(--text-main);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.factors-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.factor-tag {
+  font-size: 11px;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: var(--text-muted);
+}
+
+.rec-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-color);
+}
+
+.loading-state, .empty-state {
+  padding: 48px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.similar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.similar-item {
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: #f8fafc;
+}
+
+.similar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

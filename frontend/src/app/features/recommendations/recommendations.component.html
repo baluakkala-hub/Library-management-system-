@@ -1,0 +1,131 @@
+<div class="page-header">
+  <div>
+    <h1>Personalized Book Recommendations</h1>
+    <p class="subtitle">AI-driven suggestions calculated via TF-IDF vector space modeling and borrowing affinity</p>
+  </div>
+
+  @if (authService.isAdmin()) {
+    <div class="member-selector-group">
+      <label class="form-label" style="margin: 0; font-weight: 600;">Active Patron:</label>
+      <select class="form-control member-select" [(ngModel)]="selectedMemberId" (change)="onMemberChange()">
+        @for (m of members; track m.id) {
+          <option [value]="m.id">{{ m.name }} ({{ m.email }})</option>
+        }
+      </select>
+    </div>
+  } @else {
+    <div class="student-profile-chip">
+      <span class="prof-label">Viewing Suggestions for:</span>
+      <strong>{{ authService.currentUser()?.name }}</strong>
+    </div>
+  }
+</div>
+
+<div class="card intro-card">
+  <div class="intro-content">
+    <div>
+      <h3>Recommendation Profile for {{ selectedMemberName }}</h3>
+      <p class="sub-text">Calculated using centroid TF-IDF vectors of past loans, author preferences, and subject classifications.</p>
+    </div>
+    <button class="btn btn-secondary" [disabled]="loading" (click)="loadRecommendations()">
+      Recalculate Suggestions
+    </button>
+  </div>
+</div>
+
+@if (loading) {
+  <div class="loading-state">Generating personalized recommendations and synthesizing explainable rationales...</div>
+} @else if (recommendations.length === 0) {
+  <div class="card empty-state">
+    <p>No recommendations available for this member yet.</p>
+  </div>
+} @else {
+  <div class="recommendations-grid">
+    @for (rec of recommendations; track rec.id) {
+      <div class="card rec-card">
+        <div class="rec-card-header">
+          <div>
+            <span class="badge badge-info">{{ rec.category }}</span>
+            <h3 class="book-title">{{ rec.title }}</h3>
+            <div class="book-author">By {{ rec.author }}</div>
+          </div>
+          <div class="match-score-badge">
+            <span class="match-val">{{ rec.matchPercentage }}%</span>
+            <span class="match-lbl">Match</span>
+          </div>
+        </div>
+
+        <!-- Physical Shelf Location -->
+        <div class="rec-shelf-tag">
+          <span class="shelf-pin">📍</span>
+          <span>{{ rec.aisle || 'Aisle 1' }} • {{ rec.shelf || 'Shelf A1' }} • {{ rec.columnRack || 'Rack 1' }}</span>
+        </div>
+
+        <!-- Explainability Section -->
+        <div class="explanation-box">
+          <div class="explanation-label">Why Recommended:</div>
+          <p class="explanation-text">{{ rec.explanation }}</p>
+        </div>
+
+        <div class="factors-row">
+          @for (factor of rec.matchFactors; track factor) {
+            <span class="factor-tag">{{ factor }}</span>
+          }
+        </div>
+
+        <div class="rec-card-footer">
+          <div class="stock-status">
+            @if (rec.availableCopies > 0) {
+              <span class="badge badge-success">{{ rec.availableCopies }} Copies In Stock</span>
+            } @else {
+              <span class="badge badge-danger">Out of Stock (Hold Available)</span>
+            }
+          </div>
+          <button class="btn btn-secondary btn-sm" (click)="openSimilarModal(rec)">
+            Find Similar
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+}
+
+<!-- Similar Books Modal -->
+@if (showSimilarModal) {
+  <div class="modal-overlay">
+    <div class="modal-card wide-modal">
+      <div class="modal-header">
+        <div>
+          <h3>Content-Similar Titles: "{{ targetBookTitle }}"</h3>
+          <p class="sub-text">Titles sharing the highest cosine similarity and domain keywords</p>
+        </div>
+        <button class="close-btn" (click)="closeSimilarModal()">Close</button>
+      </div>
+
+      <div class="modal-body">
+        @if (loadingSimilar) {
+          <div class="loading-state">Computing cosine distances...</div>
+        } @else if (similarBooks.length === 0) {
+          <div class="empty-state">No similar titles found.</div>
+        } @else {
+          <div class="similar-list">
+            @for (sim of similarBooks; track sim.id) {
+              <div class="similar-item">
+                <div class="similar-header">
+                  <strong>{{ sim.title }}</strong>
+                  <span class="badge badge-primary">{{ sim.matchPercentage }}% Similar</span>
+                </div>
+                <div class="sub-text">{{ sim.author }} | {{ sim.category }}</div>
+                <p class="explanation-text" style="margin-top: 6px;">{{ sim.explanation }}</p>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeSimilarModal()">Close</button>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,154 @@
+<div class="page-header">
+  <div>
+    @if (authService.isAdmin()) {
+      <h1>Fines & Settlements</h1>
+      <p class="subtitle">Track overdue loan penalties, member dues, and process payments</p>
+    } @else {
+      <h1>My Overdue Fines & Dues</h1>
+      <p class="subtitle">Review your individual loan charges, pay overdue fees, or clear holds before examinations</p>
+    }
+  </div>
+</div>
+
+<div class="card">
+  <div class="toolbar">
+    <div class="filter-tabs">
+      <button 
+        class="tab-btn" 
+        [class.active]="filter === 'UNPAID'" 
+        (click)="setFilter('UNPAID')">
+        Unpaid Fines
+      </button>
+      <button 
+        class="tab-btn" 
+        [class.active]="filter === 'ALL'" 
+        (click)="setFilter('ALL')">
+        All History
+      </button>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="loading-state">Loading fines...</div>
+  } @else if (fines.length === 0) {
+    <div class="empty-state">
+      <p>{{ authService.isStudent() ? '🎉 Great news! You have no outstanding fines or overdue dues on your card.' : 'No fines records found for the selected filter.' }}</p>
+    </div>
+  } @else {
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Fine ID</th>
+          <th>Borrower</th>
+          <th>Book Title</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Payment Date</th>
+          <th>Method</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (fine of fines; track fine.id) {
+          <tr>
+            <td><code>#{{ fine.id }}</code></td>
+            <td>
+              <strong>{{ fine.memberName }}</strong>
+              <div class="sub-text">{{ fine.memberEmail }}</div>
+            </td>
+            <td>
+              {{ fine.bookTitle || 'Transaction #' + fine.transactionId }}
+              @if (fine.bookIsbn) {
+                <div class="sub-text">{{ fine.bookIsbn }}</div>
+              }
+            </td>
+            <td>
+              <strong [class.fine-text]="fine.status === 'UNPAID'">${{ fine.amount | number:'1.2-2' }}</strong>
+            </td>
+            <td>
+              @if (fine.status === 'UNPAID') {
+                <span class="badge badge-danger">UNPAID</span>
+              } @else if (fine.status === 'PAID') {
+                <span class="badge badge-success">PAID</span>
+              } @else {
+                <span class="badge badge-warning">WAIVED</span>
+              }
+            </td>
+            <td>{{ fine.paymentDate ? (fine.paymentDate | date:'mediumDate') : '—' }}</td>
+            <td>{{ fine.paymentMethod || '—' }}</td>
+            <td>
+              @if (fine.status === 'UNPAID') {
+                @if (authService.isAdmin()) {
+                  <button class="btn btn-primary btn-sm" (click)="openPayModal(fine)">
+                    Settle Payment
+                  </button>
+                } @else {
+                  <button class="btn btn-primary btn-sm" (click)="openPayModal(fine)">
+                    Pay Fee
+                  </button>
+                }
+              } @else {
+                <span class="badge badge-success">Cleared</span>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>
+
+<!-- Official Library Contact Help Notice -->
+<div class="card help-contact-card" style="margin-top: 20px;">
+  <div style="display: flex; align-items: center; gap: 12px;">
+    <span style="font-size: 24px;">🏛️</span>
+    <div>
+      <strong>University Library Circulation & Accounts Helpdesk</strong>
+      <p style="margin: 2px 0 0 0; font-size: 13px; color: var(--text-muted);">
+        For billing questions, fine waiver appeals, or account unlock:
+        Admin: <strong>admin</strong> • Phone: <strong>0987654654</strong> • Email: <a href="mailto:LIBRARY@admin.com" style="color: var(--primary); font-weight: 600;">LIBRARY@admin.com</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+@if (showPayModal && selectedFine) {
+  <div class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Settle Outstanding Fine</h3>
+        <button class="close-btn" (click)="closePayModal()">Close</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="fine-summary">
+          <div class="summary-row">
+            <span>Member:</span>
+            <strong>{{ selectedFine.memberName }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Total Amount Due:</span>
+            <strong class="fine-text">${{ selectedFine.amount | number:'1.2-2' }}</strong>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 16px;">
+          <label class="form-label">Select Payment Method *</label>
+          <select class="form-control" [(ngModel)]="selectedPaymentMethod">
+            <option value="CASH">Cash</option>
+            <option value="CARD">Credit / Debit Card</option>
+            <option value="UPI">UPI / Digital Transfer</option>
+            <option value="STUDENT_ACCOUNT">Student Tuition Account Deduction</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closePayModal()">Cancel</button>
+        <button type="button" class="btn btn-primary" [disabled]="paying" (click)="confirmPayment()">
+          {{ paying ? 'Processing...' : 'Confirm Settlement' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

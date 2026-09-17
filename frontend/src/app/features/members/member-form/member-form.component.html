@@ -1,0 +1,63 @@
+<div class="modal-overlay">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>{{ isEditMode ? 'Edit Member' : 'Register New Member' }}</h3>
+      <button class="close-btn" (click)="onCancel()">✕</button>
+    </div>
+
+    <form (ngSubmit)="onSubmit()">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Full Name *</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            placeholder="e.g. Jane Smith" 
+            [(ngModel)]="formData.name" 
+            name="name" 
+            required 
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Email Address *</label>
+          <input 
+            type="email" 
+            class="form-control" 
+            placeholder="e.g. jane.smith@university.edu" 
+            [(ngModel)]="formData.email" 
+            name="email" 
+            required 
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <input 
+            type="tel" 
+            class="form-control" 
+            placeholder="e.g. +1-555-0102" 
+            [(ngModel)]="formData.phone" 
+            name="phone" 
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Membership Status</label>
+          <select class="form-control" [(ngModel)]="formData.status" name="status">
+            <option value="ACTIVE">ACTIVE</option>
+            <option value="SUSPENDED">SUSPENDED</option>
+            <option value="INACTIVE">INACTIVE</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="saving">
+          {{ saving ? 'Saving...' : (isEditMode ? 'Update Member' : 'Register Member') }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
