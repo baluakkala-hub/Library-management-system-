@@ -1,63 +1,82 @@
-# Central University Library Management System (UniLibrary)
+# Library Management System
 
-An intelligent, web-based academic Library Management System built with **Spring Boot 3** and **Angular 18**, featuring smart keyword search, personalized book recommendations, interactive shelf navigation (Floor/Row/Shelf locator), and automated circulation & fine management.
-
----
-
-## 📁 Project Directory Structure
-
-`	ext
-mini project/
-├── backend/                # Spring Boot 3 Java REST API & Database Services
-├── frontend/               # Angular 18 Single-Page Application (Web UI)
-├── docs/                   # Complete Project Documentation & Assets
-│   ├── IEEE_Conference_Paper.docx  # Final IEEE format research paper
-│   ├── IEEE_Conference_Paper.pdf   # Formatted PDF of conference paper
-│   ├── Project_Report.docx         # Complete detailed project report
-│   ├── Project_Recap.docx          # Technology & Architecture recap
-│   ├── Review_Presentation.pptx    # Simplified 16-slide presentation for review
-│   ├── Credentials.txt             # Default usernames and passwords
-│   └── figures/                    # System architecture & methodology diagrams
-├── 1-Start-Backend.bat     # One-click launcher for Spring Boot Backend
-├── 2-Start-Frontend.bat    # One-click launcher for Angular Frontend
-└── README.md               # Project guide and instructions
-`
+A full-stack web application for managing library operations, book catalogs, member borrowing, and overdue fines, built with **Spring Boot** and **Angular**.
 
 ---
 
-## 🚀 Quick Start (How to Run)
+## Features
 
-### 1. Start the Backend API
-Double-click:
-`	ext
-1-Start-Backend.bat
-`
-* **Port**: 8080
-* **API Base URL**: http://localhost:8080/api
-* **Swagger Documentation**: http://localhost:8080/swagger-ui.html
-* **Database**: MySQL on localhost:3306 (Database: `lms_db`, User: `root`, Password: empty)
-
-### 2. Start the Frontend Web UI
-Double-click:
-`	ext
-2-Start-Frontend.bat
-`
-* **URL**: http://localhost:4200
-* Opens automatically in your browser.
+- **Spring Security & JWT**: Role-based authentication (`ROLE_ADMIN` and `ROLE_STUDENT`) with BCrypt password hashing.
+- **100-Book Catalog**: Curated collection across Engineering, AI/CS, and 24 classic & sci-fi Novels (including *Dune*, *1984*, *Foundation*).
+- **Physical Shelf Locator**: Interactive aisle, shelf, and rack coordinates for library inventory.
+- **Automated Borrowing Simulation**: 30 active student profiles with realistic borrowing histories matching departments.
+- **Fine Management in INR (₹)**: Automated tracking of overdue returns, damaged books, and UPI / Card / Cash settlement.
+- **Student ID Governance**: Automatic lockout for inactive accounts with admin reactivation controls.
 
 ---
 
-## 🔑 Login Credentials
+## Tech Stack
 
-| Role | Username | Password | Access / Portal |
-| :--- | :--- | :--- | :--- |
-| **Administrator** | dmin | dmin123 | Full Library Management (Catalog, Members, Issue/Return, Fines) |
-| **Student** | student | student123 | Student Discovery (Catalog Search, Recommendations, Shelf Locator, My Loans) |
+- **Backend**: Java 17, Spring Boot 3, Spring Security 6, JWT, Spring Data JPA, Hibernate, MySQL 8
+- **Frontend**: Angular 17, TypeScript, Bootstrap 5
+- **Build Tools**: Apache Maven, npm
 
 ---
 
-## 🛠️ Technology Stack
+## Project Structure
 
-* **Backend**: Java 17, Spring Boot 3.3.4, Spring Data JPA, Spring Security (JWT), H2/MySQL
-* **Frontend**: Angular 18 (Standalone Components), TypeScript, RxJS, Bootstrap 5, Bootstrap Icons
-* **Build Tools**: Apache Maven 3.9+, Node.js & npm, Angular CLI
+```text
+library-management-system/
+├── backend/                  # Spring Boot REST API & Security Services
+│   ├── src/                  # Controllers, Services, Repositories, Entities, DTOs
+│   └── pom.xml               # Maven configuration and dependencies
+├── frontend/                 # Angular Single-Page Application
+│   ├── src/                  # Components, services, guards, and interceptors
+│   └── package.json          # Node dependencies and scripts
+├── .gitignore                # Git ignore rules
+└── README.md                 # Project documentation
+```
+
+---
+
+## Getting Started
+
+### Prerequisites
+- **Java JDK 17+**
+- **Node.js 18+** & npm
+- **MySQL 8+** (or configured database)
+- **Apache Maven 3.8+**
+
+---
+
+### 1. Run Backend
+
+```bash
+cd backend
+mvn spring-boot:run
+```
+
+- **API URL**: `http://localhost:8080/api`
+- **Swagger Documentation**: `http://localhost:8080/swagger-ui.html`
+
+---
+
+### 2. Run Frontend
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+- **Application URL**: `http://localhost:4200`
+
+---
+
+## Default Login Credentials
+
+| Role | Username | Password |
+| :--- | :--- | :--- |
+| **Administrator** | `admin` | `admin123` |
+| **Student (Active)** | `satish` | `student123` |
+| **Student (General)** | `student` | `student123` |
