@@ -91,6 +91,14 @@ export class BookListComponent implements OnInit {
     this.loadBooks();
   }
 
+  filterByCategory(category: string): void {
+    this.searchQuery = category;
+    this.aiSearchMode = false;
+    this.semanticMetaMap.clear();
+    this.pageNumber = 0;
+    this.onSearch();
+  }
+
   loadBooks(): void {
     this.loading = true;
     this.cdr.detectChanges();
@@ -132,20 +140,47 @@ export class BookListComponent implements OnInit {
         }
       });
     } else if (this.searchQuery && this.searchQuery.trim().length > 0) {
-      // STANDARD KEYWORD SEARCH
+      // STANDARD KEYWORD SEARCH OR NOVELS FILTER
       this.isPagedMode = false;
       this.semanticMetaMap.clear();
-      this.bookService.getBooks(this.searchQuery).subscribe({
-        next: (data) => {
-          this.books = data || [];
-          this.loading = false;
-          this.cdr.detectChanges();
-        },
-        error: () => {
-          this.loading = false;
-          this.cdr.detectChanges();
-        }
-      });
+      const q = this.searchQuery.trim().toLowerCase();
+      if (q === 'novels' || q === 'novel') {
+        const novelCategories = [
+          'Science Fiction',
+          'Classic Literature',
+          'Fantasy & Fiction',
+          'Contemporary Fiction',
+          'Indian Literature',
+          'General Non-Fiction'
+        ];
+        this.bookService.getBooks('').subscribe({
+          next: (data) => {
+            this.books = (data || []).filter(b => 
+              (b.category ? novelCategories.includes(b.category) : false) ||
+              (b.aisle ? b.aisle.toLowerCase().includes('literature') : false) ||
+              (b.description ? b.description.toLowerCase().includes('novel') : false)
+            );
+            this.loading = false;
+            this.cdr.detectChanges();
+          },
+          error: () => {
+            this.loading = false;
+            this.cdr.detectChanges();
+          }
+        });
+      } else {
+        this.bookService.getBooks(this.searchQuery).subscribe({
+          next: (data) => {
+            this.books = data || [];
+            this.loading = false;
+            this.cdr.detectChanges();
+          },
+          error: () => {
+            this.loading = false;
+            this.cdr.detectChanges();
+          }
+        });
+      }
     } else {
       // PAGED DEFAULT VIEW
       this.isPagedMode = true;

@@ -1,10 +1,13 @@
 import { Injectable, signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { Observable, of, throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 import { User, UserRole } from '../models/user.model';
 
 export interface AuthCredential {
   username: string;
-  passwordHash: string; // plain text for demo: admin123 / student123
+  passwordHash: string;
   user: User;
 }
 
@@ -12,10 +15,14 @@ export interface AuthCredential {
   providedIn: 'root'
 })
 export class AuthService {
+  private http = inject(HttpClient);
   private router = inject(Router);
-  private readonly AUTH_STORAGE_KEY = 'smart_lms_auth_user';
 
-  // Library Contact Information requested by user
+  private readonly AUTH_STORAGE_KEY = 'smart_lms_auth_user';
+  private readonly TOKEN_STORAGE_KEY = 'smart_lms_jwt_token';
+  private readonly API_BASE_URL = 'http://localhost:8080/api/auth';
+
+  // Library Contact Information
   readonly libraryContact = {
     phone: '0987654654',
     email: 'LIBRARY@admin.com',
@@ -24,7 +31,7 @@ export class AuthService {
     location: 'Central Campus Library, Floors 1 & 2'
   };
 
-  // Pre-configured University Accounts (Admin & Students across departments)
+  // Pre-configured fallback users for offline demo
   private readonly USERS_DB: AuthCredential[] = [
     {
       username: 'admin',
@@ -124,21 +131,44 @@ export class AuthService {
     }
   }
 
-  login(username: string, password: string): { success: boolean; message: string } {
-    const cleanUser = username?.trim().toLowerCase();
-    const cred = this.USERS_DB.find(u => u.username.toLowerCase() === cleanUser);
+  login(usernameOrEmail: string, password: string): Observable<{ success: boolean; message: string }> {
+    const payload = { usernameOrEmail: usernameOrEmail.trim(), password };
 
-    if (!cred) {
-      return { success: false, message: 'Invalid username. Please check your credentials.' };
-    }
-
-    if (cred.passwordHash !== password) {
-      return { success: false, message: 'Incorrect password. Try again.' };
-    }
-
-    this.currentUser.set(cred.user);
-    localStorage.setItem(this.AUTH_STORAGE_KEY, JSON.stringify(cred.user));
-    return { success: true, message: `Welcome back, ${cred.user.name}!` };
+    return this.http.post<any>(`${this.API_BASE_URL}/login`, payload).pipe(
+      map(res => {
+        if (res.success && res.data) {
+          const authData = res.data;
+          const user: User = {
+            username: authData.username,
+            name: authData.name,
+            role: (authData.role === 'ROLE_ADMIN' || authData.role === 'ADMIN') ? 'ADMIN' : 'STUDENT',
+            email: authData.email,
+            avatar: authData.avatar || (authData.role?.includes('ADMIN') ? 'ADM' : 'STU'),
+            department: authData.department,
+            memberId: authData.memberId
+          };
+          this.currentUser.set(user);
+          localStorage.setItem(this.AUTH_STORAGE_KEY, JSON.stringify(user));
+          if (authData.token) {
+            localStorage.setItem(this.TOKEN_STORAGE_KEY, authData.token);
+          }
+          return { success: true, message: `Welcome back, ${user.name}!` };
+        }
+        return { success: false, message: res.message || 'Login failed' };
+      }),
+      catchError(err => {
+        // Fallback for offline demo if backend is initializing
+        const clean = usernameOrEmail.trim().toLowerCase();
+        const cred = this.USERS_DB.find(u => u.username.toLowerCase() === clean || u.user.email.toLowerCase() === clean);
+        if (cred && cred.passwordHash === password) {
+          this.currentUser.set(cred.user);
+          localStorage.setItem(this.AUTH_STORAGE_KEY, JSON.stringify(cred.user));
+          return of({ success: true, message: `Welcome back, ${cred.user.name}!` });
+        }
+        const errorMsg = err.error?.message || 'Invalid username/email or password';
+        return of({ success: false, message: errorMsg });
+      })
+    );
   }
 
   quickDemoLogin(username: string): void {
@@ -154,6 +184,7 @@ export class AuthService {
   logout(): void {
     this.currentUser.set(null);
     localStorage.removeItem(this.AUTH_STORAGE_KEY);
+    localStorage.removeItem(this.TOKEN_STORAGE_KEY);
     this.router.navigate(['/login']);
   }
 
@@ -162,11 +193,17 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    return this.currentUser()?.role === 'ADMIN';
+    const role = this.currentUser()?.role as string;
+    return role === 'ADMIN' || role === 'ROLE_ADMIN';
   }
 
   isStudent(): boolean {
-    return this.currentUser()?.role === 'STUDENT';
+    const role = this.currentUser()?.role as string;
+    return role === 'STUDENT' || role === 'ROLE_STUDENT';
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem(this.TOKEN_STORAGE_KEY);
   }
 
   getRole(): UserRole | 'GUEST' {

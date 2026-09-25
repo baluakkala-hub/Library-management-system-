@@ -41,6 +41,34 @@
     }
   </div>
 
+  <!-- Genre & Subject Category Filter Chips -->
+  <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; padding: 4px 0;">
+    <button type="button" class="btn btn-sm" [ngClass]="!searchQuery ? 'btn-primary' : 'btn-outline'" (click)="filterByCategory('')">
+      All (100 Books)
+    </button>
+    <button type="button" class="btn btn-sm" [ngClass]="searchQuery === 'Novels' ? 'btn-primary' : 'btn-outline'" (click)="filterByCategory('Novels')">
+      📖 Novels
+    </button>
+    <button type="button" class="btn btn-sm" [ngClass]="searchQuery === 'Computer Science' ? 'btn-primary' : 'btn-outline'" (click)="filterByCategory('Computer Science')">
+      💻 Computer Science
+    </button>
+    <button type="button" class="btn btn-sm" [ngClass]="searchQuery === 'Artificial Intelligence' ? 'btn-primary' : 'btn-outline'" (click)="filterByCategory('Artificial Intelligence')">
+      🤖 AI & ML
+    </button>
+    <button type="button" class="btn btn-sm" [ngClass]="searchQuery === 'Electrical Engineering' ? 'btn-primary' : 'btn-outline'" (click)="filterByCategory('Electrical Engineering')">
+      ⚡ Electrical & VLSI
+    </button>
+    <button type="button" class="btn btn-sm" [ngClass]="searchQuery === 'Mechanical Engineering' ? 'btn-primary' : 'btn-outline'" (click)="filterByCategory('Mechanical Engineering')">
+      ⚙️ Mechanical
+    </button>
+    <button type="button" class="btn btn-sm" [ngClass]="searchQuery === 'Civil Engineering' ? 'btn-primary' : 'btn-outline'" (click)="filterByCategory('Civil Engineering')">
+      🏗️ Civil
+    </button>
+    <button type="button" class="btn btn-sm" [ngClass]="searchQuery === 'Management' ? 'btn-primary' : 'btn-outline'" (click)="filterByCategory('Management')">
+      📈 Management
+    </button>
+  </div>
+
   <!-- AI Query Intelligence Status Banner: Rendered exclusively for Students -->
   @if (authService.isStudent() && aiSearchMode && searchQuery && !loading) {
     <div class="ai-search-banner">

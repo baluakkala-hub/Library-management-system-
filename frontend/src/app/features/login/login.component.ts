@@ -41,18 +41,24 @@ export class LoginComponent {
     this.loading = true;
     this.error = '';
 
-    const result = this.authService.login(this.username.trim(), this.password);
-    this.loading = false;
-
-    if (result.success) {
-      if (this.selectedRole === 'admin' && !this.authService.isAdmin()) {
-        this.error = 'This account does not have Administrator privileges. Please switch to the Student Login tab.';
-        return;
+    this.authService.login(this.username.trim(), this.password).subscribe({
+      next: (result) => {
+        this.loading = false;
+        if (result.success) {
+          if (this.selectedRole === 'admin' && !this.authService.isAdmin()) {
+            this.error = 'This account does not have Administrator privileges. Please switch to the Student Login tab.';
+            return;
+          }
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || (this.authService.isAdmin() ? '/dashboard' : '/books');
+          this.router.navigateByUrl(returnUrl);
+        } else {
+          this.error = result.message;
+        }
+      },
+      error: (err) => {
+        this.loading = false;
+        this.error = err.error?.message || 'Invalid username/email or password';
       }
-      const returnUrl = this.route.snapshot.queryParams['returnUrl'] || (this.authService.isAdmin() ? '/dashboard' : '/books');
-      this.router.navigateByUrl(returnUrl);
-    } else {
-      this.error = result.message;
-    }
+    });
   }
 }

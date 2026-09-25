@@ -23,7 +23,7 @@ public class Fine {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "transaction_id", nullable = false)
+    @JoinColumn(name = "transaction_id", nullable = true)
     private Transaction transaction;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,6 +32,9 @@ public class Fine {
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal amount;
+
+    @Column(length = 255)
+    private String reason;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)

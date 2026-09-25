@@ -23,7 +23,7 @@ public class TransactionService {
 
     private static final int MAX_BOOKS_PER_MEMBER = 3;
     private static final int DEFAULT_LOAN_DAYS = 14;
-    private static final BigDecimal DAILY_FINE_RATE = new BigDecimal("1.00");
+    private static final BigDecimal DAILY_FINE_RATE = new BigDecimal("5.00"); // ₹5.00 per day in INR
 
     private final TransactionRepository transactionRepository;
     private final BookRepository bookRepository;
@@ -49,7 +49,7 @@ public class TransactionService {
         if (unpaidFinesCount > 0) {
             BigDecimal unpaidTotal = fineRepository.sumUnpaidFinesByMemberId(member.getId());
             throw new BusinessException("Borrowing blocked: Member has " + unpaidFinesCount 
-                    + " unpaid fine(s) totaling $" + unpaidTotal.setScale(2) + ". Fines must be cleared first.");
+                    + " unpaid fine(s) totaling ₹" + unpaidTotal.setScale(2) + ". Fines must be cleared first.");
         }
 
         // Business Rule 3: Member max loan limit

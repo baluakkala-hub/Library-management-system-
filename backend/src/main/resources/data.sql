@@ -344,7 +344,274 @@ INSERT INTO books (isbn, title, author, category, total_copies, available_copies
 VALUES ('978-1119385974', 'Project Management: A Systems Approach', 'Harold Kerzner', 'Management', 4, 3, 
         'Industry standard reference for project management professionals and engineering leaders. Covers work breakdown structures, risk management, scheduling, and stakeholder communication.',
         'project management, pmp, scheduling, risk management, wbs, agile project, governance, stakeholder management', 
+        'project management, pmp, scheduling, risk management, wbs, agile project, governance, stakeholder management', 
         2017, 4.7, 140, 'Aisle 6 (Management)', 'Shelf B1', 'Rack 1');
+
+-- 7. ADDITIONAL EXPANDED CATALOG - 20 BOOKS ACROSS DISCIPLINES
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-1543940176', 'Deep Learning for Computer Vision', 'Adrian Rosebrock', 'Artificial Intelligence', 4, 3, 
+        'Comprehensive guide to building deep learning models for image classification, object detection, and face recognition using OpenCV, Keras, and TensorFlow.', 
+        'deep learning, computer vision, cnn, opencv, image classification, object detection, yolo, neural networks', 
+        2017, 4.8, 145, 'Aisle 1 (CSE/IT)', 'Shelf C2', 'Rack 1');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0262039246', 'Reinforcement Learning: An Introduction', 'Richard S. Sutton & Andrew G. Barto', 'Artificial Intelligence', 5, 4, 
+        'The definitive reference on reinforcement learning. Covers Markov decision processes, dynamic programming, Monte Carlo methods, temporal-difference learning, and Q-learning.', 
+        'reinforcement learning, rl, q-learning, markov decision processes, mdp, policy gradient, deep rl, bellman equation', 
+        2018, 4.9, 280, 'Aisle 1 (CSE/IT)', 'Shelf C2', 'Rack 2');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-1107002173', 'Quantum Computation and Quantum Information', 'Michael A. Nielsen & Isaac L. Chuang', 'Computer Science', 4, 3, 
+        'The foundational textbook on quantum computing. Introduces qubits, quantum circuits, quantum Fourier transform, Shor''s factoring algorithm, and Grover''s search algorithm.', 
+        'quantum computing, qubits, quantum algorithms, shor algorithm, grover search, quantum information, quantum entanglement', 
+        2010, 4.9, 215, 'Aisle 1 (CSE/IT)', 'Shelf D2', 'Rack 2');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-1491929124', 'Site Reliability Engineering: How Google Runs Production Systems', 'Niall Richard Murphy et al.', 'Computer Science', 4, 3, 
+        'Members of the Google SRE team explain how Google builds, deploys, monitors, and maintains some of the world''s largest and most reliable computing systems.', 
+        'sre, site reliability engineering, devops, distributed systems, monitoring, slo, sli, error budgets, incident management', 
+        2016, 4.8, 190, 'Aisle 1 (CSE/IT)', 'Shelf D1', 'Rack 2');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-1098103248', 'Natural Language Processing with Transformers', 'Lewis Tunstall, Leandro von Werra & Thomas Wolf', 'Artificial Intelligence', 4, 4, 
+        'Hands-on guide to building state-of-the-art NLP models with Hugging Face Transformers. Covers BERT, GPT, T5, text classification, named entity recognition, and question answering.', 
+        'nlp, transformers, hugging face, bert, gpt, large language models, llm, attention mechanism, text processing', 
+        2022, 4.9, 220, 'Aisle 1 (CSE/IT)', 'Shelf C1', 'Rack 1');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0321547743', 'CMOS VLSI Design: A Circuits and Systems Perspective', 'Neil H. E. Weste & David Harris', 'Electrical Engineering', 5, 4, 
+        'The standard textbook on CMOS VLSI design. Explains circuit design, transistor layout, logical effort, timing analysis, dynamic logic, and modern manufacturing technology.', 
+        'vlsi, cmos, integrated circuits, circuit design, transistor layout, verilog, logic design, semiconductor fabrication', 
+        2010, 4.8, 160, 'Aisle 2 (ECE/EEE)', 'Shelf C2', 'Rack 1');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0130422323', 'Wireless Communications: Principles and Practice', 'Theodore S. Rappaport', 'Electrical Engineering', 4, 3, 
+        'Covers cellular radio fundamentals, path loss, multipath propagation, small-scale fading, equalization, diversity techniques, and modern 4G/5G mobile standards.', 
+        'wireless communications, cellular systems, fading, multipath, rf, 4g, 5g, modulation, antenna diversity, propagation', 
+        2002, 4.7, 135, 'Aisle 2 (ECE/EEE)', 'Shelf C2', 'Rack 2');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0996025515', 'Internet of Things: A Hands-On Approach', 'Arshdeep Bahga & Vijay Madisetti', 'Electrical Engineering', 4, 4, 
+        'Practical guide to IoT design and deployment using Raspberry Pi, Arduino, MQTT, CoAP, and cloud analytics. Covers edge computing, sensor interfacing, and smart campus solutions.', 
+        'iot, internet of things, raspberry pi, arduino, sensors, mqtt, embedded systems, edge computing, smart systems', 
+        2014, 4.6, 110, 'Aisle 2 (ECE/EEE)', 'Shelf D1', 'Rack 1');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-1292251073', 'Mechatronics: Electronic Control Systems in Mechanical and Electrical Engineering', 'William Bolton', 'Mechanical Engineering', 5, 4, 
+        'Comprehensive introduction to mechatronics combining mechanical engineering with electronics and intelligent computer control. Covers sensors, actuators, PLCs, and microcontrollers.', 
+        'mechatronics, sensors, actuators, plcs, microcontrollers, control engineering, robotics, electro-mechanical', 
+        2019, 4.7, 125, 'Aisle 3 (Mechanical)', 'Shelf C2', 'Rack 1');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0080966328', 'Aerodynamics for Engineering Students', 'E. L. Houghton & P. W. Carpenter', 'Mechanical Engineering', 4, 3, 
+        'Classic engineering text on low-speed and high-speed aerodynamics. Covers potential flow, airfoil theory, finite wing theory, boundary layers, and compressible supersonic flows.', 
+        'aerodynamics, airfoil, lift, drag, compressible flow, boundary layer, supersonic, fluid dynamics, aeronautics', 
+        2012, 4.7, 95, 'Aisle 3 (Mechanical)', 'Shelf C2', 'Rack 2');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0979004902', 'Finite Element Procedures', 'Klaus-Jürgen Bathe', 'Mechanical Engineering', 4, 3, 
+        'The definitive reference on the finite element method (FEM) for linear and nonlinear structural analysis, solid mechanics, and heat conduction equations.', 
+        'finite element method, fem, fea, structural mechanics, numerical analysis, stress analysis, elasticity, solid mechanics', 
+        2006, 4.8, 140, 'Aisle 3 (Mechanical)', 'Shelf D1', 'Rack 1');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0071759038', 'Bridge Engineering: Design, Rehabilitation, and Maintenance', 'Demetrios E. Tonias & Jim J. Zhao', 'Civil Engineering', 4, 3, 
+        'Comprehensive guide to bridge engineering according to AASHTO specifications. Covers superstructures, substructures, piers, abutments, bridge seismic design, and fatigue.', 
+        'bridge engineering, aashto, prestressed concrete, steel girders, piers, seismic design, civil engineering, infrastructure', 
+        2012, 4.6, 85, 'Aisle 4 (Civil)', 'Shelf C1', 'Rack 1');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0849314391', 'Earthquake Engineering: From Seismology to Performance-Based Design', 'Yousef Bozorgnia & Vitelmo V. Bertero', 'Civil Engineering', 4, 3, 
+        'In-depth coverage of engineering seismology, ground motion records, response spectra, ductile detailing, base isolation, and seismic retrofitting of buildings.', 
+        'earthquake engineering, seismic design, response spectrum, base isolation, structural dynamics, building codes, retrofitting', 
+        2004, 4.8, 90, 'Aisle 4 (Civil)', 'Shelf C1', 'Rack 2');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0198072393', 'Remote Sensing and GIS', 'Basudeb Bhatta', 'Civil Engineering', 5, 4, 
+        'Standard university textbook introducing the principles of satellite remote sensing, photogrammetry, image interpretation, GIS spatial analysis, and GPS surveying.', 
+        'remote sensing, gis, satellite imagery, photogrammetry, spatial analysis, cartography, geomatics, gps', 
+        2011, 4.7, 115, 'Aisle 4 (Civil)', 'Shelf C2', 'Rack 1');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0387310732', 'Pattern Recognition and Machine Learning', 'Christopher M. Bishop', 'Mathematics', 5, 4, 
+        'The premier textbook on pattern recognition and Bayesian machine learning. Covers Bayesian networks, Gaussian processes, expectation-maximization, and variational inference.', 
+        'pattern recognition, machine learning, bayesian inference, gaussian processes, graphical models, probability, statistics', 
+        2006, 4.9, 310, 'Aisle 5 (Math & Sciences)', 'Shelf C1', 'Rack 1');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0521642989', 'Information Theory, Inference, and Learning Algorithms', 'David J. C. MacKay', 'Mathematics', 4, 3, 
+        'Cambridge classic connecting information theory, coding theory, statistical physics, and machine learning. Covers Shannon entropy, error-correcting codes, and Monte Carlo methods.', 
+        'information theory, shannon entropy, error correcting codes, bayesian inference, monte carlo, neural networks, coding theory', 
+        2003, 4.9, 205, 'Aisle 5 (Math & Sciences)', 'Shelf C1', 'Rack 2');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0123821881', 'Statistical Mechanics', 'R. K. Pathria & Paul D. Beale', 'Physics', 4, 3, 
+        'Graduate textbook on equilibrium and non-equilibrium statistical mechanics. Covers microcanonical, canonical, and grand canonical ensembles, Bose-Einstein condensation, and Fermi gases.', 
+        'statistical mechanics, thermodynamics, ensembles, bose einstein, fermi dirac, partition functions, phase transitions, physics', 
+        2011, 4.8, 130, 'Aisle 5 (Math & Sciences)', 'Shelf C2', 'Rack 1');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-9353166526', 'Financial Management: Theory and Practice', 'Prasanna Chandra', 'Management', 5, 4, 
+        'India''s premier finance textbook for MBA and management students. Covers working capital management, capital structure theories, valuation, derivatives, and portfolio analysis.', 
+        'financial management, corporate finance, capital budgeting, working capital, portfolio management, valuation, mba finance', 
+        2019, 4.8, 230, 'Aisle 6 (Management)', 'Shelf B1', 'Rack 2');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0133800203', 'Supply Chain Management: Strategy, Planning, and Operation', 'Sunil Chopra & Peter Meindl', 'Management', 4, 3, 
+        'Provides a strategic framework to guide decisions about logistics, inventory control, sourcing, transport, and facility location in global supply networks.', 
+        'supply chain, logistics, inventory management, sourcing, operations, procurement, bullwhip effect, distribution', 
+        2015, 4.7, 160, 'Aisle 6 (Management)', 'Shelf B2', 'Rack 1');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0133856460', 'Marketing Management', 'Philip Kotler & Kevin Lane Keller', 'Management', 5, 4, 
+        'The gold standard world-renowned marketing textbook. Covers market segmentation, branding, consumer behavior, pricing strategies, digital marketing, and omni-channel distribution.', 
+        'marketing management, branding, market research, consumer behavior, pricing strategies, segmentation, marketing strategy', 
+        2015, 4.8, 280, 'Aisle 6 (Management)', 'Shelf B2', 'Rack 2');
+
+-- 8. NOVELS & LITERARY CLASSICS (BRINGING CATALOG TO EXACTLY 100 BOOKS)
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0441172719', 'Dune', 'Frank Herbert', 'Science Fiction', 6, 5, 
+        'Set on the desert planet Arrakis, Dune tells the story of Paul Atreides, heir to a noble family in a galactic empire, battling for control of the universe''s most valuable substance: the spice melange.', 
+        'dune, arrakis, paul atreides, spice, sci-fi classic, science fiction, desert, empire, frank herbert', 
+        1965, 4.9, 450, 'Aisle 7 (Literature & Fiction)', 'Shelf A1', 'Rack 1');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0593098233', 'Dune Messiah', 'Frank Herbert', 'Science Fiction', 5, 4, 
+        'The direct sequel to Dune. Paul Atreides has become Emperor of the known universe, facing political conspiracies, religious jihad, and tragic prophecies.', 
+        'dune, dune messiah, arrakis, muad dib, paul atreides, science fiction, prophecy, empire', 
+        1969, 4.7, 280, 'Aisle 7 (Literature & Fiction)', 'Shelf A1', 'Rack 2');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0553293357', 'Foundation', 'Isaac Asimov', 'Science Fiction', 5, 4, 
+        'The first novel in Asimov''s legendary series. Mathematician Hari Seldon develops psychohistory to preserve knowledge and civilization through the fall of the Galactic Empire.', 
+        'foundation, isaac asimov, psychohistory, hari seldon, galactic empire, science fiction classic, space opera', 
+        1951, 4.8, 380, 'Aisle 7 (Literature & Fiction)', 'Shelf A2', 'Rack 1');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0451524935', '1984', 'George Orwell', 'Classic Literature', 6, 5, 
+        'The seminal dystopian novel depicting a totalitarian regime under Big Brother, surveillance, thoughtcrime, and the fight of Winston Smith for individual freedom.', 
+        '1984, george orwell, dystopia, big brother, totalitarianism, thoughtcrime, classic, surveillance', 
+        1949, 4.9, 520, 'Aisle 7 (Literature & Fiction)', 'Shelf A2', 'Rack 2');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0060850524', 'Brave New World', 'Aldous Huxley', 'Classic Literature', 5, 4, 
+        'A prophetic vision of a dehumanized, technologically controlled totalitarian society based on consumerism, psychological conditioning, and genetic engineering.', 
+        'brave new world, aldous huxley, dystopia, genetic engineering, classic literature, philosophy', 
+        1932, 4.7, 340, 'Aisle 7 (Literature & Fiction)', 'Shelf B1', 'Rack 1');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0061120084', 'To Kill a Mockingbird', 'Harper Lee', 'Classic Literature', 6, 5, 
+        'Pulitzer Prize-winning novel exploring racial injustice, compassion, and innocence in the American Deep South through the eyes of young Scout Finch and her lawyer father Atticus.', 
+        'to kill a mockingbird, harper lee, atticus finch, justice, southern gothic, american classic, pulitzer', 
+        1960, 4.9, 490, 'Aisle 7 (Literature & Fiction)', 'Shelf B1', 'Rack 2');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0743273565', 'The Great Gatsby', 'F. Scott Fitzgerald', 'Classic Literature', 5, 4, 
+        'The quintessential story of the Jazz Age, exploring wealth, ambition, obsession, and the elusive American Dream through the mysterious millionaire Jay Gatsby.', 
+        'the great gatsby, fitzgerald, jazz age, american dream, classic, daisy buchanan, 1920s', 
+        1925, 4.6, 410, 'Aisle 7 (Literature & Fiction)', 'Shelf B2', 'Rack 1');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0547928210', 'The Lord of the Rings: The Fellowship of the Ring', 'J.R.R. Tolkien', 'Fantasy & Fiction', 6, 5, 
+        'The first part of Tolkien''s masterwork epic fantasy. Frodo Baggins begins his perilous quest across Middle-earth to destroy the One Ring in the fires of Mount Doom.', 
+        'lord of the rings, tolkien, fellowship of the ring, frodo, gandalf, middle earth, high fantasy, epic', 
+        1954, 4.9, 610, 'Aisle 7 (Literature & Fiction)', 'Shelf B2', 'Rack 2');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0547928227', 'The Hobbit', 'J.R.R. Tolkien', 'Fantasy & Fiction', 5, 4, 
+        'The delightful prelude to The Lord of the Rings. Follows Bilbo Baggins as he is swept into an epic quest to reclaim the lost dwarf kingdom of Erebor from the dragon Smaug.', 
+        'the hobbit, tolkien, bilbo baggins, smaug, middle earth, fantasy classic, adventure, ring', 
+        1937, 4.8, 480, 'Aisle 7 (Literature & Fiction)', 'Shelf C1', 'Rack 1');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0593135204', 'Project Hail Mary', 'Andy Weir', 'Science Fiction', 5, 4, 
+        'A lone astronaut on an interstellar survival mission must use science, physics, and unexpected friendship with an extraterrestrial to save humanity from solar extinction.', 
+        'project hail mary, andy weir, interstellar, science fiction, space exploration, physics, hard sci-fi, rocky', 
+        2021, 4.9, 390, 'Aisle 7 (Literature & Fiction)', 'Shelf C1', 'Rack 2');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0553418026', 'The Martian', 'Andy Weir', 'Science Fiction', 5, 4, 
+        'Astronaut Mark Watney is stranded alone on Mars after a dust storm. Using his engineering ingenuity and botany skills, he fights to survive against all odds.', 
+        'the martian, andy weir, mark watney, mars survival, hard sci-fi, engineering, botany, space', 
+        2014, 4.8, 440, 'Aisle 7 (Literature & Fiction)', 'Shelf C2', 'Rack 1');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0441569595', 'Neuromancer', 'William Gibson', 'Science Fiction', 4, 3, 
+        'The definitive cyberpunk masterpiece that coined the term cyberspace. Follows washed-up hacker Case hired for a high-stakes hack against an omnipresent artificial intelligence.', 
+        'neuromancer, william gibson, cyberpunk, cyberspace, ai, matrix, hacking, sci-fi noir', 
+        1984, 4.7, 310, 'Aisle 7 (Literature & Fiction)', 'Shelf C2', 'Rack 2');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-1451673319', 'Fahrenheit 451', 'Ray Bradbury', 'Classic Literature', 5, 4, 
+        'In a dystopian future where books are forbidden and burned by firemen, Guy Montag begins questioning everything about censorship, media consumption, and intellectual freedom.', 
+        'fahrenheit 451, ray bradbury, censorship, book burning, dystopia, classic, guy montag', 
+        1953, 4.7, 360, 'Aisle 7 (Literature & Fiction)', 'Shelf D1', 'Rack 1');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0062315007', 'The Alchemist', 'Paulo Coelho', 'Contemporary Fiction', 6, 5, 
+        'An inspiring philosophical tale about an Andalusian shepherd boy named Santiago who journeys to the Egyptian pyramids in search of treasure and his personal legend.', 
+        'the alchemist, paulo coelho, personal legend, philosophy, destiny, inspiring, adventure', 
+        1988, 4.8, 590, 'Aisle 7 (Literature & Fiction)', 'Shelf D1', 'Rack 2');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0812976533', 'Midnight''s Children', 'Salman Rushdie', 'Indian Literature', 5, 4, 
+        'Winner of the Booker Prize and Best of the Booker. A magical realist historical saga following children born at the midnight stroke of India''s independence.', 
+        'midnights children, salman rushdie, booker prize, magical realism, indian history, independence, modern classic', 
+        1981, 4.8, 320, 'Aisle 7 (Literature & Fiction)', 'Shelf D2', 'Rack 1');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0812979657', 'The God of Small Things', 'Arundhati Roy', 'Indian Literature', 5, 4, 
+        'Booker Prize-winning lyrical novel set in Kerala, chronicling the childhood experiences of fraternal twins and how the smallest events can overturn families and traditions.', 
+        'the god of small things, arundhati roy, booker prize, kerala, ayemenem, indian literature, lyrical', 
+        1997, 4.8, 340, 'Aisle 7 (Literature & Fiction)', 'Shelf D2', 'Rack 2');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-1416562603', 'The White Tiger', 'Aravind Adiga', 'Indian Literature', 5, 4, 
+        'Winner of the Man Booker Prize. A dark, comic, fast-paced tale of Balram Halwai, a village boy who rises from driver to successful entrepreneur in modern Bangalore.', 
+        'the white tiger, aravind adiga, booker prize, bangalore, social mobility, modern india, satire', 
+        2008, 4.6, 290, 'Aisle 8 (Special Collections)', 'Shelf A1', 'Rack 1');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0060786526', 'A Suitable Boy', 'Vikram Seth', 'Indian Literature', 4, 3, 
+        'One of the longest English novels in history, set in post-independence India. An intimate epic of four families and Mrs. Rupa Mehra''s quest to arrange a suitable match for her daughter.', 
+        'a suitable boy, vikram seth, indian english literature, post independence, epic novel, family saga', 
+        1993, 4.7, 210, 'Aisle 8 (Special Collections)', 'Shelf A1', 'Rack 2');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0143039648', 'The Guide', 'R. K. Narayan', 'Indian Literature', 5, 4, 
+        'Set in fictional Malgudi, this Sahitya Akademi Award-winning masterpiece follows tour guide Raju who through bizarre twists of fate becomes revered as a spiritual guru.', 
+        'the guide, rk narayan, malgudi, sahitya akademi, classic indian fiction, transformation, humor', 
+        1958, 4.8, 270, 'Aisle 8 (Special Collections)', 'Shelf A2', 'Rack 1');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0141439518', 'Pride and Prejudice', 'Jane Austen', 'Classic Literature', 6, 5, 
+        'The timeless romantic comedy of manners depicting the tempestuous courtship between the spirited Elizabeth Bennet and the proud aristocratic Mr. Darcy.', 
+        'pride and prejudice, jane austen, elizabeth bennet, mr darcy, classic romance, regency, wit', 
+        1813, 4.9, 640, 'Aisle 8 (Special Collections)', 'Shelf A2', 'Rack 2');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0143058144', 'Crime and Punishment', 'Fyodor Dostoevsky', 'Classic Literature', 5, 4, 
+        'A psychological masterpiece exploring the moral dilemmas of Rodion Raskolnikov, an impoverished ex-student in St. Petersburg who murders a pawnbroker to test his theories of greatness.', 
+        'crime and punishment, dostoevsky, raskolnikov, st petersburg, psychological novel, guilt, redemption', 
+        1866, 4.8, 380, 'Aisle 8 (Special Collections)', 'Shelf B1', 'Rack 1');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0316769488', 'The Catcher in the Rye', 'J. D. Salinger', 'Classic Literature', 5, 4, 
+        'The classic exploration of teenage alienation, loss of innocence, and identity crisis through the rebellious voice of Holden Caulfield wandering New York City.', 
+        'the catcher in the rye, jd salinger, holden caulfield, alienation, coming of age, classic literature', 
+        1951, 4.6, 410, 'Aisle 8 (Special Collections)', 'Shelf B1', 'Rack 2');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0765382030', 'The Three-Body Problem', 'Cixin Liu', 'Science Fiction', 5, 4, 
+        'Hugo Award-winning hard sci-fi epic set against the backdrop of China''s Cultural Revolution, culminating in humanity''s first contact with an alien civilization from Alpha Centauri.', 
+        'the three body problem, cixin liu, hugo award, hard sci-fi, first contact, physics, trisolaris', 
+        2008, 4.8, 350, 'Aisle 8 (Special Collections)', 'Shelf B2', 'Rack 1');
+
+INSERT INTO books (isbn, title, author, category, total_copies, available_copies, description, keywords, publication_year, average_rating, ratings_count, aisle, shelf, column_rack) 
+VALUES ('978-0062316097', 'Sapiens: A Brief History of Humankind', 'Yuval Noah Harari', 'General Non-Fiction', 6, 5, 
+        'A groundbreaking historical exploration spanning 70,000 years of human evolution, the Cognitive Revolution, the Agricultural Revolution, and the Scientific Revolution.', 
+        'sapiens, yuval noah harari, anthropology, evolution, human history, non-fiction, cognitive revolution', 
+        2014, 4.9, 580, 'Aisle 8 (Special Collections)', 'Shelf B2', 'Rack 2');
 
 
 -- 2. SEED MEMBERS (South Indian Demographic Profiles)
@@ -364,7 +631,7 @@ INSERT INTO members (name, email, phone, membership_date, status)
 VALUES ('Lokesh Reddy', 'lokesh@sice.edu.in', '+91 97001 23456', '2023-10-01', 'ACTIVE');
 
 INSERT INTO members (name, email, phone, membership_date, status) 
-VALUES ('Jagan Chowdhary', 'jagan@sice.edu.in', '+91 94401 56789', '2023-10-15', 'SUSPENDED');
+VALUES ('Jagan Chowdhary', 'jagan@sice.edu.in', '+91 94401 56789', '2023-10-15', 'ACTIVE');
 
 INSERT INTO members (name, email, phone, membership_date, status) 
 VALUES ('Ananya Sharma', 'ananya@sice.edu.in', '+91 91234 56780', '2024-01-05', 'ACTIVE');
@@ -378,68 +645,327 @@ VALUES ('Sravya Murthy', 'sravya@sice.edu.in', '+91 93456 78902', '2024-02-01', 
 INSERT INTO members (name, email, phone, membership_date, status) 
 VALUES ('Spoorthi Varma', 'spoorthi@sice.edu.in', '+91 94567 89013', '2024-02-15', 'ACTIVE');
 
+-- Additional 30 Members (Pan-Indian Demographic Fusion)
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Aarav Patel', 'aarav.patel@sice.edu.in', '+91 98250 11223', '2024-03-01', 'ACTIVE');
 
--- 3. SEED HISTORICAL & ACTIVE TRANSACTIONS
--- Member 1 (Satish): Computer Science Focus
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Rohan Mukherjee', 'rohan.mukherjee@sice.edu.in', '+91 98301 44556', '2024-03-05', 'ACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Priya Nambiar', 'priya.nambiar@sice.edu.in', '+91 94471 22334', '2024-03-10', 'ACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Vikramaditya Singh', 'vikram.singh@sice.edu.in', '+91 94140 55667', '2024-03-15', 'ACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Sneha Kulkarni', 'sneha.kulkarni@sice.edu.in', '+91 98220 77889', '2024-03-20', 'ACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Tanvi Deshmukh', 'tanvi.deshmukh@sice.edu.in', '+91 98225 99001', '2024-04-01', 'ACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Harpreet Kaur', 'harpreet.kaur@sice.edu.in', '+91 98140 33445', '2024-04-05', 'ACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Meera Iyer', 'meera.iyer@sice.edu.in', '+91 94440 66778', '2024-04-10', 'ACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Aditya Varma', 'aditya.varma@sice.edu.in', '+91 98481 88990', '2024-04-15', 'ACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Siddharth Nair', 'siddharth.nair@sice.edu.in', '+91 94475 12345', '2024-05-01', 'ACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Ishaan Chatterjee', 'ishaan.chatterjee@sice.edu.in', '+91 98310 23456', '2024-05-05', 'ACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Riya Sengupta', 'riya.sengupta@sice.edu.in', '+91 98315 34567', '2024-05-10', 'ACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Arjun Pillai', 'arjun.pillai@sice.edu.in', '+91 94460 45678', '2024-05-15', 'ACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Kavya Sundaram', 'kavya.sundaram@sice.edu.in', '+91 94445 56789', '2024-06-01', 'ACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Devendra Rathore', 'devendra.rathore@sice.edu.in', '+91 94145 67890', '2024-06-05', 'ACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Pooja Hegde', 'pooja.hegde@sice.edu.in', '+91 98450 78901', '2024-06-10', 'ACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Nikhil Joshi', 'nikhil.joshi@sice.edu.in', '+91 98230 89012', '2024-06-15', 'ACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Neha Bhattacharya', 'neha.bhattacharya@sice.edu.in', '+91 98320 90123', '2024-07-01', 'ACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Chirag Mehta', 'chirag.mehta@sice.edu.in', '+91 98255 01234', '2024-07-05', 'ACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Shalini Menon', 'shalini.menon@sice.edu.in', '+91 94465 12340', '2024-07-10', 'INACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Abhimanyu Das', 'abhimanyu.das@sice.edu.in', '+91 94370 23451', '2024-07-15', 'INACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Ritika Barua', 'ritika.barua@sice.edu.in', '+91 94350 34562', '2024-08-01', 'ACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Gurpreet Singh', 'gurpreet.singh@sice.edu.in', '+91 98145 45673', '2024-08-05', 'INACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Pranav Venkatesh', 'pranav.venkatesh@sice.edu.in', '+91 94448 56784', '2024-08-10', 'INACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Swati Mahajan', 'swati.mahajan@sice.edu.in', '+91 94191 67895', '2024-08-15', 'INACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Tenzin Norbu', 'tenzin.norbu@sice.edu.in', '+91 94360 78906', '2024-09-01', 'INACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Rajeshwari Somayaji', 'rajeshwari.s@sice.edu.in', '+91 98455 89017', '2024-09-05', 'INACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Mayank Tripathi', 'mayank.tripathi@sice.edu.in', '+91 94150 90128', '2024-09-10', 'INACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Deepali Bora', 'deepali.bora@sice.edu.in', '+91 94355 01239', '2024-09-15', 'INACTIVE');
+
+INSERT INTO members (name, email, phone, membership_date, status)
+VALUES ('Farhan Qureshi', 'farhan.qureshi@sice.edu.in', '+91 98260 12349', '2024-10-01', 'INACTIVE');
+
+
+-- 3. SEED HISTORICAL & ACTIVE TRANSACTIONS (Simulated for 20 Active Students with Personalised Academic Profiles)
+-- Satish Kumar (ID: 1) - CS Focus (Clean Code, Effective Java, OS)
 INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
 VALUES (1, 1, '2026-06-01', '2026-06-15', '2026-06-14', 'RETURNED');
-
 INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
 VALUES (3, 1, '2026-07-01', '2026-07-15', '2026-07-12', 'RETURNED');
-
 INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
-VALUES (4, 1, '2026-08-01', '2026-08-15', '2026-08-15', 'RETURNED');
+VALUES (5, 1, '2026-09-18', '2026-10-02', NULL, 'ISSUED');
 
+-- Bala Krishna (ID: 2) - AI & Data Science (Deep Learning, Transformers, Hands-On ML)
 INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
-VALUES (1, 1, '2026-08-20', '2026-09-04', NULL, 'ISSUED');
-
--- Member 2 (Bala Krishna): AI & Data Systems Focus
+VALUES (9, 2, '2026-06-10', '2026-06-24', '2026-06-22', 'RETURNED');
 INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
-VALUES (8, 2, '2026-06-10', '2026-06-25', '2026-06-22', 'RETURNED');
-
+VALUES (65, 2, '2026-07-15', '2026-07-29', '2026-07-28', 'RETURNED');
 INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
-VALUES (9, 2, '2026-07-05', '2026-07-20', '2026-07-18', 'RETURNED');
+VALUES (11, 2, '2026-09-20', '2026-10-04', NULL, 'ISSUED');
 
+-- Divya Reddy (ID: 3) - ECE Focus (CMOS VLSI, Microelectronics)
 INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
-VALUES (11, 2, '2026-08-02', '2026-08-16', '2026-08-14', 'RETURNED');
-
+VALUES (66, 3, '2026-06-05', '2026-06-19', '2026-06-18', 'RETURNED');
 INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
-VALUES (9, 2, '2026-08-25', '2026-09-08', NULL, 'ISSUED');
+VALUES (15, 3, '2026-08-10', '2026-08-24', NULL, 'OVERDUE');
 
--- Member 3 (Divya Reddy): ECE Focus
+-- Soumya Naidu (ID: 4) - Civil Engineering (Structural Analysis, Concrete Structures)
 INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
-VALUES (16, 3, '2026-06-15', '2026-06-30', '2026-06-28', 'RETURNED');
-
+VALUES (35, 4, '2026-06-12', '2026-06-26', '2026-06-25', 'RETURNED');
 INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
-VALUES (17, 3, '2026-07-10', '2026-07-24', '2026-07-20', 'RETURNED');
+VALUES (37, 4, '2026-09-15', '2026-09-29', NULL, 'ISSUED');
 
+-- Lokesh Reddy (ID: 5) - Mechanical Engineering (Thermodynamics, Robotics)
 INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
-VALUES (18, 3, '2026-08-15', '2026-08-30', NULL, 'OVERDUE');
-
--- Member 4 (Soumya Naidu): Civil Focus
+VALUES (25, 5, '2026-07-01', '2026-07-15', '2026-07-14', 'RETURNED');
 INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
-VALUES (36, 4, '2026-07-01', '2026-07-15', '2026-07-14', 'RETURNED');
+VALUES (32, 5, '2026-09-19', '2026-10-03', NULL, 'ISSUED');
 
+-- Ananya Sharma (ID: 7) - CS & Cloud Systems (Compilers, Cloud Native Patterns, SRE)
 INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
-VALUES (38, 4, '2026-08-01', '2026-08-15', '2026-08-15', 'RETURNED');
-
--- Member 5 (Lokesh Reddy): Mechanical Focus
+VALUES (13, 7, '2026-06-15', '2026-06-29', '2026-06-28', 'RETURNED');
 INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
-VALUES (26, 5, '2026-07-12', '2026-07-26', '2026-07-25', 'RETURNED');
-
+VALUES (14, 7, '2026-07-20', '2026-08-03', '2026-08-02', 'RETURNED');
 INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
-VALUES (28, 5, '2026-08-10', '2026-08-24', '2026-08-22', 'RETURNED');
+VALUES (64, 7, '2026-09-22', '2026-10-06', NULL, 'ISSUED');
+
+-- Jahnvi Rao (ID: 8) - Data Science (Deep Learning, Data-Intensive Applications)
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (9, 8, '2026-07-05', '2026-07-19', '2026-07-18', 'RETURNED');
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (8, 8, '2026-09-16', '2026-09-30', NULL, 'ISSUED');
+
+-- Sravya Murthy (ID: 9) - MBA (Financial Management, The Lean Startup)
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (53, 9, '2026-06-20', '2026-07-04', '2026-07-04', 'RETURNED');
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (55, 9, '2026-09-18', '2026-10-02', NULL, 'ISSUED');
+
+-- Spoorthi Varma (ID: 10) - IT (Algorithms CLRS, Discrete Mathematics)
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (4, 10, '2026-06-08', '2026-06-22', '2026-06-21', 'RETURNED');
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (49, 10, '2026-09-21', '2026-10-05', NULL, 'ISSUED');
+
+-- Aarav Patel (ID: 11) - Mechanical (Aerodynamics, Finite Element Procedures)
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (70, 11, '2026-07-10', '2026-07-24', '2026-07-24', 'RETURNED');
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (71, 11, '2026-09-22', '2026-10-06', NULL, 'ISSUED');
+
+-- Rohan Mukherjee (ID: 12) - CS (Transformers, Reinforcement Learning)
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (65, 12, '2026-06-14', '2026-06-28', '2026-06-27', 'RETURNED');
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (62, 12, '2026-09-19', '2026-10-03', NULL, 'ISSUED');
+
+-- Priya Nambiar (ID: 13) - ECE (Signals & Systems, Wireless Communications)
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (17, 13, '2026-06-18', '2026-07-02', '2026-07-01', 'RETURNED');
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (67, 13, '2026-09-17', '2026-10-01', NULL, 'ISSUED');
+
+-- Vikramaditya Singh (ID: 14) - Civil (Bridge Engineering, Earthquake Engineering)
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (72, 14, '2026-07-05', '2026-07-19', '2026-07-19', 'RETURNED');
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (73, 14, '2026-09-21', '2026-10-05', NULL, 'ISSUED');
+
+-- Sneha Kulkarni (ID: 15) - Data Science (Pattern Recognition, Sapiens)
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (61, 15, '2026-06-22', '2026-07-06', '2026-07-05', 'RETURNED');
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (100, 15, '2026-09-23', '2026-10-07', NULL, 'ISSUED');
+
+-- Tanvi Deshmukh (ID: 16) - Mech/Control (Mechatronics, Modern Control Engineering)
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (69, 16, '2026-06-28', '2026-07-12', '2026-07-11', 'RETURNED');
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (20, 16, '2026-09-20', '2026-10-04', NULL, 'ISSUED');
+
+-- Meera Iyer (ID: 18) - Sci-Fi / Space Classics (Dune, Dune Messiah, Foundation)
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (77, 18, '2026-07-01', '2026-07-15', '2026-07-15', 'RETURNED');
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (78, 18, '2026-07-20', '2026-08-03', '2026-08-03', 'RETURNED');
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (79, 18, '2026-09-22', '2026-10-06', NULL, 'ISSUED');
+
+-- Aditya Varma (ID: 19) - Indian Literature & Modern Classics (The Guide, Midnight's Children)
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (95, 19, '2026-06-15', '2026-06-29', '2026-06-28', 'RETURNED');
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (91, 19, '2026-09-21', '2026-10-05', NULL, 'ISSUED');
+
+-- Siddharth Nair (ID: 20) - MBA (Operations Research, Project Management)
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (57, 20, '2026-06-30', '2026-07-14', '2026-07-13', 'RETURNED');
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (56, 20, '2026-09-18', '2026-10-02', NULL, 'ISSUED');
+
+-- Ishaan Chatterjee (ID: 21) - Quantum & Cyberpunk (Quantum Computation, Neuromancer)
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (63, 21, '2026-07-05', '2026-07-19', '2026-07-18', 'RETURNED');
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (88, 21, '2026-09-23', '2026-10-07', NULL, 'ISSUED');
+
+-- Ritika Barua (ID: 32) - Sci-Fi Hard Fiction (The Martian, Project Hail Mary)
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (87, 32, '2026-07-12', '2026-07-26', '2026-07-25', 'RETURNED');
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (86, 32, '2026-09-20', '2026-10-04', NULL, 'ISSUED');
+
+-- Jagan Chowdhary (ID: 6) - Electrical (Electric Circuits, Power Electronics)
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (19, 6, '2026-06-15', '2026-06-29', '2026-07-06', 'RETURNED');
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (21, 6, '2026-09-18', '2026-10-02', NULL, 'ISSUED');
+
+-- Harpreet Kaur (ID: 17) - Electrical (Communication Systems, Antenna Theory)
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (24, 17, '2026-08-15', '2026-08-29', NULL, 'OVERDUE');
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (25, 17, '2026-07-01', '2026-07-15', '2026-07-14', 'RETURNED');
+
+-- Riya Sengupta (ID: 22) - Data Science (Deep Learning, Data-Intensive Applications)
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (9, 22, '2026-06-20', '2026-07-04', '2026-07-09', 'RETURNED');
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (8, 22, '2026-09-20', '2026-10-04', NULL, 'ISSUED');
+
+-- Arjun Pillai (ID: 23) - Electrical (Embedded Systems, DSP)
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (23, 23, '2026-07-02', '2026-07-16', '2026-07-15', 'RETURNED');
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (18, 23, '2026-09-19', '2026-10-03', NULL, 'ISSUED');
+
+-- Kavya Sundaram (ID: 24) - Civil (Surveying and Levelling, Transportation)
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (39, 24, '2026-06-10', '2026-06-24', '2026-07-04', 'RETURNED');
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (40, 24, '2026-09-15', '2026-09-29', NULL, 'ISSUED');
+
+-- Devendra Rathore (ID: 25) - Mechanical (IC Engines, Manufacturing Technology)
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (34, 25, '2026-07-05', '2026-07-19', '2026-07-18', 'RETURNED');
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (35, 25, '2026-09-21', '2026-10-05', NULL, 'ISSUED');
+
+-- Pooja Hegde (ID: 26) - IT (Computer Networks, Database Systems)
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (6, 26, '2026-06-18', '2026-07-02', '2026-07-10', 'RETURNED');
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (7, 26, '2026-09-17', '2026-10-01', NULL, 'ISSUED');
+
+-- Nikhil Joshi (ID: 27) - CSE (Computer Systems, Design Patterns)
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (12, 27, '2026-07-10', '2026-07-24', '2026-07-23', 'RETURNED');
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (2, 27, '2026-09-22', '2026-10-06', NULL, 'ISSUED');
+
+-- Neha Bhattacharya (ID: 28) - AI & Robotics (Artificial Intelligence AIMA, Reinforcement Learning)
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (10, 28, '2026-06-25', '2026-07-09', '2026-07-15', 'RETURNED');
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (62, 28, '2026-09-18', '2026-10-02', NULL, 'ISSUED');
+
+-- Chirag Mehta (ID: 29) - MBA (Essentials of Management, Strategic Management)
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (52, 29, '2026-07-08', '2026-07-22', '2026-07-21', 'RETURNED');
+INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status)
+VALUES (60, 29, '2026-09-20', '2026-10-04', NULL, 'ISSUED');
 
 
--- 4. SEED FINES
-INSERT INTO fines (transaction_id, member_id, amount, status, payment_date, payment_method) 
-VALUES (11, 3, 10.00, 'UNPAID', NULL, NULL);
+-- 4. SEED FINES (IN INR WITH REALISTIC UNIVERSITY REASONS & LATE SUBMISSIONS)
+INSERT INTO fines (transaction_id, member_id, amount, reason, status, payment_date, payment_method) 
+VALUES (8, 3, 70.00, 'Overdue Book Return (14 Days Overdue - Microelectronic Circuits)', 'UNPAID', NULL, NULL);
 
-INSERT INTO fines (transaction_id, member_id, amount, status, payment_date, payment_method) 
-VALUES (2, 1, 4.50, 'PAID', '2026-08-20', 'CARD');
+INSERT INTO fines (transaction_id, member_id, amount, reason, status, payment_date, payment_method) 
+VALUES (14, 7, 150.00, 'Damaged Textbook - Water damaged pages on Cloud Native Patterns', 'UNPAID', NULL, NULL);
 
-INSERT INTO fines (transaction_id, member_id, amount, status, payment_date, payment_method) 
-VALUES (8, 2, 2.00, 'PAID', '2026-08-15', 'UPI');
+INSERT INTO fines (transaction_id, member_id, amount, reason, status, payment_date, payment_method) 
+VALUES (16, 8, 100.00, 'Torn / Missing Index Pages in Deep Learning', 'PAID', '2026-09-10', 'UPI');
+
+INSERT INTO fines (transaction_id, member_id, amount, reason, status, payment_date, payment_method) 
+VALUES (22, 11, 50.00, 'Defaced Book - Heavy Pen/Highlighter Markings in Aerodynamics', 'UNPAID', NULL, NULL);
+
+INSERT INTO fines (transaction_id, member_id, amount, reason, status, payment_date, payment_method) 
+VALUES (28, 14, 80.00, 'Late Return of High-Demand Reference Material (Bridge Engineering)', 'PAID', '2026-09-15', 'CARD');
+
+INSERT INTO fines (transaction_id, member_id, amount, reason, status, payment_date, payment_method) 
+VALUES (34, 18, 35.00, 'Late Return Penalty - Dune (Special Illustrated Edition)', 'UNPAID', NULL, NULL);
+
+INSERT INTO fines (transaction_id, member_id, amount, reason, status, payment_date, payment_method) 
+VALUES (NULL, 20, 60.00, 'Lost Library Barcode Tag Replacement Fee', 'PAID', '2026-09-12', 'CASH');
+
+INSERT INTO fines (transaction_id, member_id, amount, reason, status, payment_date, payment_method) 
+VALUES (NULL, 6, 35.00, 'Late submission - 7 days overdue return on Electric Circuits', 'UNPAID', NULL, NULL);
+
+INSERT INTO fines (transaction_id, member_id, amount, reason, status, payment_date, payment_method) 
+VALUES (NULL, 17, 45.00, 'Overdue fine - Late submission pending on Communication Systems', 'UNPAID', NULL, NULL);
+
+INSERT INTO fines (transaction_id, member_id, amount, reason, status, payment_date, payment_method) 
+VALUES (NULL, 22, 25.00, 'Late submission fee - 5 days overdue return on Deep Learning', 'PAID', '2026-07-10', 'UPI');
+
+INSERT INTO fines (transaction_id, member_id, amount, reason, status, payment_date, payment_method) 
+VALUES (NULL, 24, 50.00, 'Late submission penalty - 10 days overdue on Surveying and Levelling', 'UNPAID', NULL, NULL);
+
+INSERT INTO fines (transaction_id, member_id, amount, reason, status, payment_date, payment_method) 
+VALUES (NULL, 26, 40.00, 'Late submission & overdue fine - 8 days late return on Computer Networks', 'PAID', '2026-07-11', 'CARD');
+
+INSERT INTO fines (transaction_id, member_id, amount, reason, status, payment_date, payment_method) 
+VALUES (NULL, 28, 30.00, 'Late submission fine - 6 days late on Artificial Intelligence', 'UNPAID', NULL, NULL);
 
 
 -- 5. SEED RESERVATIONS (Waitlist)
@@ -456,3 +982,133 @@ VALUES ('neural networks deep learning', 'KEYWORD', 3, 0, 'None', CURRENT_TIMEST
 
 INSERT INTO search_eval_logs (query, search_mode, execution_time_ms, results_count, top_matched_book, created_at)
 VALUES ('thermodynamics cengel heat transfer', 'SEMANTIC', 7, 2, 'Thermodynamics: An Engineering Approach', CURRENT_TIMESTAMP());
+
+
+-- ==============================================================================
+-- 7. SEED USERS & CREDENTIALS (SPRING SECURITY BCRYPT-HASHED PASSWORDS)
+-- Admin: admin / admin123
+-- Students: satish, balakrishna, divya, etc. / student123
+-- ==============================================================================
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('admin', 'LIBRARY@admin.com', '$2a$12$cO7Pn3F8RRjOa9sPWMyeCOYoQlwOOdJf0TA4bslmalWIMJUMHIq76', 'ROLE_ADMIN', 'Chief Librarian', 'ADM', 'Central Library Administration', NULL, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('satish', 'satish@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Satish Kumar', 'SK', 'Computer Science & Engineering', 1, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('balakrishna', 'balakrishna@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Bala Krishna', 'BK', 'AI & Data Engineering', 2, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('divya', 'divyareddy@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Divya Reddy', 'DR', 'Electronics & Communication', 3, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('soumya', 'soumya@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Soumya Naidu', 'SN', 'Civil Engineering', 4, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('lokesh', 'lokesh@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Lokesh Reddy', 'LR', 'Mechanical Engineering', 5, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('jagan', 'jagan@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Jagan Chowdhary', 'JC', 'Electrical & Electronics', 6, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('ananya', 'ananya@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Ananya Sharma', 'AS', 'Computer Science & Engineering', 7, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('jahnvi', 'jahnvi@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Jahnvi Rao', 'JR', 'Data Science & Analytics', 8, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('sravya', 'sravya@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Sravya Murthy', 'SM', 'Management Studies (MBA)', 9, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('spoorthi', 'spoorthi@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Spoorthi Varma', 'SV', 'Information Technology', 10, true);
+
+-- Additional 30 Student Users (Password: student123)
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('aarav', 'aarav.patel@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Aarav Patel', 'AP', 'Mechanical Engineering', 11, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('rohan', 'rohan.mukherjee@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Rohan Mukherjee', 'RM', 'Computer Science & Engineering', 12, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('priya', 'priya.nambiar@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Priya Nambiar', 'PN', 'Electronics & Communication', 13, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('vikramaditya', 'vikram.singh@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Vikramaditya Singh', 'VS', 'Civil Engineering', 14, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('sneha', 'sneha.kulkarni@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Sneha Kulkarni', 'SK', 'Data Science & Analytics', 15, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('tanvi', 'tanvi.deshmukh@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Tanvi Deshmukh', 'TD', 'AI & Robotics', 16, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('harpreet', 'harpreet.kaur@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Harpreet Kaur', 'HK', 'Electrical & Electronics', 17, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('meera', 'meera.iyer@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Meera Iyer', 'MI', 'Computer Science & Engineering', 18, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('aditya', 'aditya.varma@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Aditya Varma', 'AV', 'Mechanical Engineering', 19, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('siddharth', 'siddharth.nair@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Siddharth Nair', 'SN', 'Management Studies (MBA)', 20, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('ishaan', 'ishaan.chatterjee@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Ishaan Chatterjee', 'IC', 'Computer Science & Engineering', 21, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('riya', 'riya.sengupta@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Riya Sengupta', 'RS', 'Data Science & Analytics', 22, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('arjun', 'arjun.pillai@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Arjun Pillai', 'AP', 'Electrical & Electronics', 23, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('kavya', 'kavya.sundaram@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Kavya Sundaram', 'KS', 'Civil Engineering', 24, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('devendra', 'devendra.rathore@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Devendra Rathore', 'DR', 'Mechanical Engineering', 25, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('pooja', 'pooja.hegde@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Pooja Hegde', 'PH', 'Information Technology', 26, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('nikhil', 'nikhil.joshi@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Nikhil Joshi', 'NJ', 'Computer Science & Engineering', 27, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('neha', 'neha.bhattacharya@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Neha Bhattacharya', 'NB', 'AI & Robotics', 28, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('chirag', 'chirag.mehta@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Chirag Mehta', 'CM', 'Management Studies (MBA)', 29, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('shalini', 'shalini.menon@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Shalini Menon', 'SM', 'Electronics & Communication', 30, false);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('abhimanyu', 'abhimanyu.das@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Abhimanyu Das', 'AD', 'Civil Engineering', 31, false);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('ritika', 'ritika.barua@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Ritika Barua', 'RB', 'Information Technology', 32, true);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('gurpreet', 'gurpreet.singh@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Gurpreet Singh', 'GS', 'Mechanical Engineering', 33, false);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('pranav', 'pranav.venkatesh@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Pranav Venkatesh', 'PV', 'Computer Science & Engineering', 34, false);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('swati', 'swati.mahajan@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Swati Mahajan', 'SM', 'Management Studies (MBA)', 35, false);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('tenzin', 'tenzin.norbu@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Tenzin Norbu', 'TN', 'Electrical & Electronics', 36, false);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('rajeshwari', 'rajeshwari.s@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Rajeshwari Somayaji', 'RS', 'AI & Data Engineering', 37, false);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('mayank', 'mayank.tripathi@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Mayank Tripathi', 'MT', 'Civil Engineering', 38, false);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('deepali', 'deepali.bora@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Deepali Bora', 'DB', 'Computer Science & Engineering', 39, false);
+
+INSERT INTO users (username, email, password, role, name, avatar, department, member_id, enabled)
+VALUES ('farhan', 'farhan.qureshi@sice.edu.in', '$2a$12$hxmh0DN7wl9GeD18f7RqY.oUt2I4NAJdu1k45M/GvmGlElPu7Aj5G', 'ROLE_STUDENT', 'Farhan Qureshi', 'FQ', 'Mechanical Engineering', 40, false);

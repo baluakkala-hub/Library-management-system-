@@ -62,4 +62,12 @@ public class MemberController {
         memberService.deleteMember(id);
         return ResponseEntity.ok(ApiResponse.ok(null, "Member deleted successfully"));
     }
+
+    @PatchMapping("/{id}/toggle-status")
+    @Operation(summary = "Toggle member active/inactive status and matching user login access")
+    public ResponseEntity<ApiResponse<MemberResponseDTO>> toggleMemberStatus(@PathVariable Long id) {
+        MemberResponseDTO updated = memberService.toggleMemberStatus(id);
+        String msg = "Member ID " + (updated.getStatus().equals("ACTIVE") ? "reactivated successfully" : "deactivated");
+        return ResponseEntity.ok(ApiResponse.ok(updated, msg));
+    }
 }

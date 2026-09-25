@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { ApiResponse } from '../../shared/models/api-response.model';
-import { Fine, PayFineRequest } from '../../shared/models/fine.model';
+import { Fine, PayFineRequest, CreateFineRequest } from '../../shared/models/fine.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +21,10 @@ export class FineService {
 
   getFinesByMember(memberId: number): Observable<Fine[]> {
     return this.http.get<ApiResponse<Fine[]>>(`${this.apiUrl}/member/${memberId}`).pipe(map(res => res.data));
+  }
+
+  createFine(request: CreateFineRequest): Observable<Fine> {
+    return this.http.post<ApiResponse<Fine>>(this.apiUrl, request).pipe(map(res => res.data));
   }
 
   payFine(fineId: number, request: PayFineRequest): Observable<Fine> {

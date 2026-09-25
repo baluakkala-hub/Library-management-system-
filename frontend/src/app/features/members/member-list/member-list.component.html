@@ -52,11 +52,22 @@
               } @else if (member.status === 'SUSPENDED') {
                 <span class="badge badge-danger">SUSPENDED</span>
               } @else {
-                <span class="badge badge-warning">INACTIVE</span>
+                <span class="badge badge-warning" style="background: rgba(239, 68, 68, 0.12); color: #dc2626; border: 1px solid rgba(239, 68, 68, 0.25); font-size: 11px;">
+                  🚫 INACTIVE (ID Deactivated)
+                </span>
               }
             </td>
             <td>{{ member.membershipDate | date:'mediumDate' }}</td>
             <td class="action-buttons">
+              @if (member.status === 'INACTIVE') {
+                <button class="btn btn-sm" style="background: #10b981; color: white; padding: 4px 9px; font-size: 11.5px; font-weight: 600;" (click)="toggleMemberStatus(member)">
+                  ⚡ Reactivate ID
+                </button>
+              } @else if (member.status === 'ACTIVE') {
+                <button class="btn btn-sm" style="background: #f8fafc; color: #64748b; border: 1px solid #cbd5e1; padding: 4px 9px; font-size: 11.5px;" (click)="toggleMemberStatus(member)">
+                  Deactivate ID
+                </button>
+              }
               <button class="btn btn-secondary btn-sm" (click)="openHistoryModal(member)">History</button>
               <button class="btn btn-secondary btn-sm" (click)="openEditModal(member)">Edit</button>
               <button class="btn btn-danger btn-sm" (click)="deleteMember(member)">Delete</button>
@@ -146,7 +157,7 @@
               <tbody>
                 @for (fine of memberFines; track fine.id) {
                   <tr>
-                    <td><strong>${{ fine.amount | number:'1.2-2' }}</strong></td>
+                    <td><strong>₹{{ fine.amount | number:'1.2-2' }}</strong></td>
                     <td>
                       @if (fine.status === 'UNPAID') {
                         <span class="badge badge-danger">UNPAID</span>

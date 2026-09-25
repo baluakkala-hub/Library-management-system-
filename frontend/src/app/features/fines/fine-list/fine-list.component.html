@@ -2,7 +2,7 @@
   <div>
     @if (authService.isAdmin()) {
       <h1>Fines & Settlements</h1>
-      <p class="subtitle">Track overdue loan penalties, member dues, and process payments</p>
+      <p class="subtitle">Track overdue loan penalties, member dues, assess fines, and process payments</p>
     } @else {
       <h1>My Overdue Fines & Dues</h1>
       <p class="subtitle">Review your individual loan charges, pay overdue fees, or clear holds before examinations</p>
@@ -11,7 +11,7 @@
 </div>
 
 <div class="card">
-  <div class="toolbar">
+  <div class="toolbar" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
     <div class="filter-tabs">
       <button 
         class="tab-btn" 
@@ -26,6 +26,16 @@
         All History
       </button>
     </div>
+
+    @if (authService.isAdmin()) {
+      <button 
+        type="button" 
+        class="btn btn-primary" 
+        (click)="openAddFineModal()"
+        style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600;">
+        <span>➕</span> Issue Fine to Student
+      </button>
+    }
   </div>
 
   @if (loading) {
@@ -40,6 +50,7 @@
         <tr>
           <th>Fine ID</th>
           <th>Borrower</th>
+          <th>Reason / Violation</th>
           <th>Book Title</th>
           <th>Amount</th>
           <th>Status</th>
@@ -57,13 +68,18 @@
               <div class="sub-text">{{ fine.memberEmail }}</div>
             </td>
             <td>
-              {{ fine.bookTitle || 'Transaction #' + fine.transactionId }}
+              <span class="fine-reason-tag" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 3px 8px; border-radius: 4px; font-size: 11.5px; font-weight: 600; border: 1px solid rgba(239, 68, 68, 0.2);">
+                {{ fine.reason || 'Overdue Book Return' }}
+              </span>
+            </td>
+            <td>
+              {{ fine.bookTitle || (fine.transactionId ? 'Transaction #' + fine.transactionId : 'Administrative Assessment') }}
               @if (fine.bookIsbn) {
                 <div class="sub-text">{{ fine.bookIsbn }}</div>
               }
             </td>
             <td>
-              <strong [class.fine-text]="fine.status === 'UNPAID'">${{ fine.amount | number:'1.2-2' }}</strong>
+              <strong [class.fine-text]="fine.status === 'UNPAID'">₹{{ fine.amount | number:'1.2-2' }}</strong>
             </td>
             <td>
               @if (fine.status === 'UNPAID') {
@@ -112,12 +128,100 @@
   </div>
 </div>
 
+<!-- Modal 1: Admin Issue Fine Modal -->
+@if (showAddFineModal) {
+  <div class="modal-overlay" (click)="closeAddFineModal()">
+    <div class="modal-card animate-slide-up" (click)="$event.stopPropagation()" style="max-width: 520px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 20px;">⚖️</span>
+          <h3 style="margin: 0;">Issue Fine to Student</h3>
+        </div>
+        <button class="close-btn" (click)="closeAddFineModal()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <p style="font-size: 13px; color: var(--text-muted); margin-top: 0; margin-bottom: 16px;">
+          Assess a library violation penalty. An automated notification will be emailed to the student.
+        </p>
+
+        @if (addFineError) {
+          <div style="background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; padding: 10px 14px; border-radius: 6px; font-size: 13px; margin-bottom: 14px;">
+            ⚠️ {{ addFineError }}
+          </div>
+        }
+
+        <!-- Select Member -->
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-label" style="font-weight: 600; display: block; margin-bottom: 6px;">Select Student / Member *</label>
+          <select class="form-control" [(ngModel)]="selectedMemberId" style="width: 100%; padding: 9px; border-radius: 6px;">
+            @for (mem of members; track mem.id) {
+              <option [value]="mem.id">
+                {{ mem.name }} ({{ mem.email }})
+              </option>
+            }
+          </select>
+        </div>
+
+        <!-- Fine Amount -->
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-label" style="font-weight: 600; display: block; margin-bottom: 6px;">Fine Amount (₹ INR) *</label>
+          <input 
+            type="number" 
+            class="form-control" 
+            [(ngModel)]="fineAmount" 
+            min="1.00" 
+            step="5.00" 
+            placeholder="e.g. 50.00"
+            style="width: 100%; padding: 9px; border-radius: 6px;"
+          />
+        </div>
+
+        <!-- Reason Dropdown -->
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-label" style="font-weight: 600; display: block; margin-bottom: 6px;">Violation Type / Reason *</label>
+          <select class="form-control" [(ngModel)]="fineReason" style="width: 100%; padding: 9px; border-radius: 6px;">
+            @for (reason of PRESET_REASONS; track reason) {
+              <option [value]="reason">{{ reason }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- Additional Notes -->
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-label" style="font-weight: 600; display: block; margin-bottom: 6px;">Additional Specific Notes (Optional)</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            [(ngModel)]="customReasonNotes" 
+            placeholder="e.g. Book: Clean Code, 5 pages water marked"
+            style="width: 100%; padding: 9px; border-radius: 6px;"
+          />
+        </div>
+      </div>
+
+      <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 10px; padding: 14px 20px; border-top: 1px solid var(--border-color);">
+        <button type="button" class="btn btn-secondary" (click)="closeAddFineModal()">Cancel</button>
+        <button 
+          type="button" 
+          class="btn btn-primary" 
+          [disabled]="submittingFine" 
+          (click)="submitAddFine()"
+          style="display: inline-flex; align-items: center; gap: 6px;">
+          <span>📧</span> {{ submittingFine ? 'Issuing & Emailing...' : 'Issue Fine & Email Student' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Modal 2: Pay Fine Modal -->
 @if (showPayModal && selectedFine) {
-  <div class="modal-overlay">
-    <div class="modal-card">
+  <div class="modal-overlay" (click)="closePayModal()">
+    <div class="modal-card animate-slide-up" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h3>Settle Outstanding Fine</h3>
-        <button class="close-btn" (click)="closePayModal()">Close</button>
+        <button class="close-btn" (click)="closePayModal()">✕</button>
       </div>
 
       <div class="modal-body">
@@ -126,9 +230,15 @@
             <span>Member:</span>
             <strong>{{ selectedFine.memberName }}</strong>
           </div>
+          @if (selectedFine.reason) {
+            <div class="summary-row">
+              <span>Reason:</span>
+              <span style="color: #ef4444; font-weight: 600;">{{ selectedFine.reason }}</span>
+            </div>
+          }
           <div class="summary-row">
             <span>Total Amount Due:</span>
-            <strong class="fine-text">${{ selectedFine.amount | number:'1.2-2' }}</strong>
+            <strong class="fine-text">₹{{ selectedFine.amount | number:'1.2-2' }}</strong>
           </div>
         </div>
 

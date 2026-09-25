@@ -21,6 +21,7 @@ public class FineMapper {
                 .memberName(fine.getMember() != null ? fine.getMember().getName() : null)
                 .memberEmail(fine.getMember() != null ? fine.getMember().getEmail() : null)
                 .amount(fine.getAmount())
+                .reason(fine.getReason())
                 .status(fine.getStatus())
                 .paymentDate(fine.getPaymentDate())
                 .paymentMethod(fine.getPaymentMethod())

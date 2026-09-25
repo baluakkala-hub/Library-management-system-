@@ -58,13 +58,13 @@ public class ResearchEvaluationService {
     @Transactional(readOnly = true)
     public void exportBenchmarkCsv(HttpServletResponse response) throws IOException {
         response.setContentType("text/csv");
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"library_system_metrics.csv\"");
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"ieee_lms_evaluation_metrics.csv\"");
 
         PrintWriter writer = response.getWriter();
         ResearchBenchmarkDTO b = getBenchmarkSummary();
 
-        writer.println("# LIBRARY SYSTEM PERFORMANCE BENCHMARK DATASET");
-        writer.println("# Project: Library Management System");
+        writer.println("# IEEE CONFERENCE EVALUATION BENCHMARK DATASET");
+        writer.println("# Project: AI-Enhanced Smart Library Management System");
         writer.println("# Metric,Measured Value,Unit,Theoretical Bound / Target");
         writer.printf("Average Keyword Search Latency,%.2f,ms,< 10 ms%n", b.getAverageKeywordLatencyMs());
         writer.printf("Average Semantic Search Latency,%.2f,ms,< 25 ms%n", b.getAverageSemanticLatencyMs());

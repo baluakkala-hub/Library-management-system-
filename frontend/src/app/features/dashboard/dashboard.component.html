@@ -207,7 +207,7 @@
       <div class="welcome-header-card">
         <div class="welcome-text-col">
           <h1 class="greeting-heading">Administrator Console 🛡️</h1>
-          <p class="greeting-department">Library Management System • Inventory & Circulation</p>
+          <p class="greeting-department">Central University Library • System Governance & Stock Control</p>
         </div>
         <div class="welcome-stat-pill">
           <span class="stat-number">{{ stats.totalBooks || 248 }}</span>
@@ -243,7 +243,7 @@
         <div class="metric-card">
           <span class="metric-icon">💳</span>
           <div class="metric-info">
-            <span class="metric-val">${{ (stats.totalUnpaidFines || 0) | number:'1.2-2' }}</span>
+            <span class="metric-val">₹{{ (stats.totalUnpaidFines || 0) | number:'1.2-2' }}</span>
             <span class="metric-name">Unpaid Fines</span>
           </div>
         </div>
@@ -287,6 +287,8 @@
           <a routerLink="/members" class="btn-card-action">Manage Members →</a>
         </div>
       </div>
+
+
     }
   }
 </div>
@@ -300,7 +302,7 @@
           <span class="modal-icon">🏛️</span>
           <div>
             <h3>Library Help & Circulation Desk</h3>
-            <p class="modal-sub">Contact the library administrative team</p>
+            <p class="modal-sub">Contact the central university library administrative team</p>
           </div>
         </div>
         <button class="close-btn" (click)="closeContact()">✕</button>

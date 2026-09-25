@@ -16,12 +16,15 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.library.lms.repository.UserRepository;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
     private final TransactionRepository transactionRepository;
+    private final UserRepository userRepository;
     private final MemberMapper memberMapper;
     @Transactional(readOnly = true)
     public List<MemberResponseDTO> getAllMembers() {
@@ -77,5 +80,28 @@ public class MemberService {
         }
 
         memberRepository.delete(member);
+    }
+
+    @Transactional
+    public MemberResponseDTO toggleMemberStatus(Long id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Member not found with id: " + id));
+
+        if (member.getStatus() == com.library.lms.entity.MemberStatus.ACTIVE) {
+            member.setStatus(com.library.lms.entity.MemberStatus.INACTIVE);
+            userRepository.findByMemberId(id).ifPresent(u -> {
+                u.setEnabled(false);
+                userRepository.save(u);
+            });
+        } else {
+            member.setStatus(com.library.lms.entity.MemberStatus.ACTIVE);
+            userRepository.findByMemberId(id).ifPresent(u -> {
+                u.setEnabled(true);
+                userRepository.save(u);
+            });
+        }
+
+        Member updated = memberRepository.save(member);
+        return memberMapper.toResponseDTO(updated);
     }
 }

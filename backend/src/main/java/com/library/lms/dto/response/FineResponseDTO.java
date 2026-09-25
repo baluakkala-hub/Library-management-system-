@@ -23,6 +23,7 @@ public class FineResponseDTO {
     private String memberName;
     private String memberEmail;
     private BigDecimal amount;
+    private String reason;
     private FineStatus status;
     private LocalDate paymentDate;
     private PaymentMethod paymentMethod;

@@ -96,9 +96,9 @@ export class LendingListComponent implements OnInit {
       this.lendingService.returnBook(transaction.id).subscribe({
         next: (updated) => {
           if (updated.fineAmount > 0) {
-            alert(`Book returned. An overdue fine of $${updated.fineAmount.toFixed(2)} has been recorded.`);
+            alert(`Book returned. An overdue fine of ₹${updated.fineAmount.toFixed(2)} has been recorded.`);
           } else {
-            alert('Book returned on time with $0 fine.');
+            alert('Book returned on time with ₹0 fine.');
           }
           this.loadData();
         }

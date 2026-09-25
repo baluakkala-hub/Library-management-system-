@@ -124,4 +124,21 @@ export class MemberListComponent implements OnInit {
     this.memberFines = [];
     this.cdr.detectChanges();
   }
+
+  toggleMemberStatus(member: Member): void {
+    const isActivating = member.status !== 'ACTIVE';
+    const actionName = isActivating ? 'Reactivate student ID and restore portal login for' : 'Deactivate student ID and suspend portal login for';
+    if (confirm(`${actionName} "${member.name}"?`)) {
+      this.memberService.toggleMemberStatus(member.id!).subscribe({
+        next: (updated) => {
+          member.status = updated.status;
+          alert(`✅ Student ID for ${member.name} is now ${updated.status}.`);
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          alert(`Failed to update status: ${err.error?.message || err.message}`);
+        }
+      });
+    }
+  }
 }

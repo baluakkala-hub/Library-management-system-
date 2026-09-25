@@ -10,6 +10,7 @@ export interface Fine {
   memberName: string;
   memberEmail: string;
   amount: number;
+  reason?: string;
   status: FineStatus;
   paymentDate?: string;
   paymentMethod?: PaymentMethod;
@@ -19,4 +20,11 @@ export interface Fine {
 
 export interface PayFineRequest {
   paymentMethod: PaymentMethod;
+}
+
+export interface CreateFineRequest {
+  memberId: number;
+  amount: number;
+  reason: string;
+  transactionId?: number;
 }

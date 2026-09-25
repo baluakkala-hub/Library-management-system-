@@ -148,9 +148,9 @@
               </td>
               <td>
                 @if (tx.fineAmount > 0) {
-                  <strong class="fine-text">${{ tx.fineAmount | number:'1.2-2' }}</strong>
+                  <strong class="fine-text">₹{{ tx.fineAmount | number:'1.2-2' }}</strong>
                 } @else {
-                  <span class="text-muted">$0.00</span>
+                  <span class="text-muted">₹0.00</span>
                 }
               </td>
               <td>

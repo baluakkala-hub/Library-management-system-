@@ -31,4 +31,8 @@ export class MemberService {
   deleteMember(id: number): Observable<void> {
     return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${id}`).pipe(map(() => undefined));
   }
+
+  toggleMemberStatus(id: number): Observable<Member> {
+    return this.http.patch<ApiResponse<Member>>(`${this.apiUrl}/${id}/toggle-status`, {}).pipe(map(res => res.data));
+  }
 }

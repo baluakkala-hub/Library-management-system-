@@ -39,6 +39,14 @@ public class FineController {
         return ResponseEntity.ok(ApiResponse.ok(fineService.getFinesByMember(memberId)));
     }
 
+    @PostMapping
+    @Operation(summary = "Assess or issue a manual fine to a student")
+    public ResponseEntity<ApiResponse<FineResponseDTO>> createFine(
+            @Valid @RequestBody com.library.lms.dto.request.CreateFineRequestDTO request) {
+        FineResponseDTO newFine = fineService.createFine(request);
+        return ResponseEntity.ok(ApiResponse.ok(newFine, "Fine issued successfully and notification dispatched"));
+    }
+
     @PostMapping("/{id}/pay")
     @Operation(summary = "Settle / pay an outstanding fine")
     public ResponseEntity<ApiResponse<FineResponseDTO>> payFine(

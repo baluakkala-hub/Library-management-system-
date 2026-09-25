@@ -122,7 +122,7 @@ public class SemanticSearchService {
 
         long elapsed = System.currentTimeMillis() - startTime;
 
-        // Log for search performance evaluation
+        // Log for IEEE research evaluation
         logRepository.save(SearchEvaluationLog.builder()
                 .query(rawQuery)
                 .searchMode("SEMANTIC")
