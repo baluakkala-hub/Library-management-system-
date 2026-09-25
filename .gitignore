@@ -13,6 +13,11 @@ desktop.ini
 # Logs
 *.log
 
+# Scripts & Local Drafts
+*.bat
+*.docx
+UniLibrary_MiniProject_Report_Draft.*
+
 # Build & Dependencies
 **/target/
 **/dist/
