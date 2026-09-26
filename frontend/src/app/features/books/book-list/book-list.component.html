@@ -1,248 +1,312 @@
-<div class="page-header">
-  <div>
-    <h1>{{ authService.isAdmin() ? 'Books Inventory & Stock Governance' : 'Books Catalog & Physical Shelf Locator' }}</h1>
-    <p class="subtitle">{{ authService.isAdmin() ? 'Manage institutional textbook inventory, adjust copies, and update physical shelf coordinates (Aisles 1–6)' : 'Explore university textbooks, locate physical aisles and shelf racks, and check borrowing availability' }}</p>
-  </div>
-  @if (authService.isAdmin()) {
-    <button class="btn btn-primary" (click)="openAddModal()">
-      + Add New Book
-    </button>
-  }
-</div>
-
-<div class="card">
-  <div class="toolbar">
-    <div class="search-box">
-      <input 
-        type="text" 
-        class="form-control" 
-        [placeholder]="authService.isAdmin() ? 'Search inventory by Title, Author, Category, or ISBN...' : (aiSearchMode ? 'Enter conversational topic (e.g. neural networks, clean code, distributed)...' : 'Search by Title, Author, Category, or ISBN...')" 
-        [(ngModel)]="searchQuery" 
-        (keyup.enter)="onSearch()"
-      />
+<div class="book-catalog-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">{{ authService.isAdmin() ? 'Book Inventory & Shelf Catalog' : 'Library Catalog' }}</h1>
+      <p class="subtitle">
+        {{ authService.isAdmin() ? 'Manage institutional stock, copy allocation, and shelf coordinates across Aisles 1–8.' : 'Explore 100 university textbooks and classic literature. Check physical shelf coordinates and real-time availability.' }}
+      </p>
     </div>
-    <button class="btn btn-secondary" (click)="onSearch()">Search</button>
-
-    <!-- AI Search Mode Toggle: Rendered exclusively for Students -->
-    @if (authService.isStudent()) {
-      <button 
-        type="button" 
-        class="btn" 
-        [ngClass]="aiSearchMode ? 'btn-ai-active' : 'btn-outline'" 
-        (click)="toggleAiSearchMode()"
-        title="Toggle between AI Semantic NLP search and traditional keyword substring search"
-      >
-        {{ aiSearchMode ? '✨ AI Semantic: ON' : '🔍 AI Mode: OFF' }}
+    @if (authService.isAdmin()) {
+      <button class="btn btn-primary" (click)="openAddModal()">
+        + Add Book
       </button>
     }
-
-    @if (searchQuery) {
-      <button class="btn btn-outline btn-sm" (click)="clearSearchFilter()">Clear</button>
-    }
   </div>
 
-  <!-- Genre & Subject Category Filter Chips -->
-  <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; padding: 4px 0;">
-    <button type="button" class="btn btn-sm" [ngClass]="!searchQuery ? 'btn-primary' : 'btn-outline'" (click)="filterByCategory('')">
-      All (100 Books)
-    </button>
-    <button type="button" class="btn btn-sm" [ngClass]="searchQuery === 'Novels' ? 'btn-primary' : 'btn-outline'" (click)="filterByCategory('Novels')">
-      📖 Novels
-    </button>
-    <button type="button" class="btn btn-sm" [ngClass]="searchQuery === 'Computer Science' ? 'btn-primary' : 'btn-outline'" (click)="filterByCategory('Computer Science')">
-      💻 Computer Science
-    </button>
-    <button type="button" class="btn btn-sm" [ngClass]="searchQuery === 'Artificial Intelligence' ? 'btn-primary' : 'btn-outline'" (click)="filterByCategory('Artificial Intelligence')">
-      🤖 AI & ML
-    </button>
-    <button type="button" class="btn btn-sm" [ngClass]="searchQuery === 'Electrical Engineering' ? 'btn-primary' : 'btn-outline'" (click)="filterByCategory('Electrical Engineering')">
-      ⚡ Electrical & VLSI
-    </button>
-    <button type="button" class="btn btn-sm" [ngClass]="searchQuery === 'Mechanical Engineering' ? 'btn-primary' : 'btn-outline'" (click)="filterByCategory('Mechanical Engineering')">
-      ⚙️ Mechanical
-    </button>
-    <button type="button" class="btn btn-sm" [ngClass]="searchQuery === 'Civil Engineering' ? 'btn-primary' : 'btn-outline'" (click)="filterByCategory('Civil Engineering')">
-      🏗️ Civil
-    </button>
-    <button type="button" class="btn btn-sm" [ngClass]="searchQuery === 'Management' ? 'btn-primary' : 'btn-outline'" (click)="filterByCategory('Management')">
-      📈 Management
-    </button>
-  </div>
-
-  <!-- AI Query Intelligence Status Banner: Rendered exclusively for Students -->
-  @if (authService.isStudent() && aiSearchMode && searchQuery && !loading) {
-    <div class="ai-search-banner">
-      <div class="ai-banner-left">
-        <span class="ai-icon">✨</span>
-        <div>
-          <strong>AI Semantic Search Active for: "{{ searchQuery }}"</strong>
-          <p>Concept expansion applied to categories, topics, and descriptions. Ranked by cosine vector similarity.</p>
-        </div>
+  <!-- Search & Filter Controls -->
+  <div class="catalog-controls">
+    <div class="search-bar-row">
+      <div class="search-input-wrapper">
+        <span class="search-icon">🔍</span>
+        <input 
+          type="text" 
+          class="search-input-field" 
+          [placeholder]="authService.isAdmin() ? 'Search by title, author, category, or ISBN...' : (aiSearchMode ? 'Describe what you want to learn (e.g. distributed systems, neural networks)...' : 'Search by title, author, or category...')" 
+          [(ngModel)]="searchQuery" 
+          (keyup.enter)="onSearch()"
+        />
+        @if (searchQuery) {
+          <button type="button" class="clear-search-btn" (click)="clearSearchFilter()">✕</button>
+        }
       </div>
-      <div class="ai-banner-right">
-        <span class="badge badge-primary">{{ books.length }} Conceptual Matches</span>
-        <button class="btn-link-white" (click)="clearSearchFilter()">Reset to Default</button>
+
+      <button type="button" class="btn btn-secondary" (click)="onSearch()">
+        Search
+      </button>
+
+      @if (authService.isStudent()) {
+        <button 
+          type="button" 
+          class="btn" 
+          [ngClass]="aiSearchMode ? 'btn-primary' : 'btn-secondary'" 
+          (click)="toggleAiSearchMode()"
+        >
+          {{ aiSearchMode ? 'AI Search: On' : 'AI Search' }}
+        </button>
+      }
+
+      <!-- View Switcher -->
+      <div class="view-toggle-group">
+        <button 
+          type="button" 
+          class="toggle-btn" 
+          [class.active]="viewMode === 'cards'" 
+          (click)="viewMode = 'cards'"
+          title="Grid view"
+        >
+          Grid
+        </button>
+        <button 
+          type="button" 
+          class="toggle-btn" 
+          [class.active]="viewMode === 'table'" 
+          (click)="viewMode = 'table'"
+          title="Table view"
+        >
+          Table
+        </button>
       </div>
     </div>
-  }
 
+    <!-- Category Filter Chips -->
+    <div class="genre-filter-row">
+      <button type="button" class="filter-pill" [class.active]="!searchQuery" (click)="filterByCategory('')">
+        All Books (100)
+      </button>
+      <button type="button" class="filter-pill" [class.active]="searchQuery === 'Novels'" (click)="filterByCategory('Novels')">
+        Novels & Classics
+      </button>
+      <button type="button" class="filter-pill" [class.active]="searchQuery === 'Computer Science'" (click)="filterByCategory('Computer Science')">
+        Computer Science
+      </button>
+      <button type="button" class="filter-pill" [class.active]="searchQuery === 'Artificial Intelligence'" (click)="filterByCategory('Artificial Intelligence')">
+        AI & ML
+      </button>
+      <button type="button" class="filter-pill" [class.active]="searchQuery === 'Electrical Engineering'" (click)="filterByCategory('Electrical Engineering')">
+        Electrical & VLSI
+      </button>
+      <button type="button" class="filter-pill" [class.active]="searchQuery === 'Mechanical Engineering'" (click)="filterByCategory('Mechanical Engineering')">
+        Mechanical
+      </button>
+      <button type="button" class="filter-pill" [class.active]="searchQuery === 'Civil Engineering'" (click)="filterByCategory('Civil Engineering')">
+        Civil
+      </button>
+      <button type="button" class="filter-pill" [class.active]="searchQuery === 'Management'" (click)="filterByCategory('Management')">
+        Management
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
   @if (loading) {
-    <div class="loading-state">
-      {{ aiSearchMode ? 'Running NLP concept expansion and vector ranking...' : 'Loading books...' }}
+    <div class="state-container">
+      <p class="text-caption">Loading library catalog...</p>
     </div>
   } @else if (books.length === 0) {
-    <div class="empty-state">
-      <p>{{ aiSearchMode ? 'No books match this conceptual query.' : 'No books found. Click "Add New Book" to start your catalog.' }}</p>
-      @if (aiSearchMode) {
-        <button class="btn btn-secondary btn-sm" style="margin-top: 10px;" (click)="clearSearchFilter()">Show All Books</button>
-      }
+    <!-- Empty State per Section 21 -->
+    <div class="empty-state-editorial">
+      <div class="empty-icon-monogram">📖</div>
+      <h3>No books found</h3>
+      <p>We couldn't find any books matching your query.</p>
+      <button class="btn btn-secondary btn-sm" (click)="clearSearchFilter()">Clear search</button>
     </div>
   } @else {
-    <table class="data-table">
-      <thead>
-        <tr>
-          @if (aiSearchMode) {
-            <th>AI Match</th>
-          }
-          <th>ISBN</th>
-          <th>Title & Author</th>
-          <th>Category</th>
-          <th>Physical Shelf Location</th>
-          <th>Copies</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
+    <!-- ───────────────────────────────────────────────
+         VIEW 1: BOOK CARDS (Section 11)
+         ─────────────────────────────────────────────── -->
+    @if (viewMode === 'cards') {
+      <div class="book-cards-grid">
         @for (book of books; track book.id) {
-          <tr>
-            @if (aiSearchMode) {
-              <td>
-                @if (semanticMetaMap.has(book.id!)) {
-                  <span class="badge badge-primary">{{ semanticMetaMap.get(book.id!)?.relevance }}% Match</span>
-                } @else {
-                  <span class="badge badge-secondary">—</span>
-                }
-              </td>
-            }
-            <td><code>{{ book.isbn }}</code></td>
-            <td>
-              <strong class="book-title-cell">{{ book.title }}</strong>
-              <div class="book-author-cell">by {{ book.author }}</div>
-              @if (aiSearchMode && semanticMetaMap.has(book.id!)) {
-                <div class="inventory-matched-tags">
-                  @for (kw of semanticMetaMap.get(book.id!)?.matchedKeywords; track kw) {
-                    <span class="mini-kw-pill">{{ kw }}</span>
-                  }
-                </div>
-              }
-            </td>
-            <td><span class="badge badge-info">{{ book.category || 'General' }}</span></td>
-            <td>
-              <div class="shelf-location-chip" title="Aisle, Shelf and Column location">
-                <span class="shelf-icon">📍</span>
-                <div class="shelf-meta">
-                  <span class="shelf-aisle">{{ book.aisle || 'Aisle 1' }}</span>
-                  <span class="shelf-coords">{{ book.shelf || 'Shelf A1' }} • {{ book.columnRack || 'Rack 1' }}</span>
-                </div>
+          <article class="editorial-book-card">
+            <!-- Book Cover Container -->
+            <div class="book-cover-surface" (click)="openShelfModal(book)">
+              <div class="cover-art-content">
+                <span class="cover-category-micro">{{ book.category || 'Textbook' }}</span>
+                <h4 class="cover-title-display">{{ book.title }}</h4>
+                <span class="cover-author-sub">{{ book.author }}</span>
               </div>
-            </td>
-            <td>
-              <div class="copies-cell">
-                <span class="avail-num">{{ book.availableCopies }}</span> / {{ book.totalCopies }}
-              </div>
-            </td>
-            <td>
-              @if ((book.availableCopies || 0) > 0) {
-                <span class="badge badge-success">In Stock</span>
-              } @else {
-                <span class="badge badge-danger">Checked Out</span>
-              }
-            </td>
-            <td class="action-buttons">
-              @if (authService.isAdmin()) {
-                @if ((book.availableCopies || 0) === 0) {
-                  <button class="btn btn-outline btn-sm" (click)="openReserveModal(book)" title="Place Hold on Waitlist">Hold</button>
-                }
-                <button class="btn btn-secondary btn-sm" (click)="openEditModal(book)">Edit</button>
-                <button class="btn btn-danger btn-sm" (click)="deleteBook(book)">Delete</button>
-              } @else {
-                @if ((book.availableCopies || 0) > 0) {
-                  <button class="btn btn-primary btn-sm btn-borrow" (click)="requestBorrow(book)">
-                    Take Book
-                  </button>
-                } @else {
-                  <button class="btn btn-warning btn-sm btn-hold" (click)="requestBorrow(book)">
-                    Place Hold
-                  </button>
-                }
-              }
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
+              <div class="cover-spine-edge"></div>
+            </div>
 
-    <!-- Pagination Controls -->
+            <!-- Card Meta Structure -->
+            <div class="card-meta-body">
+              <h4 class="book-card-title" [title]="book.title" (click)="openShelfModal(book)">{{ book.title }}</h4>
+              <p class="book-card-author">{{ book.author }}</p>
+              
+              <div class="card-status-line">
+                <span class="genre-text">{{ book.category || 'General' }}</span>
+                <span class="dot-separator">·</span>
+                @if ((book.availableCopies ?? 0) > 0) {
+                  <span class="status-available">{{ book.availableCopies }} of {{ book.totalCopies }} available</span>
+                } @else {
+                  <span class="status-out">All copies checked out</span>
+                }
+              </div>
+
+              <!-- Shelf Location -->
+              <div class="card-shelf-location" (click)="openShelfModal(book)">
+                <span class="shelf-label">Location:</span>
+                <span class="shelf-val">{{ book.aisle || 'Aisle 1' }} · {{ book.shelf || 'A1' }}</span>
+              </div>
+
+              <!-- Action Row -->
+              <div class="card-action-row">
+                @if (authService.isAdmin()) {
+                  <button type="button" class="btn btn-secondary btn-sm" (click)="openEditModal(book)">Edit</button>
+                  <button type="button" class="btn btn-destructive btn-sm" (click)="deleteBook(book)">Delete</button>
+                } @else {
+                  <button type="button" class="btn btn-ghost btn-sm" (click)="openShelfModal(book)">Shelf Map</button>
+                  @if ((book.availableCopies ?? 0) > 0) {
+                    <button type="button" class="btn btn-primary btn-sm" (click)="requestBorrow(book)">Borrow</button>
+                  } @else {
+                    <button type="button" class="btn btn-secondary btn-sm" (click)="openReserveModal(book)">Hold</button>
+                  }
+                }
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    }
+
+    <!-- ───────────────────────────────────────────────
+         VIEW 2: EDITORIAL TABLE (Section 14)
+         ─────────────────────────────────────────────── -->
+    @if (viewMode === 'table') {
+      <div class="data-table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ISBN</th>
+              <th>Title & Author</th>
+              <th>Genre</th>
+              <th>Shelf Location</th>
+              <th>Stock</th>
+              <th>Availability</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (book of books; track book.id) {
+              <tr>
+                <td><span class="isbn-text">{{ book.isbn }}</span></td>
+                <td>
+                  <strong class="table-title">{{ book.title }}</strong>
+                  <div class="table-author">{{ book.author }}</div>
+                </td>
+                <td><span class="badge badge-secondary">{{ book.category || 'General' }}</span></td>
+                <td>
+                  <span class="table-shelf" (click)="openShelfModal(book)">
+                    {{ book.aisle || 'Aisle 1' }} · {{ book.shelf || 'A1' }}
+                  </span>
+                </td>
+                <td>{{ book.availableCopies }} / {{ book.totalCopies }}</td>
+                <td>
+                  @if ((book.availableCopies ?? 0) > 0) {
+                    <span class="badge badge-success">Available</span>
+                  } @else {
+                    <span class="badge badge-danger">Checked out</span>
+                  }
+                </td>
+                <td>
+                  <div class="table-actions">
+                    @if (authService.isAdmin()) {
+                      <button type="button" class="btn btn-secondary btn-sm" (click)="openEditModal(book)">Edit</button>
+                      <button type="button" class="btn btn-destructive btn-sm" (click)="deleteBook(book)">Delete</button>
+                    } @else {
+                      <button type="button" class="btn btn-ghost btn-sm" (click)="openShelfModal(book)">Locate</button>
+                      @if ((book.availableCopies ?? 0) > 0) {
+                        <button type="button" class="btn btn-primary btn-sm" (click)="requestBorrow(book)">Borrow</button>
+                      } @else {
+                        <button type="button" class="btn btn-secondary btn-sm" (click)="openReserveModal(book)">Hold</button>
+                      }
+                    }
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+    <!-- Pagination -->
     @if (isPagedMode && totalPages > 1) {
-      <div class="pagination-bar">
-        <button class="btn btn-secondary btn-sm" [disabled]="pageNumber === 0" (click)="goToPage(-1)">
+      <div class="pagination-row">
+        <button type="button" class="btn btn-secondary btn-sm" [disabled]="pageNumber === 0" (click)="goToPage(-1)">
           Previous
         </button>
-        <span class="page-info">
-          Page {{ pageNumber + 1 }} of {{ totalPages }} ({{ totalElements }} total books)
+        <span class="text-caption">
+          Page {{ pageNumber + 1 }} of {{ totalPages }}
         </span>
-        <button class="btn btn-secondary btn-sm" [disabled]="pageNumber >= totalPages - 1" (click)="goToPage(1)">
+        <button type="button" class="btn btn-secondary btn-sm" [disabled]="pageNumber >= totalPages - 1" (click)="goToPage(1)">
           Next
         </button>
       </div>
     }
   }
-</div>
 
-@if (showModal) {
-  <app-book-form 
-    [book]="selectedBook" 
-    (save)="onSaveBook()" 
-    (cancel)="closeModal()"
-  ></app-book-form>
-}
+  <!-- ───────────────────────────────────────────────
+       SHELF LOCATOR MODAL (Section 16)
+       ─────────────────────────────────────────────── -->
+  @if (showShelfModal && shelfModalBook) {
+    <div class="modal-overlay" (click)="closeShelfModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header-editorial">
+          <div>
+            <h3>Shelf Coordinates</h3>
+            <p class="text-caption">Exact physical library location</p>
+          </div>
+          <button type="button" class="modal-close" (click)="closeShelfModal()">✕</button>
+        </div>
 
-<!-- Hold / Reservation Modal -->
-@if (showReserveModal && reserveBookTarget) {
-  <div class="modal-overlay">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h3>Place Book Hold (Waitlist)</h3>
-        <button class="close-btn" (click)="closeReserveModal()">Close</button>
-      </div>
+        <div class="modal-body-editorial">
+          <div class="book-identity-summary">
+            <h4>{{ shelfModalBook.title }}</h4>
+            <p class="text-caption">{{ shelfModalBook.author }} · {{ shelfModalBook.category }}</p>
+          </div>
 
-      <div class="modal-body">
-        <div class="hold-summary">
-          <p>This book is currently out of stock. Placing a hold guarantees priority fulfillment as soon as any copy is returned.</p>
-          <div style="margin-top: 10px;">
-            <strong>Title:</strong> {{ reserveBookTarget.title }}<br>
-            <strong>ISBN:</strong> {{ reserveBookTarget.isbn }}
+          <div class="coordinates-grid">
+            <div class="coord-card">
+              <span class="coord-label">Aisle</span>
+              <strong class="coord-val">{{ shelfModalBook.aisle || 'Aisle 1' }}</strong>
+            </div>
+            <div class="coord-card">
+              <span class="coord-label">Shelf Row</span>
+              <strong class="coord-val">{{ shelfModalBook.shelf || 'A1' }}</strong>
+            </div>
+            <div class="coord-card">
+              <span class="coord-label">Rack</span>
+              <strong class="coord-val">{{ shelfModalBook.columnRack || 'Rack 1' }}</strong>
+            </div>
+          </div>
+
+          <div class="shelf-instruction-box">
+            <p class="text-body-small">
+              Located in <strong>{{ shelfModalBook.aisle }}</strong>. Walk along the main central corridor and check shelf row <strong>{{ shelfModalBook.shelf }}, {{ shelfModalBook.columnRack }}</strong>. Books are arranged alphabetically by author.
+            </p>
           </div>
         </div>
 
-        <div class="form-group" style="margin-top: 16px;">
-          <label class="form-label">Select Reserving Member (Active Only) *</label>
-          <select class="form-control" [(ngModel)]="selectedMemberId">
-            <option [ngValue]="0" disabled selected>-- Select a Member --</option>
-            @for (m of activeMembers; track m.id) {
-              <option [ngValue]="m.id">{{ m.name }} ({{ m.email }})</option>
-            }
-          </select>
+        <div class="modal-footer-editorial">
+          <button type="button" class="btn btn-secondary" (click)="closeShelfModal()">Close</button>
+          @if ((shelfModalBook.availableCopies ?? 0) > 0 && authService.isStudent()) {
+            <button type="button" class="btn btn-primary" (click)="requestBorrow(shelfModalBook); closeShelfModal()">
+              Borrow
+            </button>
+          }
         </div>
       </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="closeReserveModal()">Cancel</button>
-        <button type="button" class="btn btn-primary" [disabled]="reserving" (click)="confirmReservation()">
-          {{ reserving ? 'Placing Hold...' : 'Confirm Hold' }}
-        </button>
-      </div>
     </div>
-  </div>
-}
+  }
+
+  <!-- Add/Edit Modal (Admin) -->
+  @if (showModal) {
+    <app-book-form 
+      [book]="selectedBook" 
+      (save)="onSaveBook()" 
+      (cancel)="closeModal()"
+    ></app-book-form>
+  }
+</div>

@@ -1,189 +1,144 @@
+/* ─────────────────────────────────────────────────────────────
+   SECTION 1, 2, 3, 9, 10 — WARM EDITORIAL LOGIN
+   ───────────────────────────────────────────────────────────── */
+
 .login-wrapper {
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 32px 16px;
-  background: var(--bg-main);
+  background-color: var(--bg-primary);
+  padding: 24px;
   position: relative;
 }
 
 .top-actions {
   position: absolute;
   top: 24px;
-  right: 28px;
+  right: 24px;
 }
 
-.theme-toggle-btn {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  color: var(--text-main);
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 12.5px;
-  font-weight: 600;
+.theme-toggle {
+  background: transparent;
+  border: 1px solid var(--border-default);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 500;
   cursor: pointer;
-  box-shadow: var(--shadow);
-  transition: all 0.2s ease;
+  transition: all var(--duration-fast) var(--ease-editorial);
 }
 
-.theme-toggle-btn:hover {
-  background: var(--bg-hover);
-  border-color: var(--primary);
+.theme-toggle:hover {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
 }
 
 .login-container {
   width: 100%;
-  max-width: 460px;
+  max-width: 420px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-xl);
 }
 
 .login-header {
   text-align: center;
-  margin-bottom: 4px;
-}
-
-.brand-seal {
-  font-size: 38px;
-  margin-bottom: 8px;
-  display: inline-block;
-  filter: drop-shadow(0 4px 8px rgba(79, 70, 229, 0.2));
-}
-
-.login-header h2 {
-  font-size: 24px;
-  font-weight: 800;
-  color: var(--text-main);
-  letter-spacing: -0.02em;
-}
-
-.role-toggle-bar {
   display: flex;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 14px;
-  padding: 4px;
-  gap: 6px;
-  box-shadow: var(--shadow);
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
 }
 
-.toggle-tab {
-  flex: 1;
+.brand-monogram {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-default);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 10px 14px;
-  border: none;
-  background: transparent;
-  color: var(--text-muted);
-  font-size: 13.5px;
+  font-family: var(--font-serif);
+  font-size: 22px;
   font-weight: 600;
-  border-radius: 10px;
+  color: var(--accent-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.login-title {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1.15;
+}
+
+.login-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* ── Role Selector ── */
+.role-selector {
+  display: flex;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  background-color: var(--bg-surface);
+}
+
+.role-pill-btn {
+  flex: 1;
+  height: 36px;
+  border: none;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all var(--duration-fast) var(--ease-editorial);
 }
 
-.toggle-tab:hover {
-  color: var(--text-main);
-  background: var(--bg-hover);
+.role-pill-btn.active {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
-.toggle-tab.active {
-  color: #ffffff;
-  font-weight: 700;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-}
-
-.toggle-tab:first-child.active {
-  background: linear-gradient(135deg, #4f46e5, #4338ca);
-}
-
-.toggle-tab:last-child.active {
-  background: linear-gradient(135deg, #d97706, #b45309);
-}
-
-.tab-icon {
-  font-size: 16px;
-}
-
-.tab-text {
-  letter-spacing: -0.01em;
-}
-
+/* ── Login Card ── */
 .login-card {
-  padding: 28px;
-  border-radius: 16px;
-  box-shadow: var(--shadow-lg);
-  transition: border-color 0.3s ease;
-}
-
-.admin-login-card {
-  border-top: 4px solid #f59e0b;
-}
-
-.student-login-card {
-  border-top: 4px solid #4f46e5;
-}
-
-.card-title-row {
-  margin-bottom: 20px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.card-title-row h3 {
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--text-main);
-  margin: 0;
-}
-
-.alert-box {
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-size: 12.5px;
-  margin-bottom: 16px;
-}
-
-.alert-error {
-  background: rgba(239, 68, 68, 0.1);
-  color: var(--danger);
-  border: 1px solid rgba(239, 68, 68, 0.25);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-block {
   width: 100%;
-  padding: 12px;
-  font-size: 14px;
-  margin-top: 10px;
+  margin-top: var(--space-sm);
 }
 
-.btn-admin-submit {
-  background: linear-gradient(135deg, #d97706, #b45309);
-  color: #ffffff;
-  border: none;
-  font-weight: 700;
-  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.25);
+.form-error-banner {
+  padding: 10px 14px;
+  border-radius: var(--radius-xs);
+  background-color: rgba(168, 93, 88, 0.1);
+  color: var(--error);
+  font-size: 13px;
+  border: 1px solid rgba(168, 93, 88, 0.25);
+  margin-bottom: var(--space-md);
 }
 
-.btn-admin-submit:hover {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
-  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.38);
+.credentials-hint {
+  text-align: center;
 }
 
-.btn-student-submit {
-  background: linear-gradient(135deg, #4f46e5, #4338ca);
-  color: #ffffff;
-  border: none;
-  font-weight: 700;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
-}
-
-.btn-student-submit:hover {
-  background: linear-gradient(135deg, #6366f1, #4f46e5);
-  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.38);
+.credentials-hint code {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  background-color: var(--bg-secondary);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
 }

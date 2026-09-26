@@ -1,26 +1,29 @@
-<div class="modal-overlay">
-  <div class="modal-card">
+<div class="modal-overlay" (click)="onCancel()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
     <div class="modal-header">
-      <h3>Issue a Book to Member</h3>
-      <button class="close-btn" (click)="onCancel()">✕</button>
+      <div class="header-titles">
+        <span class="editorial-kicker">Circulation Desk</span>
+        <h3>Issue Volume on Loan</h3>
+      </div>
+      <button type="button" class="modal-close" (click)="onCancel()" aria-label="Close dialog">✕</button>
     </div>
 
     <form (ngSubmit)="onSubmit()">
       <div class="modal-body">
         <div class="form-group">
-          <label class="form-label">Select Book (In Stock Only) *</label>
+          <label class="form-label">Select Volume (Available In Inventory) *</label>
           <select class="form-control" [(ngModel)]="formData.bookId" name="bookId" required>
-            <option [ngValue]="0" disabled selected>-- Select a Book --</option>
+            <option [ngValue]="0" disabled selected>-- Select a Volume from Stacks --</option>
             @for (b of books; track b.id) {
-              <option [ngValue]="b.id">{{ b.title }} ({{ b.availableCopies }} available) - ISBN: {{ b.isbn }}</option>
+              <option [ngValue]="b.id">{{ b.title }} · {{ b.author }} ({{ b.availableCopies }} available) - ISBN: {{ b.isbn }}</option>
             }
           </select>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Select Borrower (Active Members Only) *</label>
+          <label class="form-label">Borrowing Scholar / Patron *</label>
           <select class="form-control" [(ngModel)]="formData.memberId" name="memberId" required>
-            <option [ngValue]="0" disabled selected>-- Select a Member --</option>
+            <option [ngValue]="0" disabled selected>-- Select an Active Patron --</option>
             @for (m of members; track m.id) {
               <option [ngValue]="m.id">{{ m.name }} ({{ m.email }})</option>
             }
@@ -28,7 +31,7 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label">Loan Duration (Days)</label>
+          <label class="form-label">Loan Duration (Standard: 14 Days)</label>
           <input 
             type="number" 
             class="form-control" 
@@ -37,14 +40,14 @@
             [(ngModel)]="formData.loanDays" 
             name="loanDays" 
           />
-          <small class="hint-text">Standard loan period is 14 days.</small>
+          <span class="hint-caption">Calculates the return deadline date automatically upon authorization.</span>
         </div>
       </div>
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
         <button type="submit" class="btn btn-primary" [disabled]="issuing">
-          {{ issuing ? 'Issuing...' : 'Confirm Book Issue' }}
+          {{ issuing ? 'Authorizing Loan...' : 'Authorize Book Issue' }}
         </button>
       </div>
     </form>

@@ -1,68 +1,62 @@
 <div class="login-wrapper">
-  <!-- Theme Toggle in Top Right -->
+  <!-- Top Right Theme Toggle -->
   <div class="top-actions">
     <button 
       type="button" 
-      class="theme-toggle-btn" 
+      class="theme-toggle" 
       (click)="themeService.toggleTheme()"
-      [title]="themeService.isDark() ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
     >
-      {{ themeService.isDark() ? '☀️ Light Mode' : '🌙 Dark Mode' }}
+      {{ themeService.isDark() ? 'Daylight' : 'Evening' }}
     </button>
   </div>
 
-  <div class="login-container animate-slide-up">
-    <!-- Brand Header -->
+  <div class="login-container">
+    <!-- Editorial Header -->
     <div class="login-header">
-      <div class="brand-seal">🏛️</div>
-      <h2>Central University Library</h2>
+      <div class="brand-monogram">L</div>
+      <h1 class="login-title">Library Management System</h1>
+      <p class="login-subtitle">Sign in to access the university catalog and borrowing desk</p>
     </div>
 
     <!-- Role Toggle Bar -->
-    <div class="role-toggle-bar">
+    <div class="role-selector">
       <button 
         type="button" 
-        class="toggle-tab" 
+        class="role-pill-btn" 
         [class.active]="selectedRole === 'student'"
         (click)="setRole('student')"
       >
-        <span class="tab-icon">🎓</span>
-        <span class="tab-text">Student Login</span>
+        Scholar Portal
       </button>
       <button 
         type="button" 
-        class="toggle-tab" 
+        class="role-pill-btn" 
         [class.active]="selectedRole === 'admin'"
         (click)="setRole('admin')"
       >
-        <span class="tab-icon">🛡️</span>
-        <span class="tab-text">Administrator Login</span>
+        Administration
       </button>
     </div>
 
-    <!-- Active Role Login Card -->
-    <div class="card login-card" [ngClass]="selectedRole === 'admin' ? 'admin-login-card' : 'student-login-card'">
-      <div class="card-title-row">
-        <h3>{{ selectedRole === 'admin' ? 'Administrator Login' : 'Student Portal Login' }}</h3>
-      </div>
-
+    <!-- Login Card -->
+    <div class="card login-card">
       @if (error) {
-        <div class="alert-box alert-error animate-fade-in">
-          <span>⚠️ {{ error }}</span>
+        <div class="form-error-banner">
+          {{ error }}
         </div>
       }
 
       <form (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label class="form-label" for="username">
-            {{ selectedRole === 'admin' ? 'Administrator Username' : 'Student ID / Username' }}
+            {{ selectedRole === 'admin' ? 'Administrator Username' : 'Scholar Username' }}
           </label>
           <input 
             id="username"
             name="username"
             type="text" 
             class="form-control" 
-            [placeholder]="selectedRole === 'admin' ? 'Enter administrator username' : 'Enter student ID or username'" 
+            [placeholder]="selectedRole === 'admin' ? 'e.g. admin' : 'e.g. satish'" 
             [(ngModel)]="username"
             required
             autocomplete="username"
@@ -76,7 +70,7 @@
             name="password"
             type="password" 
             class="form-control" 
-            [placeholder]="selectedRole === 'admin' ? 'Enter account password' : 'Enter student portal password'" 
+            placeholder="••••••••" 
             [(ngModel)]="password"
             required
             autocomplete="current-password"
@@ -85,13 +79,17 @@
 
         <button 
           type="submit" 
-          class="btn btn-block" 
-          [ngClass]="selectedRole === 'admin' ? 'btn-admin-submit' : 'btn-student-submit'"
+          class="btn btn-primary btn-block" 
           [disabled]="loading"
         >
-          {{ loading ? 'Verifying Credentials...' : (selectedRole === 'admin' ? 'Sign In to Administrative Console →' : 'Sign In to Student Portal →') }}
+          {{ loading ? 'Signing in...' : 'Sign In' }}
         </button>
       </form>
+    </div>
+
+    <!-- Quiet Credentials Hint -->
+    <div class="credentials-hint">
+      <span class="text-caption">Default accounts: <code>admin / admin123</code> · <code>satish / student123</code></span>
     </div>
   </div>
 </div>

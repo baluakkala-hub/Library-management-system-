@@ -1,15 +1,16 @@
 <aside class="sidebar">
+  <!-- Minimalist Editorial Brand -->
   <div class="brand">
-    <span class="brand-icon">🏛️</span>
+    <div class="brand-monogram">L</div>
     <div class="brand-info">
-      <span class="brand-name">UniLibrary</span>
-      <span class="role-pill" [class.role-admin]="authService.isAdmin()" [class.role-student]="authService.isStudent()">
-        {{ authService.isAdmin() ? 'ADMIN CONSOLE' : 'STUDENT PORTAL' }}
-      </span>
+      <span class="brand-name">Library System</span>
+      <span class="brand-role">{{ authService.isAdmin() ? 'Administration' : 'Scholar Portal' }}</span>
     </div>
   </div>
 
+  <!-- Quiet Navigation Menu -->
   <nav class="nav-menu">
+    <div class="nav-section-label">Menu</div>
     @for (link of navLinks; track link.path) {
       <a [routerLink]="link.path" routerLinkActive="active" class="nav-item">
         <span class="nav-icon">{{ link.icon }}</span>
@@ -17,4 +18,12 @@
       </a>
     }
   </nav>
+
+  <!-- Quiet Minimalist Footer -->
+  <div class="sidebar-footer">
+    <div class="system-status-indicator">
+      <span class="status-dot"></span>
+      <span class="status-text">Catalog Online</span>
+    </div>
+  </div>
 </aside>

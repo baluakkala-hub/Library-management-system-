@@ -1,14 +1,17 @@
-<div class="modal-overlay">
-  <div class="modal-card">
+<div class="modal-overlay" (click)="onCancel()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
     <div class="modal-header">
-      <h3>{{ isEditMode ? 'Edit Book' : 'Add New Book' }}</h3>
-      <button class="close-btn" (click)="onCancel()">✕</button>
+      <div class="header-titles">
+        <span class="editorial-kicker">Catalog Administration</span>
+        <h3>{{ isEditMode ? 'Edit Volume Coordinates' : 'Acquire New Volume' }}</h3>
+      </div>
+      <button type="button" class="modal-close" (click)="onCancel()" aria-label="Close dialog">✕</button>
     </div>
 
     <form (ngSubmit)="onSubmit()">
       <div class="modal-body">
         <div class="form-group">
-          <label class="form-label">ISBN Number *</label>
+          <label class="form-label">ISBN Catalog Number *</label>
           <input 
             type="text" 
             class="form-control" 
@@ -24,7 +27,7 @@
           <input 
             type="text" 
             class="form-control" 
-            placeholder="e.g. Clean Code" 
+            placeholder="e.g. The Structure and Interpretation of Computer Programs" 
             [(ngModel)]="formData.title" 
             name="title" 
             required 
@@ -32,11 +35,11 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label">Author *</label>
+          <label class="form-label">Primary Author / Contributor *</label>
           <input 
             type="text" 
             class="form-control" 
-            placeholder="e.g. Robert C. Martin" 
+            placeholder="e.g. Harold Abelson & Gerald Jay Sussman" 
             [(ngModel)]="formData.author" 
             name="author" 
             required 
@@ -45,7 +48,7 @@
 
         <div class="form-row">
           <div class="form-group flex-1">
-            <label class="form-label">Category</label>
+            <label class="form-label">Subject / Discipline</label>
             <input 
               type="text" 
               class="form-control" 
@@ -56,7 +59,7 @@
           </div>
 
           <div class="form-group flex-1">
-            <label class="form-label">Total Copies *</label>
+            <label class="form-label">Total Copies in Inventory *</label>
             <input 
               type="number" 
               class="form-control" 
@@ -68,39 +71,42 @@
           </div>
         </div>
 
-        <!-- Physical Shelf Location Coordinates -->
-        <div class="form-row">
-          <div class="form-group flex-1">
-            <label class="form-label">📍 Aisle Location</label>
-            <input 
-              type="text" 
-              class="form-control" 
-              placeholder="e.g. Aisle 1 (CSE)" 
-              [(ngModel)]="formData.aisle" 
-              name="aisle" 
-            />
-          </div>
+        <!-- Physical Shelf Location Coordinates (Section 16) -->
+        <div class="shelf-coordinates-panel">
+          <span class="panel-tag">Physical Shelf Coordinates</span>
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label class="form-label">Aisle Corridor</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                placeholder="e.g. Aisle 1" 
+                [(ngModel)]="formData.aisle" 
+                name="aisle" 
+              />
+            </div>
 
-          <div class="form-group flex-1">
-            <label class="form-label">Shelf Bay</label>
-            <input 
-              type="text" 
-              class="form-control" 
-              placeholder="e.g. Shelf A1" 
-              [(ngModel)]="formData.shelf" 
-              name="shelf" 
-            />
-          </div>
+            <div class="form-group flex-1">
+              <label class="form-label">Shelf Row</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                placeholder="e.g. Row A" 
+                [(ngModel)]="formData.shelf" 
+                name="shelf" 
+              />
+            </div>
 
-          <div class="form-group flex-1">
-            <label class="form-label">Column / Rack</label>
-            <input 
-              type="text" 
-              class="form-control" 
-              placeholder="e.g. Rack 1" 
-              [(ngModel)]="formData.columnRack" 
-              name="columnRack" 
-            />
+            <div class="form-group flex-1">
+              <label class="form-label">Rack Column</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                placeholder="e.g. Rack 1" 
+                [(ngModel)]="formData.columnRack" 
+                name="columnRack" 
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -108,7 +114,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
         <button type="submit" class="btn btn-primary" [disabled]="saving">
-          {{ saving ? 'Saving...' : (isEditMode ? 'Update Book' : 'Create Book') }}
+          {{ saving ? 'Recording...' : (isEditMode ? 'Update Volume' : 'Save to Catalog') }}
         </button>
       </div>
     </form>

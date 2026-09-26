@@ -44,12 +44,29 @@ export class BookListComponent implements OnInit {
   totalElements: number = 0;
   isPagedMode: boolean = true;
 
+  // View Mode: Cozy Cards vs Table View
+  viewMode: 'cards' | 'table' = 'cards';
+  showShelfModal: boolean = false;
+  shelfModalBook?: Book;
+
   // Reservation modal state
   showReserveModal: boolean = false;
   reserveBookTarget?: Book;
   activeMembers: Member[] = [];
   selectedMemberId: number = 0;
   reserving: boolean = false;
+
+  openShelfModal(book: Book): void {
+    this.shelfModalBook = book;
+    this.showShelfModal = true;
+    this.cdr.detectChanges();
+  }
+
+  closeShelfModal(): void {
+    this.showShelfModal = false;
+    this.shelfModalBook = undefined;
+    this.cdr.detectChanges();
+  }
 
   ngOnInit(): void {
     this.loadMembersForReservation();

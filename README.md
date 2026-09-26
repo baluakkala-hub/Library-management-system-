@@ -21,6 +21,19 @@ An enterprise-grade, full-stack **Academic Library Management System** engineere
 | 🤖 **Personalised Borrowing Simulation** | Realistic automated circulation for **30 active students**, tailoring borrowed titles to departmental majors and reading interests. |
 | 🚫 **Account Governance & Lockout** | Automated identification of inactive accounts with account disabling in Spring Security and one-click administrator reactivation. |
 | 💰 **INR (`₹`) Fine Settlement** | Automated overdue penalty computation, book damage tracking, barcode replacement fees, and settlement logging via **UPI**, **Card**, or **Cash**. |
+| 🎨 **Warm Editorial Design Language** | Crafted around the ethos: **Warm Editorial Library × Modern Minimalism × Buttery Smooth Motion**. Eliminates generic SaaS blues in favor of parchment creams, sage greens, DM Serif Display typography, and physical card tactile motion. |
+
+---
+
+## 🎨 Design System: Warm Editorial Library × Modern Minimalism
+
+The LMS interface has been completely reimagined to evoke the quiet, tactile dignity of a historic academic library elevated by contemporary software minimalism:
+
+- **Calm & Warm Palette**: Soft parchment tones (`#F7F4EE`, `#FFFCF7`), deep slate text (`#292722`), muted sage green accents (`#526B58`), and rich leather warm tones (`#A97852`).
+- **Quiet Library Dark Mode**: Deep dusk illumination (`#171714` background, `#24231F` surfaces, `#91A994` sage highlights) mimicking study halls after sunset.
+- **Editorial Typography**: Pairing **DM Serif Display** for prominent literary headings with **Inter** for crisp data hierarchy and **JetBrains Mono** for shelf coordinates.
+- **Tactile Motion Physics**: Calibrated with custom easing curves (`cubic-bezier(0.22, 1, 0.36, 1)`) for buttery smooth elevation changes, card interactions, and modal presentations without bouncy gimmicks.
+- **Explainable Recommendation Dossiers**: High-dimensional TF-IDF vectors and cosine proximity calculation surfaced through editorial critique notes and affinity chips.
 
 ---
 

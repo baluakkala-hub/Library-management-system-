@@ -25,6 +25,18 @@ export class FineListComponent implements OnInit {
   filter: 'ALL' | 'UNPAID' = 'UNPAID';
   loading: boolean = false;
 
+  get totalUnpaidAmount(): number {
+    return this.fines.filter(f => f.status === 'UNPAID').reduce((sum, f) => sum + (f.amount || 0), 0);
+  }
+
+  get unpaidCount(): number {
+    return this.fines.filter(f => f.status === 'UNPAID').length;
+  }
+
+  get paidCount(): number {
+    return this.fines.filter(f => f.status === 'PAID').length;
+  }
+
   // Pay Modal
   showPayModal: boolean = false;
   selectedFine?: Fine;

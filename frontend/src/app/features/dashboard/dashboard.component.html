@@ -1,343 +1,146 @@
 <div class="dashboard-page">
-  <!-- Refresh Data Bar (Subtle & Compact) -->
-  <div class="dashboard-top-bar">
-    <span class="breadcrumb-tag">
-      {{ authService.isAdmin() ? '🏛️ Administrator Console' : '🎓 Student Portal' }} • Academic Session 2026
-    </span>
-    <button class="btn-refresh-subtle" (click)="loadStats()" title="Refresh live telemetry">
-      ↻ Refresh
-    </button>
-  </div>
-
-  @if (loading && !stats) {
-    <div class="dashboard-loading-state">
-      <div class="dashboard-spinner"></div>
-      <span>Loading university catalog analytics & status...</span>
+  <!-- Section 1 & 2: Editorial Calm Greeting -->
+  <header class="editorial-header">
+    <div class="header-preline">
+      <span>{{ authService.isAdmin() ? 'Institutional Administration' : 'Scholar Reading Space' }}</span>
+      <span class="dot-sep">·</span>
+      <span>Central Library</span>
     </div>
-  } @else {
-    <!-- ───────────────────────────────────────────────
-         STUDENT DASHBOARD VIEW
-         ─────────────────────────────────────────────── -->
-    @if (authService.isStudent()) {
-      <!-- 4. WELCOME SECTION (Compact & Elegant) -->
-      <div class="welcome-header-card">
-        <div class="welcome-text-col">
-          <h1 class="greeting-heading">{{ greeting }}</h1>
-          <p class="greeting-department">{{ department }}</p>
-        </div>
-        <div class="welcome-stat-pill">
-          <span class="stat-number">{{ stats.totalAvailableBooks || 201 }}</span>
-          <span class="stat-label">BOOKS AVAILABLE</span>
-        </div>
-      </div>
+    <h1 class="header-display-title">{{ greeting }}</h1>
+    <p class="header-subtext">
+      {{ authService.isAdmin() ? 'Catalog governance, scholar loans, and shelf inventory for Academic Session 2026.' : department }}
+    </p>
+  </header>
 
-      <!-- 5. DASHBOARD CARDS (Compact, High Density) -->
-      <div class="quick-cards-grid">
-        <div class="modern-action-card">
-          <div class="action-card-top">
-            <span class="action-card-icon">📚</span>
-            <h4>BOOK CATALOG</h4>
-          </div>
-          <p class="action-card-desc">Search and locate university textbooks</p>
-          <a routerLink="/books" class="btn-card-action">Explore Catalog →</a>
-        </div>
+  <!-- Section 13: Summary Metrics (Typography + Whitespace + Subtle Separators) -->
+  <section class="metrics-editorial-strip">
+    <div class="metric-col">
+      <span class="metric-label">Catalog Collection</span>
+      <span class="metric-number">{{ stats.totalBooks || 100 }}</span>
+      <span class="metric-caption">100 curated volumes</span>
+    </div>
+    <div class="metric-divider"></div>
+    <div class="metric-col">
+      <span class="metric-label">Scholars Registered</span>
+      <span class="metric-number">{{ stats.totalMembers || 41 }}</span>
+      <span class="metric-caption">30 active borrowers</span>
+    </div>
+    <div class="metric-divider"></div>
+    <div class="metric-col">
+      <span class="metric-label">Active Loans</span>
+      <span class="metric-number">{{ stats.currentlyIssuedBooks || 28 }}</span>
+      <span class="metric-caption">In circulation</span>
+    </div>
+    <div class="metric-divider"></div>
+    <div class="metric-col">
+      <span class="metric-label">Pending Dues</span>
+      <span class="metric-number">₹{{ stats.totalUnpaidFines || 500 }}</span>
+      <span class="metric-caption">Library fine ledger</span>
+    </div>
+  </section>
 
-        <div class="modern-action-card">
-          <div class="action-card-top">
-            <span class="action-card-icon">🔄</span>
-            <h4>MY BORROWINGS</h4>
-          </div>
-          <p class="action-card-desc">Show currently borrowed books / active loans</p>
-          <a routerLink="/books" class="btn-card-action">View Books →</a>
-        </div>
+  <!-- Section 12: Quiet Search Interaction -->
+  <section class="search-interaction-section">
+    <div class="search-field-container">
+      <span class="search-symbol">🔍</span>
+      <input 
+        type="text" 
+        class="search-input-field" 
+        placeholder="Search 100 library books by title, author, or concept (e.g. Dune, deep learning)..." 
+        [(ngModel)]="aiSearchQuery"
+        (keyup.enter)="onAiSearch()"
+      />
+      <button type="button" class="btn btn-primary" (click)="onAiSearch()">Search</button>
+    </div>
+    <div class="suggestions-line">
+      <span class="suggestions-label">Suggestions:</span>
+      @for (s of exampleSuggestions; track s) {
+        <button type="button" class="suggestion-link" (click)="applySuggestion(s)">{{ s }}</button>
+      }
+    </div>
+  </section>
 
-        <div class="modern-action-card">
-          <div class="action-card-top">
-            <span class="action-card-icon">✨</span>
-            <h4>AI RECOMMENDATIONS</h4>
-          </div>
-          <p class="action-card-desc">Personalized academic textbook recommendations</p>
-          <a routerLink="/recommendations" class="btn-card-action">Explore →</a>
-        </div>
-
-        <div class="modern-action-card">
-          <div class="action-card-top">
-            <span class="action-card-icon">🏛️</span>
-            <h4>LIBRARY HELP</h4>
-          </div>
-          <p class="action-card-desc">Contact librarian / circulation desk</p>
-          <button type="button" class="btn-card-action btn-as-link" (click)="openContact()">Contact →</button>
-        </div>
-      </div>
-
-      <!-- 6. PROMINENT AI SEARCH SECTION (Centerpiece) -->
-      <div class="ai-assistant-card">
-        <div class="ai-assistant-header">
-          <div class="ai-title-row">
-            <span class="ai-badge-sparkle">✨</span>
-            <div>
-              <h3>AI LIBRARY ASSISTANT</h3>
-              <p class="ai-subtitle">What are you looking for?</p>
-            </div>
-          </div>
-          <span class="ai-tech-tag">In-JVM Semantic NLP & Vector Retrieval</span>
+  <!-- Student Scholar Section -->
+  @if (authService.isStudent()) {
+    <div class="dashboard-editorial-grid">
+      <!-- Active Loans Section -->
+      <section class="content-block">
+        <div class="block-header">
+          <h3>Current Loans</h3>
+          <span class="text-caption">{{ borrowedBooks.length }} checked out</span>
         </div>
 
-        <div class="ai-input-bar">
-          <span class="ai-bar-icon">🔍</span>
-          <input 
-            type="text" 
-            class="ai-search-field" 
-            placeholder="Search books, ask about a subject, or find a shelf..." 
-            [(ngModel)]="aiSearchQuery"
-            (keyup.enter)="onAiSearch()"
-          />
-          <button type="button" class="ai-submit-btn" (click)="onAiSearch()">Search</button>
-        </div>
-
-        <div class="ai-suggestions-row">
-          <span class="suggestions-label">Try asking:</span>
-          <div class="suggestions-chips">
-            @for (suggestion of exampleSuggestions; track suggestion) {
-              <button type="button" class="suggestion-chip" (click)="applySuggestion(suggestion)">
-                "{{ suggestion }}"
-              </button>
-            }
-          </div>
-        </div>
-      </div>
-
-      <!-- 7. COMPACT LIBRARY STATUS SECTION -->
-      <div class="status-metrics-row">
-        <div class="metric-card">
-          <span class="metric-icon">📖</span>
-          <div class="metric-info">
-            <span class="metric-val">{{ stats.totalAvailableBooks || 201 }}</span>
-            <span class="metric-name">Books Available</span>
-          </div>
-        </div>
-
-        <div class="metric-card">
-          <span class="metric-icon">🔄</span>
-          <div class="metric-info">
-            <span class="metric-val">38</span>
-            <span class="metric-name">Currently Borrowed</span>
-          </div>
-        </div>
-
-        <div class="metric-card">
-          <span class="metric-icon">⏳</span>
-          <div class="metric-info">
-            <span class="metric-val">11</span>
-            <span class="metric-name">Reserved</span>
-          </div>
-        </div>
-
-        <div class="metric-card">
-          <span class="metric-icon">🎓</span>
-          <div class="metric-info">
-            <span class="metric-val">3</span>
-            <span class="metric-name">My Active Loans</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 8. CURRENT BORROWINGS SECTION (Compact list) -->
-      <div class="dashboard-section-card">
-        <div class="section-card-head">
-          <div>
-            <h3>Currently Borrowed</h3>
-            <p class="section-subtext">Active card loans, due dates, and circulation return status</p>
-          </div>
-          <a routerLink="/fines" class="section-link">Check Dues & Fines →</a>
-        </div>
-
-        <div class="borrowed-items-list">
+        <div class="editorial-list">
           @for (item of borrowedBooks; track item.title) {
-            <div class="borrowed-item-row">
-              <div class="borrowed-title-block">
-                <strong class="borrowed-title">{{ item.title }}</strong>
-                <span class="borrowed-shelf">by {{ item.author }} • 📍 {{ item.status === 'ON_TIME' ? 'Aisle 1 • Shelf A1' : (item.status === 'DUE_SOON' ? 'Aisle 1 • Shelf D2' : 'Aisle 1 • Shelf B2') }}</span>
+            <div class="editorial-list-item">
+              <div class="item-meta">
+                <strong class="item-title">{{ item.title }}</strong>
+                <span class="item-sub">by {{ item.author }}</span>
               </div>
-              <div class="borrowed-due-block">
-                <span class="borrowed-due-date">{{ item.dueDate }}</span>
-                <span class="status-indicator-pill" [ngClass]="item.statusBadgeClass">
-                  <span class="status-dot">{{ item.status === 'ON_TIME' ? '🟢' : (item.status === 'DUE_SOON' ? '🟡' : '🔴') }}</span>
-                  <span>{{ item.statusLabel }}</span>
-                </span>
+              <div class="item-status-wrapper">
+                <span class="badge" [ngClass]="item.statusBadgeClass">{{ item.statusLabel }}</span>
+                <span class="item-due">{{ item.dueDate }}</span>
               </div>
             </div>
           }
         </div>
-      </div>
+      </section>
 
-      <!-- 9. AI RECOMMENDATIONS SECTION (Horizontal Compact Cards) -->
-      <div class="dashboard-section-card">
-        <div class="section-card-head">
-          <div>
-            <h3>Recommended for You</h3>
-            <p class="section-subtext">Curriculum-aligned textbook suggestions ranked by TF-IDF affinity</p>
-          </div>
-          <a routerLink="/recommendations" class="section-link">View All Recommendations →</a>
+      <!-- Curated Recommendations -->
+      <section class="content-block">
+        <div class="block-header">
+          <h3>Curated for Your Branch</h3>
+          <a routerLink="/recommendations" class="link-editorial">View all →</a>
         </div>
 
-        <div class="horizontal-rec-grid">
-          @for (rec of recommendedBooks; track rec.id) {
-            <div class="compact-rec-card">
-              <div class="rec-top-meta">
-                <span class="rec-cat-badge">{{ rec.category }}</span>
-                <span class="rec-score-pill">{{ rec.relevanceScore }}% Match</span>
+        <div class="editorial-list">
+          @for (book of recommendedBooks; track book.id) {
+            <div class="editorial-list-item">
+              <div class="item-meta">
+                <strong class="item-title">{{ book.title }}</strong>
+                <span class="item-sub">{{ book.category }} · {{ book.location }}</span>
               </div>
-              <h4 class="rec-book-title">{{ rec.title }}</h4>
-              <p class="rec-book-desc">{{ rec.description }}</p>
-              <div class="rec-footer">
-                <span class="rec-location">{{ rec.location }}</span>
-                <button type="button" class="btn-rec-view" (click)="viewBook(rec.title)">View →</button>
-              </div>
+              <span class="match-score">{{ book.relevanceScore }}% match</span>
             </div>
           }
         </div>
-      </div>
-    }
+      </section>
+    </div>
+  }
 
-    <!-- ───────────────────────────────────────────────
-         ADMINISTRATOR DASHBOARD VIEW (PRESERVED & SLEEK)
-         ─────────────────────────────────────────────── -->
-    @if (authService.isAdmin()) {
-      <div class="welcome-header-card">
-        <div class="welcome-text-col">
-          <h1 class="greeting-heading">Administrator Console 🛡️</h1>
-          <p class="greeting-department">Central University Library • System Governance & Stock Control</p>
-        </div>
-        <div class="welcome-stat-pill">
-          <span class="stat-number">{{ stats.totalBooks || 248 }}</span>
-          <span class="stat-label">TOTAL INVENTORY COPIES</span>
-        </div>
+  <!-- Admin Quick Navigation -->
+  @if (authService.isAdmin()) {
+    <section class="content-block">
+      <div class="block-header">
+        <h3>Administrative Controls</h3>
+        <span class="text-caption">Quick navigation</span>
       </div>
 
-      <div class="status-metrics-row">
-        <div class="metric-card">
-          <span class="metric-icon">📚</span>
-          <div class="metric-info">
-            <span class="metric-val">{{ stats.totalAvailableBooks }}</span>
-            <span class="metric-name">Available on Shelf</span>
-          </div>
-        </div>
+      <div class="admin-links-grid">
+        <a routerLink="/books" class="admin-link-card">
+          <h4>Book Catalog</h4>
+          <p class="text-caption">Manage 100 books and physical shelf locations</p>
+          <span class="link-arrow">→</span>
+        </a>
 
-        <div class="metric-card">
-          <span class="metric-icon">👥</span>
-          <div class="metric-info">
-            <span class="metric-val">{{ stats.totalMembers }}</span>
-            <span class="metric-name">Cardholders ({{ stats.activeMembers }} active)</span>
-          </div>
-        </div>
+        <a routerLink="/members" class="admin-link-card">
+          <h4>Scholar Registry</h4>
+          <p class="text-caption">30 active members and account ID governance</p>
+          <span class="link-arrow">→</span>
+        </a>
 
-        <div class="metric-card">
-          <span class="metric-icon">🔄</span>
-          <div class="metric-info">
-            <span class="metric-val">{{ stats.currentlyIssuedBooks }}</span>
-            <span class="metric-name">Active Borrowings</span>
-          </div>
-        </div>
+        <a routerLink="/fines" class="admin-link-card">
+          <h4>Fine Accounts</h4>
+          <p class="text-caption">₹500 pending dues and payment records</p>
+          <span class="link-arrow">→</span>
+        </a>
 
-        <div class="metric-card">
-          <span class="metric-icon">💳</span>
-          <div class="metric-info">
-            <span class="metric-val">₹{{ (stats.totalUnpaidFines || 0) | number:'1.2-2' }}</span>
-            <span class="metric-name">Unpaid Fines</span>
-          </div>
-        </div>
+        <a routerLink="/lending" class="admin-link-card">
+          <h4>Circulation Desk</h4>
+          <p class="text-caption">Active borrowings, returns, and overdue tracking</p>
+          <span class="link-arrow">→</span>
+        </a>
       </div>
-
-      <!-- Quick Actions Grid for Admin -->
-      <div class="quick-cards-grid">
-        <div class="modern-action-card">
-          <div class="action-card-top">
-            <span class="action-card-icon">📖</span>
-            <h4>BOOK CATALOG</h4>
-          </div>
-          <p class="action-card-desc">Add, edit, adjust inventory copies, and update shelf coordinates</p>
-          <a routerLink="/books" class="btn-card-action">Manage Catalog →</a>
-        </div>
-
-        <div class="modern-action-card">
-          <div class="action-card-top">
-            <span class="action-card-icon">🔄</span>
-            <h4>LENDING DESK</h4>
-          </div>
-          <p class="action-card-desc">Issue books to students or process returned inventory</p>
-          <a routerLink="/lending" class="btn-card-action">Circulation Desk →</a>
-        </div>
-
-        <div class="modern-action-card">
-          <div class="action-card-top">
-            <span class="action-card-icon">💳</span>
-            <h4>FINES & SETTLEMENTS</h4>
-          </div>
-          <p class="action-card-desc">Collect payments, clear account holds, or apply waivers</p>
-          <a routerLink="/fines" class="btn-card-action">Manage Fines →</a>
-        </div>
-
-        <div class="modern-action-card">
-          <div class="action-card-top">
-            <span class="action-card-icon">👥</span>
-            <h4>MEMBER DIRECTORY</h4>
-          </div>
-          <p class="action-card-desc">Enroll students and faculty, update status, view histories</p>
-          <a routerLink="/members" class="btn-card-action">Manage Members →</a>
-        </div>
-      </div>
-
-
-    }
+    </section>
   }
 </div>
-
-<!-- Compact Library Help Modal -->
-@if (showHelpModal) {
-  <div class="modal-overlay" (click)="closeContact()">
-    <div class="modal-card animate-slide-up" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <div class="modal-title-with-icon">
-          <span class="modal-icon">🏛️</span>
-          <div>
-            <h3>Library Help & Circulation Desk</h3>
-            <p class="modal-sub">Contact the central university library administrative team</p>
-          </div>
-        </div>
-        <button class="close-btn" (click)="closeContact()">✕</button>
-      </div>
-
-      <div class="modal-body">
-        <div class="contact-info-grid">
-          <div class="info-row">
-            <span class="info-label">📞 Helpline:</span>
-            <a href="tel:0987654654" class="info-val-link">0987654654</a>
-          </div>
-          <div class="info-row">
-            <span class="info-label">✉️ Email:</span>
-            <a href="mailto:LIBRARY@admin.com" class="info-val-link">LIBRARY&#64;admin.com</a>
-          </div>
-          <div class="info-row">
-            <span class="info-label">👤 In-Charge:</span>
-            <span class="info-val">admin</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">🕒 Hours:</span>
-            <span class="info-val">Mon–Sat: 8:00 AM – 8:00 PM</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">📍 Location:</span>
-            <span class="info-val">Central Library Building, Floors 1 & 2</span>
-          </div>
-        </div>
-
-        <div class="modal-actions-bar">
-          <a href="tel:0987654654" class="btn btn-primary btn-sm">📞 Call Desk</a>
-          <a href="mailto:LIBRARY@admin.com" class="btn btn-secondary btn-sm">✉️ Email</a>
-          <button type="button" class="btn btn-secondary btn-sm" (click)="closeContact()">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-}

@@ -1,20 +1,23 @@
-<div class="page-header">
-  <div>
-    <h1>Members Directory</h1>
-    <p class="subtitle">Manage registered students, faculty, and library cardholders</p>
+<div class="members-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Scholar & Member Registry</h1>
+      <p class="subtitle">Directory of 41 registered students, account status, and library cardholder governance.</p>
+    </div>
+    <button class="btn btn-primary" (click)="openAddModal()">
+      + Register Member
+    </button>
   </div>
-  <button class="btn btn-primary" (click)="openAddModal()">
-    Register New Member
-  </button>
-</div>
 
-<div class="card">
-  <div class="toolbar">
-    <div class="search-box">
+  <!-- Search & Toolbar -->
+  <div class="members-controls-row">
+    <div class="search-input-wrapper">
+      <span class="search-icon">🔍</span>
       <input 
         type="text" 
-        class="form-control" 
-        placeholder="Search by Name, Email, or Phone..." 
+        class="search-input-field" 
+        placeholder="Search scholars by name, email, or department..." 
         [(ngModel)]="searchQuery" 
         (keyup.enter)="onSearch()"
       />
@@ -22,60 +25,70 @@
     <button class="btn btn-secondary" (click)="onSearch()">Search</button>
   </div>
 
+  <!-- Editorial Members Table -->
   @if (loading) {
-    <div class="loading-state">Loading members...</div>
+    <div class="state-container">
+      <p class="text-caption">Loading scholar registry...</p>
+    </div>
   } @else if (members.length === 0) {
-    <div class="empty-state">
-      <p>No members found. Click "Register New Member" to add one.</p>
+    <div class="empty-state-editorial">
+      <div class="empty-icon-monogram">👥</div>
+      <h3>No scholars found</h3>
+      <p>No members match your search criteria.</p>
+      <button class="btn btn-secondary btn-sm" (click)="searchQuery = ''; onSearch()">Clear search</button>
     </div>
   } @else {
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Email Address</th>
-          <th>Phone</th>
-          <th>Status</th>
-          <th>Membership Date</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (member of members; track member.id) {
+    <div class="data-table-container">
+      <table class="data-table">
+        <thead>
           <tr>
-            <td><strong>{{ member.name }}</strong></td>
-            <td>{{ member.email }}</td>
-            <td>{{ member.phone || 'N/A' }}</td>
-            <td>
-              @if (member.status === 'ACTIVE') {
-                <span class="badge badge-success">ACTIVE</span>
-              } @else if (member.status === 'SUSPENDED') {
-                <span class="badge badge-danger">SUSPENDED</span>
-              } @else {
-                <span class="badge badge-warning" style="background: rgba(239, 68, 68, 0.12); color: #dc2626; border: 1px solid rgba(239, 68, 68, 0.25); font-size: 11px;">
-                  🚫 INACTIVE (ID Deactivated)
-                </span>
-              }
-            </td>
-            <td>{{ member.membershipDate | date:'mediumDate' }}</td>
-            <td class="action-buttons">
-              @if (member.status === 'INACTIVE') {
-                <button class="btn btn-sm" style="background: #10b981; color: white; padding: 4px 9px; font-size: 11.5px; font-weight: 600;" (click)="toggleMemberStatus(member)">
-                  ⚡ Reactivate ID
-                </button>
-              } @else if (member.status === 'ACTIVE') {
-                <button class="btn btn-sm" style="background: #f8fafc; color: #64748b; border: 1px solid #cbd5e1; padding: 4px 9px; font-size: 11.5px;" (click)="toggleMemberStatus(member)">
-                  Deactivate ID
-                </button>
-              }
-              <button class="btn btn-secondary btn-sm" (click)="openHistoryModal(member)">History</button>
-              <button class="btn btn-secondary btn-sm" (click)="openEditModal(member)">Edit</button>
-              <button class="btn btn-danger btn-sm" (click)="deleteMember(member)">Delete</button>
-            </td>
+            <th>Scholar</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th>Registration Date</th>
+            <th>Actions</th>
           </tr>
-        }
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          @for (member of members; track member.id) {
+            <tr>
+              <td>
+                <strong class="table-title">{{ member.name }}</strong>
+              </td>
+              <td><span class="text-body-small">{{ member.email }}</span></td>
+              <td><span class="text-caption">{{ member.phone || '—' }}</span></td>
+              <td>
+                @if (member.status === 'ACTIVE') {
+                  <span class="badge badge-success">Active</span>
+                } @else if (member.status === 'SUSPENDED') {
+                  <span class="badge badge-danger">Suspended</span>
+                } @else {
+                  <span class="badge badge-warning">Deactivated</span>
+                }
+              </td>
+              <td><span class="text-caption">{{ member.membershipDate | date:'mediumDate' }}</span></td>
+              <td>
+                <div class="table-actions">
+                  @if (member.status === 'INACTIVE') {
+                    <button type="button" class="btn btn-primary btn-sm" (click)="toggleMemberStatus(member)">
+                      Reactivate
+                    </button>
+                  } @else if (member.status === 'ACTIVE') {
+                    <button type="button" class="btn btn-secondary btn-sm" (click)="toggleMemberStatus(member)">
+                      Deactivate
+                    </button>
+                  }
+                  <button type="button" class="btn btn-ghost btn-sm" (click)="openHistoryModal(member)">History</button>
+                  <button type="button" class="btn btn-ghost btn-sm" (click)="openEditModal(member)">Edit</button>
+                  <button type="button" class="btn btn-destructive btn-sm" (click)="deleteMember(member)">Delete</button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
   }
 </div>
 
@@ -89,94 +102,64 @@
 
 <!-- Member History Modal -->
 @if (showHistoryModal && historyMember) {
-  <div class="modal-overlay">
-    <div class="modal-card wide-modal">
-      <div class="modal-header">
+  <div class="modal-overlay" (click)="closeHistoryModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()" style="max-width: 640px;">
+      <div class="modal-header-editorial">
         <div>
-          <h3>Member Activity Profile: {{ historyMember.name }}</h3>
-          <p class="sub-text">{{ historyMember.email }} | Status: {{ historyMember.status }}</p>
+          <h3>Scholar Activity: {{ historyMember.name }}</h3>
+          <p class="text-caption">{{ historyMember.email }} · Status: {{ historyMember.status }}</p>
         </div>
-        <button class="close-btn" (click)="closeHistoryModal()">Close</button>
+        <button type="button" class="modal-close" (click)="closeHistoryModal()">✕</button>
       </div>
 
-      <div class="modal-body">
+      <div class="modal-body-editorial">
+        <div class="history-metrics-row">
+          <div class="coord-card">
+            <span class="coord-label">Total Loans</span>
+            <strong class="coord-val">{{ memberLoans.length }}</strong>
+          </div>
+          <div class="coord-card">
+            <span class="coord-label">Account Standing</span>
+            <strong class="coord-val" [class.text-error]="historyMember.status === 'INACTIVE'">{{ historyMember.status }}</strong>
+          </div>
+        </div>
+
         @if (loadingHistory) {
-          <div class="loading-state">Loading activity history...</div>
+          <p class="text-caption">Retrieving loan logs...</p>
+        } @else if (memberLoans.length === 0) {
+          <div class="empty-state-editorial" style="padding: 32px 0;">
+            <p>No recorded loans for this scholar.</p>
+          </div>
         } @else {
-          <!-- Loans Section -->
-          <h4 class="section-title">Loan & Borrowing History ({{ memberLoans.length }})</h4>
-          @if (memberLoans.length === 0) {
-            <p class="text-muted" style="font-size: 13px; margin-bottom: 20px;">No books borrowed yet.</p>
-          } @else {
-            <table class="data-table history-table" style="margin-bottom: 24px;">
+          <div class="data-table-container">
+            <table class="data-table">
               <thead>
                 <tr>
                   <th>Book Title</th>
                   <th>Issue Date</th>
-                  <th>Due Date</th>
-                  <th>Return Date</th>
                   <th>Status</th>
                 </tr>
               </thead>
               <tbody>
-                @for (loan of memberLoans; track loan.id) {
+                @for (tx of memberLoans; track tx.id) {
                   <tr>
-                    <td><strong>{{ loan.bookTitle }}</strong></td>
-                    <td>{{ loan.issueDate | date:'mediumDate' }}</td>
-                    <td>{{ loan.dueDate | date:'mediumDate' }}</td>
-                    <td>{{ loan.returnDate ? (loan.returnDate | date:'mediumDate') : 'Currently Held' }}</td>
+                    <td><strong class="table-title">{{ tx.bookTitle }}</strong></td>
+                    <td><span class="text-caption">{{ tx.issueDate | date:'mediumDate' }}</span></td>
                     <td>
-                      @if (loan.status === 'ISSUED') {
-                        <span class="badge badge-warning">ISSUED</span>
-                      } @else if (loan.status === 'RETURNED') {
-                        <span class="badge badge-success">RETURNED</span>
-                      } @else {
-                        <span class="badge badge-danger">OVERDUE</span>
-                      }
+                      <span class="badge" [ngClass]="tx.status === 'RETURNED' ? 'badge-success' : (tx.status === 'OVERDUE' ? 'badge-danger' : 'badge-info')">
+                        {{ tx.status }}
+                      </span>
                     </td>
                   </tr>
                 }
               </tbody>
             </table>
-          }
-
-          <!-- Fines Section -->
-          <h4 class="section-title">Fine Records & Settlements ({{ memberFines.length }})</h4>
-          @if (memberFines.length === 0) {
-            <p class="text-muted" style="font-size: 13px;">No fine records on this account.</p>
-          } @else {
-            <table class="data-table history-table">
-              <thead>
-                <tr>
-                  <th>Amount</th>
-                  <th>Status</th>
-                  <th>Payment Date</th>
-                  <th>Method</th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (fine of memberFines; track fine.id) {
-                  <tr>
-                    <td><strong>₹{{ fine.amount | number:'1.2-2' }}</strong></td>
-                    <td>
-                      @if (fine.status === 'UNPAID') {
-                        <span class="badge badge-danger">UNPAID</span>
-                      } @else {
-                        <span class="badge badge-success">PAID</span>
-                      }
-                    </td>
-                    <td>{{ fine.paymentDate ? (fine.paymentDate | date:'mediumDate') : '—' }}</td>
-                    <td>{{ fine.paymentMethod || '—' }}</td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          }
+          </div>
         }
       </div>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="closeHistoryModal()">Close Profile</button>
+      <div class="modal-footer-editorial">
+        <button type="button" class="btn btn-secondary" (click)="closeHistoryModal()">Close</button>
       </div>
     </div>
   </div>
