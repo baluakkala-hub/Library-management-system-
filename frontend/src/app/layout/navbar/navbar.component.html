@@ -1,0 +1,36 @@
+<header class="navbar">
+  <div class="navbar-left">
+    <span class="portal-badge" [class.badge-admin]="authService.isAdmin()" [class.badge-student]="authService.isStudent()">
+      {{ authService.isAdmin() ? 'Administration' : 'Scholar Portal' }}
+    </span>
+    <span class="library-location">Central Library · Aisles 1–8</span>
+  </div>
+
+  <div class="navbar-right">
+    <!-- Light / Dark Mode Toggle -->
+    <button 
+      type="button" 
+      class="theme-toggle" 
+      (click)="themeService.toggleTheme()"
+      [title]="themeService.isDark() ? 'Switch to daylight' : 'Switch to evening mode'"
+    >
+      {{ themeService.isDark() ? 'Daylight' : 'Evening' }}
+    </button>
+
+    <!-- User Profile & Role Info -->
+    <div class="user-profile">
+      <div class="user-avatar">
+        {{ authService.currentUser()?.avatar || 'AD' }}
+      </div>
+      <div class="user-info">
+        <span class="user-name">{{ authService.currentUser()?.name || 'Administrator' }}</span>
+        <span class="user-role">{{ authService.isAdmin() ? 'Librarian' : 'Student' }}</span>
+      </div>
+    </div>
+
+    <!-- Sign Out Button -->
+    <button type="button" class="btn btn-ghost btn-sm" (click)="logout()">
+      Sign Out
+    </button>
+  </div>
+</header>

@@ -1,0 +1,118 @@
+/* ─────────────────────────────────────────────────────────────
+   SECTION 14, 15 — EDITORIAL LENDING & CIRCULATION
+   ───────────────────────────────────────────────────────────── */
+
+.lending-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.page-title {
+  margin-bottom: var(--space-xs);
+}
+
+.subtitle {
+  font-size: 15px;
+  color: var(--text-secondary);
+  max-width: 680px;
+}
+
+.header-action-group {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+/* ── Filter Pills Row ── */
+.lending-controls-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.filter-pills-bar {
+  display: flex;
+  gap: var(--space-xs);
+  flex-wrap: wrap;
+}
+
+.filter-pill {
+  height: 32px;
+  padding: 0 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-surface);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-editorial);
+}
+
+.filter-pill:hover {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.filter-pill.active {
+  background-color: var(--accent-soft);
+  color: var(--accent-primary);
+  border-color: rgba(82, 107, 88, 0.3);
+  font-weight: 600;
+}
+
+/* ── Typography & Tables ── */
+.isbn-text {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.table-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.table-author {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.text-error {
+  color: var(--error);
+}
+
+.table-actions {
+  display: flex;
+  gap: var(--space-xs);
+  align-items: center;
+}
+
+.empty-state-editorial {
+  padding: 64px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.empty-icon-monogram {
+  font-size: 32px;
+  margin-bottom: var(--space-xs);
+  color: var(--text-tertiary);
+}
+
+.state-container {
+  padding: 48px;
+  text-align: center;
+}

@@ -1,0 +1,201 @@
+<div class="map-page-container">
+  <!-- Editorial Page Header -->
+  <header class="map-page-header">
+    <div class="header-content">
+      <span class="editorial-kicker">Interactive Physical Floorplan</span>
+      <h1 class="page-title">University Library Shelf Navigator</h1>
+      <p class="page-subtitle">
+        Architectural floorplan of the Central Library across Aisles 1 to 8. Click any aisle or zone to inspect shelf rows, physical racks, and shelf-allocated textbooks in real time.
+      </p>
+    </div>
+    <div class="header-legend">
+      <div class="legend-item"><span class="legend-color-dot" style="background: #4A6B82;"></span> North Wing (STEM)</div>
+      <div class="legend-item"><span class="legend-color-dot" style="background: #655A8A;"></span> South Wing (Sciences & Arts)</div>
+      <div class="legend-item"><span class="legend-color-dot" style="background: var(--accent-primary);"></span> Circulation Desk</div>
+    </div>
+  </header>
+
+  <!-- Interactive Map Canvas Grid -->
+  <div class="map-main-layout">
+    <!-- Left: Architectural SVG/CSS Floorplan -->
+    <div class="floorplan-card">
+      <div class="floorplan-meta">
+        <span class="floor-level-tag">LEVEL 1 &middot; MAIN REPOSITORIES</span>
+        <span class="compass-tag">🧭 North</span>
+      </div>
+
+      <div class="library-blueprint">
+        <!-- Entrance & Reception -->
+        <div class="blueprint-zone entrance-zone">
+          <span class="zone-icon">🚪</span>
+          <div class="zone-label">
+            <strong>Main Library Gate & Security Desk</strong>
+            <span class="zone-caption">RFID Gate &middot; Bag Drop</span>
+          </div>
+        </div>
+
+        <!-- Central Circulation & Helpdesk -->
+        <div class="blueprint-zone circulation-zone">
+          <span class="zone-icon">🛎️</span>
+          <div class="zone-label">
+            <strong>Central Circulation & Borrowing Desk</strong>
+            <span class="zone-caption">Issue / Return Desk &middot; Librarian Office</span>
+          </div>
+        </div>
+
+        <!-- Main Central Corridor -->
+        <div class="central-walkway">
+          <span class="walkway-arrow">←</span>
+          <span>MAIN CENTRAL WALKWAY (Aisles 1–8 Access Corridor)</span>
+          <span class="walkway-arrow">→</span>
+        </div>
+
+        <!-- Wings Grid -->
+        <div class="wings-container">
+          <!-- North Wing: Aisles 1 to 4 -->
+          <div class="wing-block north-wing">
+            <div class="wing-header">
+              <span class="wing-badge">NORTH WING</span>
+              <span class="wing-title">Engineering & Computing</span>
+            </div>
+
+            <div class="aisles-grid">
+              @for (aisle of aisles.slice(0, 4); track aisle.number) {
+                <div 
+                  class="aisle-rack" 
+                  [class.selected]="selectedAisle?.number === aisle.number"
+                  (click)="selectAisle(aisle)"
+                >
+                  <div class="aisle-indicator-bar" [style.background]="aisle.color"></div>
+                  <div class="aisle-content">
+                    <div class="aisle-num-row">
+                      <strong class="aisle-code">Aisle {{ aisle.number }}</strong>
+                      <span class="aisle-count-pill">{{ aisle.bookCount || 0 }} Books</span>
+                    </div>
+                    <span class="aisle-dept">{{ aisle.department }}</span>
+                    <div class="shelf-chips-row">
+                      <span class="shelf-mini-chip">A1</span>
+                      <span class="shelf-mini-chip">A2</span>
+                      <span class="shelf-mini-chip">B1</span>
+                      <span class="shelf-mini-chip">B2</span>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- South Wing: Aisles 5 to 8 -->
+          <div class="wing-block south-wing">
+            <div class="wing-header">
+              <span class="wing-badge">SOUTH WING</span>
+              <span class="wing-title">Sciences, Management & Humanities</span>
+            </div>
+
+            <div class="aisles-grid">
+              @for (aisle of aisles.slice(4, 8); track aisle.number) {
+                <div 
+                  class="aisle-rack" 
+                  [class.selected]="selectedAisle?.number === aisle.number"
+                  (click)="selectAisle(aisle)"
+                >
+                  <div class="aisle-indicator-bar" [style.background]="aisle.color"></div>
+                  <div class="aisle-content">
+                    <div class="aisle-num-row">
+                      <strong class="aisle-code">Aisle {{ aisle.number }}</strong>
+                      <span class="aisle-count-pill">{{ aisle.bookCount || 0 }} Books</span>
+                    </div>
+                    <span class="aisle-dept">{{ aisle.department }}</span>
+                    <div class="shelf-chips-row">
+                      <span class="shelf-mini-chip">A1</span>
+                      <span class="shelf-mini-chip">A2</span>
+                      <span class="shelf-mini-chip">B1</span>
+                      <span class="shelf-mini-chip">B2</span>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Quiet Study Space & Digital Lab -->
+        <div class="blueprint-bottom-amenities">
+          <div class="amenity-card">
+            <span>💻</span>
+            <span>Digital Scholarly Lab (Terminals 1–24)</span>
+          </div>
+          <div class="amenity-card">
+            <span>📖</span>
+            <span>Silent Reading Hall & Discussion Cubicles</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Detailed Inspector for the Selected Aisle -->
+    <div class="aisle-inspector-card">
+      @if (selectedAisle) {
+        <div class="inspector-header">
+          <div class="inspector-title-area">
+            <span class="inspector-badge" [style.background]="selectedAisle.color">{{ selectedAisle.zone }}</span>
+            <h2 class="inspector-aisle-name">{{ selectedAisle.name }}</h2>
+            <p class="inspector-dept">{{ selectedAisle.department }}</p>
+          </div>
+        </div>
+
+        <div class="shelf-coordinates-panel">
+          <span class="section-micro-label">PHYSICAL SHELF ROWS</span>
+          <div class="shelf-pills-list">
+            @for (shelf of selectedAisle.shelves; track shelf) {
+              <div class="shelf-coord-box">
+                <span class="shelf-box-icon">🏷️</span>
+                <span class="shelf-box-text">{{ shelf }}</span>
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="curriculum-topics-box">
+          <span class="section-micro-label">SUBJECT CURRICULUM CLUSTERS</span>
+          <p class="curriculum-text">{{ selectedAisle.description }}</p>
+        </div>
+
+        <!-- Books Stocked in This Aisle -->
+        <div class="aisle-books-section">
+          <div class="aisle-books-header">
+            <span class="section-micro-label">BOOKS LOCATED HERE ({{ aisleBooks.length }})</span>
+            <a routerLink="/books" class="link-editorial">View in catalog →</a>
+          </div>
+
+          @if (loading) {
+            <p class="text-caption">Locating catalog copies...</p>
+          } @else if (aisleBooks.length === 0) {
+            <div class="empty-aisle-box">
+              <p>No books currently indexed for this aisle.</p>
+            </div>
+          } @else {
+            <div class="aisle-books-list">
+              @for (b of aisleBooks; track b.id) {
+                <div class="aisle-book-row" (click)="viewInCatalog(b.title)">
+                  <div class="book-mini-info">
+                    <strong class="b-title">{{ b.title }}</strong>
+                    <span class="b-sub">by {{ b.author }}</span>
+                  </div>
+                  <div class="book-mini-coord">
+                    <span class="b-coord-badge">{{ b.shelf }} &middot; {{ b.columnRack }}</span>
+                    @if ((b.availableCopies ?? 0) > 0) {
+                      <span class="b-avail-badge in-stock">{{ b.availableCopies }} avail</span>
+                    } @else {
+                      <span class="b-avail-badge out-stock">Loaned</span>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>

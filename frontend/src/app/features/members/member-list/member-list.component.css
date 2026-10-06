@@ -1,0 +1,321 @@
+/* ─────────────────────────────────────────────────────────────
+   SECTION 14, 15, 16 — EDITORIAL MEMBER REGISTRY
+   ───────────────────────────────────────────────────────────── */
+
+.members-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.page-title {
+  margin-bottom: var(--space-xs);
+}
+
+.subtitle {
+  font-size: 15px;
+  color: var(--text-secondary);
+  max-width: 680px;
+}
+
+/* ── Search & Controls ── */
+.members-controls-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  max-width: 600px;
+}
+
+.search-input-wrapper {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  font-size: 15px;
+  color: var(--text-tertiary);
+  pointer-events: none;
+}
+
+.table-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.table-actions {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.history-metrics-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.coord-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--space-sm) var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.coord-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+.coord-val {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  color: var(--text-primary);
+}
+
+.text-error {
+  color: var(--error);
+}
+
+.modal-header-editorial {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: var(--space-xl) var(--space-xl) var(--space-md);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.modal-close:hover {
+  color: var(--text-primary);
+}
+
+.modal-body-editorial {
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.modal-footer-editorial {
+  padding: var(--space-md) var(--space-xl);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-xs);
+}
+
+.empty-state-editorial {
+  padding: 64px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.empty-icon-monogram {
+  font-size: 32px;
+  margin-bottom: var(--space-xs);
+  color: var(--text-tertiary);
+}
+
+.state-container {
+  padding: 48px;
+  text-align: center;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   DIGITAL LIBRARY CARD STYLES
+   ───────────────────────────────────────────────────────────── */
+.id-card-modal-dialog {
+  max-width: 540px !important;
+}
+
+.library-card-wrapper {
+  background: linear-gradient(135deg, #1b263b 0%, #0d1b2a 100%);
+  color: #f8f9fa;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.library-card-wrapper::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle, rgba(201, 162, 77, 0.25) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.card-brand-stripe {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+
+.brand-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.univ-crest {
+  font-size: 26px;
+}
+
+.univ-title {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #c9a24d;
+  font-weight: 700;
+}
+
+.univ-subtitle {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.card-chip {
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  background: linear-gradient(45deg, #ffd166, #c9a24d);
+  color: #1b263b;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+
+.card-main-grid {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.card-avatar-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.avatar-monogram {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c9a24d 0%, #8c733e 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.card-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.field-row-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.card-lbl {
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.card-val-name {
+  font-size: 15px;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.card-val {
+  font-size: 12px;
+  color: #e0e1dd;
+}
+
+.card-val.mono {
+  font-family: var(--font-mono, monospace);
+  color: #ffd166;
+  font-weight: 600;
+}
+
+.card-barcode-strip {
+  background: rgba(255, 255, 255, 0.95);
+  color: #111111;
+  border-radius: 6px;
+  padding: 8px;
+  text-align: center;
+}
+
+.simulated-barcode {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  line-height: 1;
+}
+
+.barcode-subtext {
+  font-family: var(--font-mono, monospace);
+  font-size: 9px;
+  color: #555555;
+  margin-top: 3px;
+  letter-spacing: 1px;
+}

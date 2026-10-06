@@ -1,0 +1,552 @@
+.map-page-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Page Header Editorial */
+.map-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-4);
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.editorial-kicker {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+}
+
+.page-title {
+  font-family: var(--font-serif);
+  font-size: 38px;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.1;
+}
+
+.page-subtitle {
+  font-size: 15px;
+  color: var(--text-secondary);
+  max-width: 760px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.header-legend {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 8px 16px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-color-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Layout Grid */
+.map-main-layout {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+/* Left Floorplan Card */
+.floorplan-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  box-shadow: var(--shadow-xs);
+}
+
+.floorplan-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.floor-level-tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.compass-tag {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+}
+
+.library-blueprint {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--bg-secondary);
+  border: 2px dashed var(--border-default);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+}
+
+/* Blueprint Zones */
+.blueprint-zone {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 12px 18px;
+}
+
+.entrance-zone {
+  border-left: 4px solid var(--warning);
+}
+
+.circulation-zone {
+  border-left: 4px solid var(--accent-primary);
+  background: linear-gradient(135deg, var(--bg-surface) 0%, rgba(82, 107, 88, 0.08) 100%);
+}
+
+.zone-icon {
+  font-size: 22px;
+}
+
+.zone-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.zone-label strong {
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+.zone-caption {
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+/* Central Walkway */
+.central-walkway {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 14px;
+  background: var(--bg-primary);
+  border-radius: var(--radius-xs);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  border: 1px dotted var(--border-default);
+}
+
+.walkway-arrow {
+  font-size: 14px;
+}
+
+/* Wings Container */
+.wings-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.wing-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+}
+
+.wing-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 8px;
+}
+
+.wing-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+}
+
+.wing-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Aisles Grid */
+.aisles-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.aisle-rack {
+  display: flex;
+  align-items: stretch;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-editorial);
+  overflow: hidden;
+}
+
+.aisle-rack:hover {
+  transform: translateX(4px);
+  border-color: var(--border-default);
+  box-shadow: var(--shadow-xs);
+}
+
+.aisle-rack.selected {
+  border-color: var(--accent-primary);
+  background: var(--bg-elevated);
+  box-shadow: 0 0 0 2px var(--accent-primary);
+}
+
+.aisle-indicator-bar {
+  width: 6px;
+  flex-shrink: 0;
+}
+
+.aisle-content {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.aisle-num-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.aisle-code {
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+.aisle-count-pill {
+  font-size: 10px;
+  font-weight: 600;
+  background: var(--bg-surface);
+  padding: 2px 6px;
+  border-radius: var(--radius-pill);
+  color: var(--text-tertiary);
+  border: 1px solid var(--border-subtle);
+}
+
+.aisle-dept {
+  font-size: 11px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shelf-chips-row {
+  display: flex;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.shelf-mini-chip {
+  font-size: 9px;
+  font-weight: 600;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  padding: 1px 4px;
+  border-radius: 2px;
+  color: var(--text-tertiary);
+}
+
+/* Amenities Bottom */
+.blueprint-bottom-amenities {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.amenity-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xs);
+  padding: 8px 12px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+/* Right Inspector Card */
+.aisle-inspector-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  position: sticky;
+  top: 24px;
+}
+
+.inspector-header {
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: var(--space-md);
+}
+
+.inspector-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  color: #FFFFFF;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  margin-bottom: 6px;
+}
+
+.inspector-aisle-name {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+}
+
+.inspector-dept {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.section-micro-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* Shelf Coordinate Boxes */
+.shelf-pills-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.shelf-coord-box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xs);
+  padding: 6px 10px;
+}
+
+.shelf-box-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Curriculum Box */
+.curriculum-topics-box {
+  background: var(--bg-secondary);
+  border-left: 3px solid var(--accent-primary);
+  border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+  padding: 10px 14px;
+}
+
+.curriculum-text {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* Books in this aisle */
+.aisle-books-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.aisle-books-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.link-editorial {
+  font-size: 12px;
+  color: var(--accent-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.link-editorial:hover {
+  text-decoration: underline;
+}
+
+.aisle-books-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 380px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.aisle-book-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  transition: all var(--duration-fast) ease-out;
+  gap: 8px;
+}
+
+.aisle-book-row:hover {
+  background: var(--bg-elevated);
+  border-color: var(--accent-primary);
+  transform: translateX(2px);
+}
+
+.book-mini-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.b-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+
+.b-sub {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.book-mini-coord {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.b-coord-badge {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+}
+
+.b-avail-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: var(--radius-pill);
+}
+
+.b-avail-badge.in-stock {
+  background: var(--accent-soft);
+  color: var(--accent-primary);
+}
+
+.b-avail-badge.out-stock {
+  background: rgba(168, 93, 88, 0.12);
+  color: var(--error);
+}
+
+.empty-aisle-box {
+  padding: 16px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+@media (max-width: 1024px) {
+  .map-main-layout {
+    grid-template-columns: 1fr;
+  }
+  .aisle-inspector-card {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .wings-container {
+    grid-template-columns: 1fr;
+  }
+  .blueprint-bottom-amenities {
+    grid-template-columns: 1fr;
+  }
+}

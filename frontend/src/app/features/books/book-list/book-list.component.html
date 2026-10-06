@@ -1,0 +1,317 @@
+<div class="book-catalog-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">{{ authService.isAdmin() ? 'Book Inventory & Shelf Catalog' : 'Library Catalog' }}</h1>
+      <p class="subtitle">
+        {{ authService.isAdmin() ? 'Manage institutional stock, copy allocation, and shelf coordinates across Aisles 1–8.' : 'Explore 100 university textbooks and classic literature. Check physical shelf coordinates and real-time availability.' }}
+      </p>
+    </div>
+    @if (authService.isAdmin()) {
+      <button class="btn btn-primary" (click)="openAddModal()">
+        + Add Book
+      </button>
+    }
+  </div>
+
+  <!-- Search & Filter Controls -->
+  <div class="catalog-controls">
+    <div class="search-bar-row">
+      <div class="search-input-wrapper">
+        <span class="search-icon">🔍</span>
+        <input 
+          type="text" 
+          class="search-input-field" 
+          [placeholder]="authService.isAdmin() ? 'Search by title, author, category, or ISBN...' : (aiSearchMode ? 'Describe what you want to learn (e.g. distributed systems, neural networks)...' : 'Search by title, author, or category...')" 
+          [(ngModel)]="searchQuery" 
+          (keyup.enter)="onSearch()"
+        />
+        @if (searchQuery) {
+          <button type="button" class="clear-search-btn" (click)="clearSearchFilter()">✕</button>
+        }
+      </div>
+
+      <button type="button" class="btn btn-secondary" (click)="onSearch()">
+        Search
+      </button>
+
+      @if (authService.isStudent()) {
+        <button 
+          type="button" 
+          class="btn" 
+          [ngClass]="aiSearchMode ? 'btn-primary' : 'btn-secondary'" 
+          (click)="toggleAiSearchMode()"
+        >
+          {{ aiSearchMode ? 'AI Search: On' : 'AI Search' }}
+        </button>
+      }
+
+      <!-- View Switcher -->
+      <div class="view-toggle-group">
+        <button 
+          type="button" 
+          class="toggle-btn" 
+          [class.active]="viewMode === 'cards'" 
+          (click)="viewMode = 'cards'"
+          title="Grid view"
+        >
+          Grid
+        </button>
+        <button 
+          type="button" 
+          class="toggle-btn" 
+          [class.active]="viewMode === 'table'" 
+          (click)="viewMode = 'table'"
+          title="Table view"
+        >
+          Table
+        </button>
+      </div>
+    </div>
+
+    <!-- Category Filter Chips -->
+    <div class="genre-filter-row">
+      <button type="button" class="filter-pill" [class.active]="!searchQuery" (click)="filterByCategory('')">
+        All Books (100)
+      </button>
+      <button type="button" class="filter-pill" [class.active]="searchQuery === 'Novels'" (click)="filterByCategory('Novels')">
+        Novels & Classics
+      </button>
+      <button type="button" class="filter-pill" [class.active]="searchQuery === 'Computer Science'" (click)="filterByCategory('Computer Science')">
+        Computer Science
+      </button>
+      <button type="button" class="filter-pill" [class.active]="searchQuery === 'Artificial Intelligence'" (click)="filterByCategory('Artificial Intelligence')">
+        AI & ML
+      </button>
+      <button type="button" class="filter-pill" [class.active]="searchQuery === 'Electrical Engineering'" (click)="filterByCategory('Electrical Engineering')">
+        Electrical & VLSI
+      </button>
+      <button type="button" class="filter-pill" [class.active]="searchQuery === 'Mechanical Engineering'" (click)="filterByCategory('Mechanical Engineering')">
+        Mechanical
+      </button>
+      <button type="button" class="filter-pill" [class.active]="searchQuery === 'Civil Engineering'" (click)="filterByCategory('Civil Engineering')">
+        Civil
+      </button>
+      <button type="button" class="filter-pill" [class.active]="searchQuery === 'Management'" (click)="filterByCategory('Management')">
+        Management
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (loading) {
+    <div class="state-container">
+      <p class="text-caption">Loading library catalog...</p>
+    </div>
+  } @else if (books.length === 0) {
+    <!-- Empty State per Section 21 -->
+    <div class="empty-state-editorial">
+      <div class="empty-icon-monogram">📖</div>
+      <h3>No books found</h3>
+      <p>We couldn't find any books matching your query.</p>
+      <button class="btn btn-secondary btn-sm" (click)="clearSearchFilter()">Clear search</button>
+    </div>
+  } @else {
+    <!-- ───────────────────────────────────────────────
+         VIEW 1: BOOK CARDS (Section 11)
+         ─────────────────────────────────────────────── -->
+    @if (viewMode === 'cards') {
+      <div class="book-cards-grid">
+        @for (book of books; track book.id) {
+          <article class="editorial-book-card">
+            <!-- Book Cover Container -->
+            <div class="book-cover-surface" (click)="openShelfModal(book)">
+              <div class="cover-art-content">
+                <span class="cover-category-micro">{{ book.category || 'Textbook' }}</span>
+                <h4 class="cover-title-display">{{ book.title }}</h4>
+                <span class="cover-author-sub">{{ book.author }}</span>
+              </div>
+              <div class="cover-spine-edge"></div>
+            </div>
+
+            <!-- Card Meta Structure -->
+            <div class="card-meta-body">
+              <h4 class="book-card-title" [title]="book.title" (click)="openShelfModal(book)">{{ book.title }}</h4>
+              <p class="book-card-author">{{ book.author }}</p>
+              
+              <div class="card-status-line">
+                <span class="genre-text">{{ book.category || 'General' }}</span>
+                <span class="dot-separator">·</span>
+                @if ((book.availableCopies ?? 0) > 0) {
+                  <span class="status-available">{{ book.availableCopies }} of {{ book.totalCopies }} available</span>
+                } @else {
+                  <span class="status-out">All copies checked out</span>
+                }
+              </div>
+
+              <!-- Shelf Location -->
+              <div class="card-shelf-location" (click)="openShelfModal(book)">
+                <span class="shelf-label">Location:</span>
+                <span class="shelf-val">{{ book.aisle || 'Aisle 1' }} · {{ book.shelf || 'A1' }}</span>
+              </div>
+
+              <!-- Action Row -->
+              <div class="card-action-row">
+                @if (authService.isAdmin()) {
+                  <button type="button" class="btn btn-secondary btn-sm" (click)="openEditModal(book)">Edit</button>
+                  <button type="button" class="btn btn-destructive btn-sm" (click)="deleteBook(book)">Delete</button>
+                } @else {
+                  <button type="button" class="btn btn-ghost btn-sm" (click)="openShelfModal(book)">Shelf Map</button>
+                  @if ((book.availableCopies ?? 0) > 0) {
+                    <button type="button" class="btn btn-primary btn-sm" (click)="requestBorrow(book)">Borrow</button>
+                  } @else {
+                    <button type="button" class="btn btn-secondary btn-sm" (click)="openReserveModal(book)">Hold</button>
+                  }
+                }
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    }
+
+    <!-- ───────────────────────────────────────────────
+         VIEW 2: EDITORIAL TABLE (Section 14)
+         ─────────────────────────────────────────────── -->
+    @if (viewMode === 'table') {
+      <div class="data-table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ISBN</th>
+              <th>Title & Author</th>
+              <th>Genre</th>
+              <th>Shelf Location</th>
+              <th>Stock</th>
+              <th>Availability</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (book of books; track book.id) {
+              <tr>
+                <td><span class="isbn-text">{{ book.isbn }}</span></td>
+                <td>
+                  <strong class="table-title">{{ book.title }}</strong>
+                  <div class="table-author">{{ book.author }}</div>
+                </td>
+                <td><span class="badge badge-secondary">{{ book.category || 'General' }}</span></td>
+                <td>
+                  <span class="table-shelf" (click)="openShelfModal(book)">
+                    {{ book.aisle || 'Aisle 1' }} · {{ book.shelf || 'A1' }}
+                  </span>
+                </td>
+                <td>{{ book.availableCopies }} / {{ book.totalCopies }}</td>
+                <td>
+                  @if ((book.availableCopies ?? 0) > 0) {
+                    <span class="badge badge-success">Available</span>
+                  } @else {
+                    <span class="badge badge-danger">Checked out</span>
+                  }
+                </td>
+                <td>
+                  <div class="table-actions">
+                    @if (authService.isAdmin()) {
+                      <button type="button" class="btn btn-secondary btn-sm" (click)="openEditModal(book)">Edit</button>
+                      <button type="button" class="btn btn-destructive btn-sm" (click)="deleteBook(book)">Delete</button>
+                    } @else {
+                      <button type="button" class="btn btn-ghost btn-sm" (click)="openShelfModal(book)">Locate</button>
+                      @if ((book.availableCopies ?? 0) > 0) {
+                        <button type="button" class="btn btn-primary btn-sm" (click)="requestBorrow(book)">Borrow</button>
+                      } @else {
+                        <button type="button" class="btn btn-secondary btn-sm" (click)="openReserveModal(book)">Hold</button>
+                      }
+                    }
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+    <!-- Pagination -->
+    @if (isPagedMode && totalPages > 1) {
+      <div class="pagination-row">
+        <button type="button" class="btn btn-secondary btn-sm" [disabled]="pageNumber === 0" (click)="goToPage(-1)">
+          Previous
+        </button>
+        <span class="text-caption">
+          Page {{ pageNumber + 1 }} of {{ totalPages }}
+        </span>
+        <button type="button" class="btn btn-secondary btn-sm" [disabled]="pageNumber >= totalPages - 1" (click)="goToPage(1)">
+          Next
+        </button>
+      </div>
+    }
+  }
+
+  <!-- ───────────────────────────────────────────────
+       SHELF LOCATOR MODAL (Section 16)
+       ─────────────────────────────────────────────── -->
+  @if (showShelfModal && shelfModalBook) {
+    <div class="modal-overlay" (click)="closeShelfModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header-editorial">
+          <div>
+            <h3>Shelf Coordinates</h3>
+            <p class="text-caption">Exact physical library location</p>
+          </div>
+          <button type="button" class="modal-close" (click)="closeShelfModal()">✕</button>
+        </div>
+
+        <div class="modal-body-editorial">
+          <div class="book-identity-summary">
+            <h4>{{ shelfModalBook.title }}</h4>
+            <p class="text-caption">{{ shelfModalBook.author }} · {{ shelfModalBook.category }}</p>
+          </div>
+
+          <div class="coordinates-grid">
+            <div class="coord-card">
+              <span class="coord-label">Aisle</span>
+              <strong class="coord-val">{{ shelfModalBook.aisle || 'Aisle 1' }}</strong>
+            </div>
+            <div class="coord-card">
+              <span class="coord-label">Shelf Row</span>
+              <strong class="coord-val">{{ shelfModalBook.shelf || 'A1' }}</strong>
+            </div>
+            <div class="coord-card">
+              <span class="coord-label">Rack</span>
+              <strong class="coord-val">{{ shelfModalBook.columnRack || 'Rack 1' }}</strong>
+            </div>
+          </div>
+
+          <div class="shelf-instruction-box">
+            <p class="text-body-small">
+              Located in <strong>{{ shelfModalBook.aisle }}</strong>. Walk along the main central corridor and check shelf row <strong>{{ shelfModalBook.shelf }}, {{ shelfModalBook.columnRack }}</strong>. Books are arranged alphabetically by author.
+            </p>
+            <div style="margin-top: 10px;">
+              <a routerLink="/map" (click)="closeShelfModal()" class="btn btn-secondary btn-sm" style="display: inline-flex; align-items: center; gap: 6px;">
+                🗺️ View Full Library Floorplan →
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer-editorial">
+          <button type="button" class="btn btn-secondary" (click)="closeShelfModal()">Close</button>
+          @if ((shelfModalBook.availableCopies ?? 0) > 0 && authService.isStudent()) {
+            <button type="button" class="btn btn-primary" (click)="requestBorrow(shelfModalBook); closeShelfModal()">
+              Borrow
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Add/Edit Modal (Admin) -->
+  @if (showModal) {
+    <app-book-form 
+      [book]="selectedBook" 
+      (save)="onSaveBook()" 
+      (cancel)="closeModal()"
+    ></app-book-form>
+  }
+</div>

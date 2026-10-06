@@ -1,0 +1,278 @@
+<div class="dashboard-page">
+  <!-- Optional Action Toast Feedback -->
+  @if (actionToast) {
+    <div class="feedback-toast">
+      {{ actionToast }}
+    </div>
+  }
+
+  <!-- ========================================================= -->
+  <!-- 1. STUDENT SCHOLAR DASHBOARD VIEW                         -->
+  <!-- ========================================================= -->
+  @if (authService.isStudent()) {
+    <div class="student-dashboard-layout">
+      <!-- Scholar Personal Hero Banner -->
+      <header class="scholar-hero-card">
+        <div class="hero-left">
+          <div class="hero-kicker">
+            <span class="pulse-indicator"></span>
+            <span>Scholar Reading Desk &middot; Student ID AVIT-LIB-0{{ authService.currentUser()?.memberId || '3' }}</span>
+          </div>
+          <h1 class="hero-name">{{ greeting }}</h1>
+          <p class="hero-meta">{{ department }} &middot; Anna University Academic Year 2026</p>
+        </div>
+        <div class="hero-right">
+          <div class="digital-card-preview" routerLink="/members">
+            <span class="card-chip"></span>
+            <span class="card-title">Digital Library Pass</span>
+            <span class="card-sub">{{ authService.currentUser()?.name }}</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Student Personal Metrics Row -->
+      <section class="personal-metrics-grid">
+        <div class="pmetric-card">
+          <div class="pmetric-icon">📖</div>
+          <div class="pmetric-data">
+            <span class="pmetric-value">{{ studentActiveLoans.length }}</span>
+            <span class="pmetric-label">Active Loans Checked Out</span>
+          </div>
+        </div>
+
+        <div class="pmetric-card">
+          <div class="pmetric-icon">💳</div>
+          <div class="pmetric-data">
+            <span class="pmetric-value" [class.text-danger]="studentFinesDue > 0">₹{{ studentFinesDue }}</span>
+            <span class="pmetric-label">Outstanding Fine Balance</span>
+          </div>
+        </div>
+
+        <div class="pmetric-card">
+          <div class="pmetric-icon">📚</div>
+          <div class="pmetric-data">
+            <span class="pmetric-value">{{ stats.totalBooks || 100 }}</span>
+            <span class="pmetric-label">Available Catalog Titles</span>
+          </div>
+        </div>
+
+        <div class="pmetric-card">
+          <div class="pmetric-icon">✅</div>
+          <div class="pmetric-data">
+            <span class="pmetric-value">{{ studentReturnedCount }}</span>
+            <span class="pmetric-label">Completed Reads (Returned)</span>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- Two-Column Student Workspace -->
+      <div class="student-workspace-grid">
+        <!-- Left: My Active Checked-Out Books (with 1-Click Renew) -->
+        <section class="desk-panel">
+          <div class="panel-header">
+            <div>
+              <h3>Currently Borrowed Books</h3>
+              <p class="panel-subtitle">Volumes in your custody with due date alerts and 1-click renewal</p>
+            </div>
+            <a routerLink="/books" class="link-editorial">+ Borrow More</a>
+          </div>
+
+          @if (studentActiveLoans.length === 0) {
+            <div class="empty-panel-notice">
+              <span class="empty-icon">📖</span>
+              <p>You have no active loans checked out right now.</p>
+              <a routerLink="/books" class="btn btn-secondary btn-sm">Explore Books Catalog</a>
+            </div>
+          } @else {
+            <div class="loans-stream">
+              @for (item of studentActiveLoans; track item.id) {
+                <div class="student-loan-row">
+                  <div class="loan-book-info">
+                    <strong class="loan-book-title">{{ item.bookTitle }}</strong>
+                    <div class="loan-meta-tags">
+                      <span class="meta-tag">Loan #{{ item.id }}</span>
+                      <span class="meta-tag">Issued: {{ item.issueDate }}</span>
+                      <span class="meta-tag due-tag" [class.is-overdue]="item.status === 'OVERDUE'">
+                        Due: {{ item.dueDate }}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="loan-actions">
+                    @if (item.status === 'OVERDUE') {
+                      <span class="badge badge-danger">Overdue</span>
+                    } @else {
+                      <button 
+                        type="button" 
+                        class="btn btn-secondary btn-sm btn-renew" 
+                        title="Renew loan by +7 days"
+                        (click)="renewStudentLoan(item)">
+                        🔄 Renew (+7d)
+                      </button>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </section>
+
+        <!-- Right: Curated Recommendations For You -->
+        <section class="desk-panel">
+          <div class="panel-header">
+            <div>
+              <h3>AI Recommended for You</h3>
+              <p class="panel-subtitle">Synthesized based on your branch and reading history</p>
+            </div>
+            <a routerLink="/recommendations" class="link-editorial">Full AI Dossier →</a>
+          </div>
+
+          <div class="recs-stream">
+            @for (rec of studentRecommendations; track rec.id) {
+              <div class="student-rec-card">
+                <div class="rec-card-top">
+                  <div>
+                    <span class="branch-pill">{{ rec.category }}</span>
+                    <h4 class="rec-title">{{ rec.title }}</h4>
+                    <span class="rec-author">by {{ rec.author }}</span>
+                  </div>
+                  <div class="rec-match-pill">
+                    <span class="match-num">{{ rec.matchPercentage }}%</span>
+                    <span class="match-lbl">Match</span>
+                  </div>
+                </div>
+                <div class="rec-card-bottom">
+                  <span class="rec-location-tag">📍 {{ rec.aisle || 'Aisle 1' }} · {{ rec.shelf || 'Row A1' }}</span>
+                  <a routerLink="/recommendations" class="btn btn-ghost btn-sm">Details →</a>
+                </div>
+              </div>
+            }
+          </div>
+        </section>
+      </div>
+    </div>
+  }
+
+  <!-- ========================================================= -->
+  <!-- 2. INSTITUTIONAL ADMINISTRATOR DASHBOARD VIEW             -->
+  <!-- ========================================================= -->
+  @if (authService.isAdmin()) {
+    <div class="admin-dashboard-layout">
+      <!-- Admin Institutional Header -->
+      <header class="editorial-header">
+        <div class="header-preline">
+          <span class="badge-role-admin">ADMINISTRATION HEADQUARTERS</span>
+          <span class="dot-sep">&middot;</span>
+          <span>Central Library Circulation Management</span>
+        </div>
+        <h1 class="header-display-title">Administrative Operations</h1>
+        <p class="header-subtext">Catalog governance, member credentials, real-time book circulation, and financial ledgers.</p>
+      </header>
+
+      <!-- Institutional Metrics Strip -->
+      <section class="metrics-editorial-strip">
+        <div class="metric-col">
+          <span class="metric-label">Catalog Holdings</span>
+          <span class="metric-number">{{ stats.totalBooks || 100 }}</span>
+          <span class="metric-caption">Curated volumes</span>
+        </div>
+        <div class="metric-divider"></div>
+        <div class="metric-col">
+          <span class="metric-label">Registered Scholars</span>
+          <span class="metric-number">{{ stats.totalMembers || 40 }}</span>
+          <span class="metric-caption">{{ stats.activeMembers || 30 }} active borrowers</span>
+        </div>
+        <div class="metric-divider"></div>
+        <div class="metric-col">
+          <span class="metric-label">Circulating Loans</span>
+          <span class="metric-number">{{ stats.currentlyIssuedBooks || 28 }}</span>
+          <span class="metric-caption">{{ stats.overdueTransactions || 5 }} flagged overdue</span>
+        </div>
+        <div class="metric-divider"></div>
+        <div class="metric-col">
+          <span class="metric-label">Pending Fine Ledger</span>
+          <span class="metric-number">₹{{ stats.totalUnpaidFines || 465 }}</span>
+          <span class="metric-caption">₹{{ stats.totalPaidFines || 185 }} collected</span>
+        </div>
+      </section>
+
+      <!-- Administrative Quick Action Grid -->
+      <section class="admin-actions-section">
+        <h3 class="section-heading">Operational Portals</h3>
+        <div class="admin-links-grid">
+          <a routerLink="/books" class="admin-link-card">
+            <div class="admin-card-icon">📚</div>
+            <h4>Books Inventory</h4>
+            <p class="text-caption">Manage 100 catalog entries, ISBNs, and physical shelf coordinates</p>
+            <span class="link-arrow">Open Inventory →</span>
+          </a>
+
+          <a routerLink="/members" class="admin-link-card">
+            <div class="admin-card-icon">👥</div>
+            <h4>Scholar Directory</h4>
+            <p class="text-caption">30 active university students & digital student library cards</p>
+            <span class="link-arrow">Open Directory →</span>
+          </a>
+
+          <a routerLink="/lending" class="admin-link-card">
+            <div class="admin-card-icon">🔄</div>
+            <h4>Circulation Desk</h4>
+            <p class="text-caption">Issue new books, process returns, and grant 1-click 7-day renewals</p>
+            <span class="link-arrow">Open Circulation →</span>
+          </a>
+
+          <a routerLink="/fines" class="admin-link-card">
+            <div class="admin-card-icon">💳</div>
+            <h4>Fine Ledgers</h4>
+            <p class="text-caption">Audit overdue penalties and mark cash/online fine settlements</p>
+            <span class="link-arrow">Open Ledger →</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Recent Live Circulation Activity Table -->
+      <section class="circulation-overview-section">
+        <div class="panel-header">
+          <div>
+            <h3>Recent Active Loans in Circulation</h3>
+            <p class="panel-subtitle">Live real-time checkout stream across all university departments</p>
+          </div>
+          <a routerLink="/lending" class="btn btn-secondary btn-sm">View Full Desk →</a>
+        </div>
+
+        <div class="admin-table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Book Title</th>
+                <th>Borrower / Scholar</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (tx of recentCirculation; track tx.id) {
+                <tr>
+                  <td>#{{ tx.id }}</td>
+                  <td><strong>{{ tx.bookTitle }}</strong></td>
+                  <td>{{ tx.memberName }}</td>
+                  <td>{{ tx.dueDate }}</td>
+                  <td>
+                    <span class="badge" [ngClass]="tx.status === 'OVERDUE' ? 'badge-danger' : 'badge-success'">
+                      {{ tx.status }}
+                    </span>
+                  </td>
+                  <td>
+                    <a routerLink="/lending" class="btn btn-ghost btn-sm">Manage</a>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  }
+</div>

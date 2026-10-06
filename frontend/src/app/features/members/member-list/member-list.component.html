@@ -1,0 +1,246 @@
+<div class="members-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Scholar & Member Registry</h1>
+      <p class="subtitle">Directory of 41 registered students, account status, and library cardholder governance.</p>
+    </div>
+    <button class="btn btn-primary" (click)="openAddModal()">
+      + Register Member
+    </button>
+  </div>
+
+  <!-- Search & Toolbar -->
+  <div class="members-controls-row">
+    <div class="search-input-wrapper">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="text" 
+        class="search-input-field" 
+        placeholder="Search scholars by name, email, or department..." 
+        [(ngModel)]="searchQuery" 
+        (keyup.enter)="onSearch()"
+      />
+    </div>
+    <button class="btn btn-secondary" (click)="onSearch()">Search</button>
+  </div>
+
+  <!-- Editorial Members Table -->
+  @if (loading) {
+    <div class="state-container">
+      <p class="text-caption">Loading scholar registry...</p>
+    </div>
+  } @else if (members.length === 0) {
+    <div class="empty-state-editorial">
+      <div class="empty-icon-monogram">👥</div>
+      <h3>No scholars found</h3>
+      <p>No members match your search criteria.</p>
+      <button class="btn btn-secondary btn-sm" (click)="searchQuery = ''; onSearch()">Clear search</button>
+    </div>
+  } @else {
+    <div class="data-table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Scholar</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th>Registration Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (member of members; track member.id) {
+            <tr>
+              <td>
+                <strong class="table-title">{{ member.name }}</strong>
+              </td>
+              <td><span class="text-body-small">{{ member.email }}</span></td>
+              <td><span class="text-caption">{{ member.phone || '—' }}</span></td>
+              <td>
+                @if (member.status === 'ACTIVE') {
+                  <span class="badge badge-success">Active</span>
+                } @else if (member.status === 'SUSPENDED') {
+                  <span class="badge badge-danger">Suspended</span>
+                } @else {
+                  <span class="badge badge-warning">Deactivated</span>
+                }
+              </td>
+              <td><span class="text-caption">{{ member.membershipDate | date:'mediumDate' }}</span></td>
+              <td>
+                <div class="table-actions">
+                  @if (member.status === 'INACTIVE') {
+                    <button type="button" class="btn btn-primary btn-sm" (click)="toggleMemberStatus(member)">
+                      Reactivate
+                    </button>
+                  } @else if (member.status === 'ACTIVE') {
+                    <button type="button" class="btn btn-secondary btn-sm" (click)="toggleMemberStatus(member)">
+                      Deactivate
+                    </button>
+                  }
+                  <button type="button" class="btn btn-ghost btn-sm" (click)="openIdCardModal(member)">📇 ID Card</button>
+                  <button type="button" class="btn btn-ghost btn-sm" (click)="openHistoryModal(member)">History</button>
+                  <button type="button" class="btn btn-ghost btn-sm" (click)="openEditModal(member)">Edit</button>
+                  <button type="button" class="btn btn-destructive btn-sm" (click)="deleteMember(member)">Delete</button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>
+
+@if (showModal) {
+  <app-member-form 
+    [member]="selectedMember" 
+    (save)="onSaveMember()" 
+    (cancel)="closeModal()"
+  ></app-member-form>
+}
+
+<!-- Member History Modal -->
+@if (showHistoryModal && historyMember) {
+  <div class="modal-overlay" (click)="closeHistoryModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()" style="max-width: 640px;">
+      <div class="modal-header-editorial">
+        <div>
+          <h3>Scholar Activity: {{ historyMember.name }}</h3>
+          <p class="text-caption">{{ historyMember.email }} · Status: {{ historyMember.status }}</p>
+        </div>
+        <button type="button" class="modal-close" (click)="closeHistoryModal()">✕</button>
+      </div>
+
+      <div class="modal-body-editorial">
+        <div class="history-metrics-row">
+          <div class="coord-card">
+            <span class="coord-label">Total Loans</span>
+            <strong class="coord-val">{{ memberLoans.length }}</strong>
+          </div>
+          <div class="coord-card">
+            <span class="coord-label">Account Standing</span>
+            <strong class="coord-val" [class.text-error]="historyMember.status === 'INACTIVE'">{{ historyMember.status }}</strong>
+          </div>
+        </div>
+
+        @if (loadingHistory) {
+          <p class="text-caption">Retrieving loan logs...</p>
+        } @else if (memberLoans.length === 0) {
+          <div class="empty-state-editorial" style="padding: 32px 0;">
+            <p>No recorded loans for this scholar.</p>
+          </div>
+        } @else {
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Book Title</th>
+                  <th>Issue Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (tx of memberLoans; track tx.id) {
+                  <tr>
+                    <td><strong class="table-title">{{ tx.bookTitle }}</strong></td>
+                    <td><span class="text-caption">{{ tx.issueDate | date:'mediumDate' }}</span></td>
+                    <td>
+                      <span class="badge" [ngClass]="tx.status === 'RETURNED' ? 'badge-success' : (tx.status === 'OVERDUE' ? 'badge-danger' : 'badge-info')">
+                        {{ tx.status }}
+                      </span>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+
+      <div class="modal-footer-editorial">
+        <button type="button" class="btn btn-secondary" (click)="closeHistoryModal()">Close</button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Digital Library Card Modal -->
+@if (showIdCardModal && idCardMember) {
+  <div class="modal-overlay" (click)="closeIdCardModal()">
+    <div class="modal-content id-card-modal-dialog" (click)="$event.stopPropagation()">
+      <div class="modal-header-editorial">
+        <div>
+          <h3>Digital Library Card</h3>
+          <p class="text-caption">Official scholar cardholder pass for circulation and stack entry</p>
+        </div>
+        <button type="button" class="modal-close" (click)="closeIdCardModal()">✕</button>
+      </div>
+
+      <div class="modal-body-editorial">
+        <div class="library-card-wrapper" id="printable-library-card">
+          <!-- Card Header Banner -->
+          <div class="card-brand-stripe">
+            <div class="brand-left">
+              <span class="univ-crest">🏛️</span>
+              <div>
+                <div class="univ-title">UNIVERSITY LIBRARY PASS</div>
+                <div class="univ-subtitle">Aarupadai Veedu Institute of Technology</div>
+              </div>
+            </div>
+            <span class="card-chip">💳 CHIP</span>
+          </div>
+
+          <!-- Card Body -->
+          <div class="card-main-grid">
+            <div class="card-avatar-box">
+              <div class="avatar-monogram">{{ getMonogram(idCardMember.name) }}</div>
+              <span class="badge" [ngClass]="idCardMember.status === 'ACTIVE' ? 'badge-success' : 'badge-danger'">
+                {{ idCardMember.status }}
+              </span>
+            </div>
+
+            <div class="card-fields">
+              <div class="field-row">
+                <span class="card-lbl">Scholar Name</span>
+                <strong class="card-val-name">{{ idCardMember.name }}</strong>
+              </div>
+              <div class="field-row-grid">
+                <div>
+                  <span class="card-lbl">Library ID</span>
+                  <span class="card-val mono">AVIT-LIB-{{ idCardMember.id }}</span>
+                </div>
+                <div>
+                  <span class="card-lbl">Reg. Date</span>
+                  <span class="card-val">{{ idCardMember.membershipDate | date:'mediumDate' }}</span>
+                </div>
+              </div>
+              <div class="field-row">
+                <span class="card-lbl">Email Address</span>
+                <span class="card-val">{{ idCardMember.email }}</span>
+              </div>
+              <div class="field-row">
+                <span class="card-lbl">Active Loans</span>
+                <span class="card-val">{{ activeLoanCount }} / 3 Allowed</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card Barcode Strip -->
+          <div class="card-barcode-strip">
+            <div class="simulated-barcode">
+              ||||| | |||| ||| || |||||| || ||| |||| | |||||| ||| |||| | ||
+            </div>
+            <div class="barcode-subtext">*{{ idCardMember.id }}-{{ idCardMember.email }}*</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer-editorial">
+        <button type="button" class="btn btn-secondary" (click)="closeIdCardModal()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="printIdCard()">🖨️ Print Card</button>
+      </div>
+    </div>
+  </div>
+}

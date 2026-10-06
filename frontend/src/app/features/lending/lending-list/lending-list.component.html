@@ -1,0 +1,196 @@
+<div class="lending-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Circulation & Lending Logs</h1>
+      <p class="subtitle">Issue textbooks to scholars, track active loan periods, and process returns.</p>
+    </div>
+    <div class="header-action-group">
+      <button type="button" class="btn btn-secondary" (click)="exportCsv()">
+        Export CSV
+      </button>
+      <button type="button" class="btn btn-primary" (click)="openIssueModal()">
+        + Issue Book
+      </button>
+    </div>
+  </div>
+
+  <!-- Filter Pills Bar -->
+  <div class="lending-controls-row">
+    <div class="filter-pills-bar">
+      <button 
+        type="button"
+        class="filter-pill" 
+        [class.active]="filter === 'ACTIVE'" 
+        (click)="setFilter('ACTIVE')">
+        Active Loans
+      </button>
+      <button 
+        type="button"
+        class="filter-pill" 
+        [class.active]="filter === 'OVERDUE'" 
+        (click)="setFilter('OVERDUE')">
+        Overdue Loans
+      </button>
+      <button 
+        type="button"
+        class="filter-pill" 
+        [class.active]="filter === 'RESERVATIONS'" 
+        (click)="setFilter('RESERVATIONS')">
+        Waitlist Holds
+      </button>
+      <button 
+        type="button"
+        class="filter-pill" 
+        [class.active]="filter === 'ALL'" 
+        (click)="setFilter('ALL')">
+        All History
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (loading) {
+    <div class="state-container">
+      <p class="text-caption">Loading circulation records...</p>
+    </div>
+  } @else if (filter === 'RESERVATIONS') {
+    <!-- Reservations Table -->
+    @if (reservations.length === 0) {
+      <div class="empty-state-editorial">
+        <div class="empty-icon-monogram">⏳</div>
+        <h3>No waitlist holds</h3>
+        <p>No active reservations currently queued for checked-out titles.</p>
+      </div>
+    } @else {
+      <div class="data-table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Hold ID</th>
+              <th>Book Title</th>
+              <th>Scholar</th>
+              <th>Hold Date</th>
+              <th>Status</th>
+              <th>Fulfillment</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (res of reservations; track res.id) {
+              <tr>
+                <td><span class="isbn-text">#{{ res.id }}</span></td>
+                <td>
+                  <strong class="table-title">{{ res.bookTitle }}</strong>
+                  <div class="table-author">{{ res.bookIsbn }}</div>
+                </td>
+                <td>
+                  <strong class="table-title">{{ res.memberName }}</strong>
+                  <div class="table-author">{{ res.memberEmail }}</div>
+                </td>
+                <td><span class="text-caption">{{ res.reservationDate | date:'mediumDate' }}</span></td>
+                <td>
+                  @if (res.status === 'PENDING') {
+                    <span class="badge badge-warning">In Queue</span>
+                  } @else if (res.status === 'FULFILLED') {
+                    <span class="badge badge-success">Fulfilled</span>
+                  } @else {
+                    <span class="badge badge-danger">Cancelled</span>
+                  }
+                </td>
+                <td><span class="text-caption">{{ res.fulfillmentDate ? (res.fulfillmentDate | date:'mediumDate') : 'Pending return' }}</span></td>
+                <td>
+                  @if (res.status === 'PENDING') {
+                    <button type="button" class="btn btn-destructive btn-sm" (click)="cancelReservation(res)">
+                      Cancel
+                    </button>
+                  } @else {
+                    <span class="text-caption">Closed</span>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  } @else {
+    <!-- Transactions Table -->
+    @if (transactions.length === 0) {
+      <div class="empty-state-editorial">
+        <div class="empty-icon-monogram">📋</div>
+        <h3>No loan records</h3>
+        <p>No transactions found for the selected filter.</p>
+      </div>
+    } @else {
+      <div class="data-table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Loan #</th>
+              <th>Book Title</th>
+              <th>Scholar / Borrower</th>
+              <th>Issue Date</th>
+              <th>Due Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (tx of transactions; track tx.id) {
+              <tr>
+                <td><span class="isbn-text">#{{ tx.id }}</span></td>
+                <td>
+                  <strong class="table-title">{{ tx.bookTitle }}</strong>
+                  <div class="table-author">{{ tx.bookIsbn }}</div>
+                </td>
+                <td>
+                  <strong class="table-title">{{ tx.memberName }}</strong>
+                  <div class="table-author">{{ tx.memberEmail }}</div>
+                </td>
+                <td><span class="text-caption">{{ tx.issueDate | date:'mediumDate' }}</span></td>
+                <td>
+                  <span class="text-caption" [class.text-error]="tx.status === 'OVERDUE'">
+                    {{ tx.dueDate | date:'mediumDate' }}
+                  </span>
+                </td>
+                <td>
+                  @if (tx.status === 'ISSUED') {
+                    <span class="badge badge-info">Active</span>
+                  } @else if (tx.status === 'RETURNED') {
+                    <span class="badge badge-success">Returned</span>
+                  } @else if (tx.status === 'OVERDUE') {
+                    <span class="badge badge-danger">Overdue</span>
+                  }
+                </td>
+                <td>
+                  <div class="table-actions">
+                    @if (tx.status === 'ISSUED') {
+                      <button type="button" class="btn btn-ghost btn-sm" title="Extend due date by 7 days" (click)="renewLoan(tx)">
+                        Renew
+                      </button>
+                    }
+                    @if (tx.status !== 'RETURNED') {
+                      <button type="button" class="btn btn-secondary btn-sm" (click)="returnBook(tx)">
+                        Return
+                      </button>
+                    } @else {
+                      <span class="text-caption">Archived</span>
+                    }
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+</div>
+
+@if (showIssueModal) {
+  <app-issue-modal 
+    (issued)="onBookIssued()" 
+    (closed)="closeIssueModal()"
+  ></app-issue-modal>
+}

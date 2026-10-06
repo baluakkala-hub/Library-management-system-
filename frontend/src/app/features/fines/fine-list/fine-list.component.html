@@ -1,0 +1,267 @@
+<div class="fines-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">{{ authService.isAdmin() ? 'Fines & Account Settlement' : 'Library Dues' }}</h1>
+      <p class="subtitle">
+        {{ authService.isAdmin() ? 'Review overdue return penalties, textbook repair charges, and process fine payments in Indian Rupees (₹).' : 'Review your individual library charges and settle outstanding penalties.' }}
+      </p>
+    </div>
+
+    @if (authService.isAdmin()) {
+      <button type="button" class="btn btn-primary" (click)="openAddFineModal()">
+        + Issue Fine
+      </button>
+    }
+  </div>
+
+  <!-- Summary Strip -->
+  <div class="metrics-editorial-strip">
+    <div class="metric-col">
+      <span class="metric-label">Unpaid Dues</span>
+      <span class="metric-number">₹{{ totalUnpaidAmount | number:'1.2-2' }}</span>
+      <span class="metric-caption">Pending settlement</span>
+    </div>
+    <div class="metric-divider"></div>
+    <div class="metric-col">
+      <span class="metric-label">Unpaid Penalties</span>
+      <span class="metric-number">{{ unpaidCount }}</span>
+      <span class="metric-caption">Open infractions</span>
+    </div>
+    <div class="metric-divider"></div>
+    <div class="metric-col">
+      <span class="metric-label">Settled Records</span>
+      <span class="metric-number">{{ paidCount }}</span>
+      <span class="metric-caption">Cleared in full</span>
+    </div>
+  </div>
+
+  <!-- Table Toolbar -->
+  <div class="fines-controls-row">
+    <div class="filter-pills-bar">
+      <button 
+        type="button"
+        class="filter-pill" 
+        [class.active]="filter === 'UNPAID'" 
+        (click)="setFilter('UNPAID')">
+        Unpaid Dues ({{ unpaidCount }})
+      </button>
+      <button 
+        type="button"
+        class="filter-pill" 
+        [class.active]="filter === 'ALL'" 
+        (click)="setFilter('ALL')">
+        All History ({{ fines.length }})
+      </button>
+    </div>
+
+    <span class="text-caption">Policy: ₹5.00 per overdue day</span>
+  </div>
+
+  <!-- Editorial Table -->
+  @if (loading) {
+    <div class="state-container">
+      <p class="text-caption">Loading fine records...</p>
+    </div>
+  } @else if (fines.length === 0) {
+    <div class="empty-state-editorial">
+      <div class="empty-icon-monogram">✓</div>
+      <h3>No outstanding dues</h3>
+      <p>{{ authService.isStudent() ? 'Your scholar account has zero outstanding penalties.' : 'No fine records found matching the active filter.' }}</p>
+    </div>
+  } @else {
+    <div class="data-table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Ticket</th>
+            <th>Scholar</th>
+            <th>Violation</th>
+            <th>Book Title</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Method</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (fine of fines; track fine.id) {
+            <tr>
+              <td><span class="isbn-text">#{{ fine.id }}</span></td>
+              <td>
+                <strong class="table-title">{{ fine.memberName }}</strong>
+                <div class="table-author">{{ fine.memberEmail }}</div>
+              </td>
+              <td>
+                <span class="text-body-small">{{ fine.reason || 'Overdue Book Return' }}</span>
+              </td>
+              <td>
+                <div class="table-title">{{ fine.bookTitle || (fine.transactionId ? 'Loan #' + fine.transactionId : 'General assessment') }}</div>
+              </td>
+              <td>
+                <strong class="text-body" [class.text-error]="fine.status === 'UNPAID'">
+                  ₹{{ fine.amount | number:'1.2-2' }}
+                </strong>
+              </td>
+              <td>
+                @if (fine.status === 'UNPAID') {
+                  <span class="badge badge-danger">Unpaid</span>
+                } @else if (fine.status === 'PAID') {
+                  <span class="badge badge-success">Paid</span>
+                } @else {
+                  <span class="badge badge-warning">Waived</span>
+                }
+              </td>
+              <td>
+                <span class="text-caption">{{ fine.paymentMethod || '—' }}</span>
+              </td>
+              <td>
+                @if (fine.status === 'UNPAID') {
+                  @if (authService.isAdmin()) {
+                    <button type="button" class="btn btn-secondary btn-sm" (click)="openPayModal(fine)">
+                      Settle
+                    </button>
+                  } @else {
+                    <button type="button" class="btn btn-primary btn-sm" (click)="openPayModal(fine)">
+                      Pay
+                    </button>
+                  }
+                } @else {
+                  <span class="text-caption">Cleared</span>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  <!-- Modal 1: Issue Fine (Admin) -->
+  @if (showAddFineModal) {
+    <div class="modal-overlay" (click)="closeAddFineModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header-editorial">
+          <div>
+            <h3>Issue Library Fine</h3>
+            <p class="text-caption">Assess a penalty for late return or damage</p>
+          </div>
+          <button type="button" class="modal-close" (click)="closeAddFineModal()">✕</button>
+        </div>
+
+        <div class="modal-body-editorial">
+          @if (addFineError) {
+            <div class="form-error-banner">
+              {{ addFineError }}
+            </div>
+          }
+
+          <div class="form-group">
+            <label class="form-label">Student / Member</label>
+            <select class="form-control" [(ngModel)]="selectedMemberId">
+              @for (mem of members; track mem.id) {
+                <option [value]="mem.id">
+                  {{ mem.name }} ({{ mem.email }})
+                </option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Amount (₹ INR)</label>
+            <input 
+              type="number" 
+              class="form-control" 
+              [(ngModel)]="fineAmount" 
+              min="1.00" 
+              step="5.00" 
+              placeholder="e.g. 50.00"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Violation Reason</label>
+            <select class="form-control" [(ngModel)]="fineReason">
+              @for (reason of PRESET_REASONS; track reason) {
+                <option [value]="reason">{{ reason }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Additional Notes (Optional)</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              [(ngModel)]="customReasonNotes" 
+              placeholder="e.g. Book: Dune, 4 pages marked"
+            />
+          </div>
+        </div>
+
+        <div class="modal-footer-editorial">
+          <button type="button" class="btn btn-secondary" (click)="closeAddFineModal()">Cancel</button>
+          <button 
+            type="button" 
+            class="btn btn-primary" 
+            [disabled]="submittingFine" 
+            (click)="submitAddFine()"
+          >
+            {{ submittingFine ? 'Recording...' : 'Issue Fine' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Modal 2: Pay Fine -->
+  @if (showPayModal && selectedFine) {
+    <div class="modal-overlay" (click)="closePayModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header-editorial">
+          <div>
+            <h3>Settle Outstanding Fine</h3>
+            <p class="text-caption">Record fine payment and clear dues</p>
+          </div>
+          <button type="button" class="modal-close" (click)="closePayModal()">✕</button>
+        </div>
+
+        <div class="modal-body-editorial">
+          <div class="fine-details-card">
+            <div class="detail-row">
+              <span class="text-caption">Scholar:</span>
+              <strong class="text-body-small">{{ selectedFine.memberName }}</strong>
+            </div>
+            @if (selectedFine.reason) {
+              <div class="detail-row">
+                <span class="text-caption">Reason:</span>
+                <span class="text-body-small">{{ selectedFine.reason }}</span>
+              </div>
+            }
+            <div class="detail-row total-line">
+              <span class="text-caption">Amount Due:</span>
+              <strong class="text-h4">₹{{ selectedFine.amount | number:'1.2-2' }}</strong>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top: 16px;">
+            <label class="form-label">Payment Method</label>
+            <select class="form-control" [(ngModel)]="selectedPaymentMethod">
+              <option value="UPI">UPI / GPay / PhonePe</option>
+              <option value="CARD">Credit / Debit Card</option>
+              <option value="CASH">Cash at Circulation Desk</option>
+              <option value="STUDENT_ACCOUNT">Student Tuition Account</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer-editorial">
+          <button type="button" class="btn btn-secondary" (click)="closePayModal()">Cancel</button>
+          <button type="button" class="btn btn-primary" [disabled]="paying" (click)="confirmPayment()">
+            {{ paying ? 'Processing...' : 'Confirm Payment' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
